@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from .models import AggregateIntent, CheckResult, ExperimentContract, RunIntent, Violation
 from .rules.budget import check_budget
+from .rules.config_drift import check_config_drift
 from .rules.seed_set import check_seed_set
+from .rules.split_drift import check_split_drift
 
 
 class InvariantEngine:
@@ -94,7 +96,12 @@ class InvariantEngine:
         role_violations = self._validate_roles(contract, baseline_intent, candidate_intent)
         if role_violations:
             return CheckResult.from_violations(role_violations)
-        return CheckResult.from_violations(check_budget(contract, baseline_intent, candidate_intent))
+        violations = [
+            *check_budget(contract, baseline_intent, candidate_intent),
+            *check_split_drift(contract, baseline_intent, candidate_intent),
+            *check_config_drift(contract, baseline_intent, candidate_intent),
+        ]
+        return CheckResult.from_violations(violations)
 
     def check_pre_aggregate(
         self, contract: ExperimentContract, aggregate_intent: AggregateIntent

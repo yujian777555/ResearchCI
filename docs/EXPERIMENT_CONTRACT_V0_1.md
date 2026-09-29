@@ -35,6 +35,8 @@ comparison:
   baseline: baseline
   candidate: method
 
+  require_same_split: true
+
   paired_seeds:
     required: true
     seeds: [1, 2, 3, 4, 5]
@@ -43,6 +45,9 @@ comparison:
     - training.max_epochs
     - training.max_steps
     - evaluation.max_batches
+
+  equal_config_fields:
+    - training.batch_size
 
   allowed_to_change:
     - model.optimizer
@@ -85,6 +90,12 @@ enforcement:
   pre_aggregate: block
   pre_claim: block
 ```
+
+`equal_budget_fields` belongs to RCI-C002, `require_same_split` enables RCI-C003
+for the top-level `RunIntent.split_hash`, and `equal_config_fields` belongs to
+RCI-C004. The parser rejects a path declared in both equal field lists.
+`allowed_to_change` exempts a declared equal field. If the Phase 1B fields are
+absent from an older contract, split and config checks remain inactive.
 
 ## 4. Canonical RunIntent
 

@@ -1,0 +1,67 @@
+version: "phase-1b"
+c003:
+  - id: same_split
+    baseline_split_hash: split-a
+    candidate_split_hash: split-a
+    require_same_split: true
+    expected_decision: PASS
+  - id: different_split
+    baseline_split_hash: split-a
+    candidate_split_hash: split-b
+    require_same_split: true
+    expected_decision: BLOCK
+  - id: different_split_allowed
+    baseline_split_hash: split-a
+    candidate_split_hash: split-b
+    require_same_split: false
+    expected_decision: PASS
+  - id: resolved_config_split_only
+    baseline_split_hash: split-a
+    candidate_split_hash: split-a
+    baseline_config_split_hash: config-a
+    candidate_config_split_hash: config-b
+    require_same_split: true
+    expected_decision: PASS
+c004:
+  - id: equal_batch_size
+    path: training.batch_size
+    baseline_value: 32
+    candidate_value: 32
+    expected_decision: PASS
+  - id: changed_batch_size
+    path: training.batch_size
+    baseline_value: 32
+    candidate_value: 64
+    expected_decision: BLOCK
+  - id: changed_nested_path
+    path: model.encoder.width
+    baseline_value: 64
+    candidate_value: 128
+    expected_decision: BLOCK
+  - id: allowed_change
+    path: training.batch_size
+    baseline_value: 32
+    candidate_value: 64
+    allowed_to_change: true
+    expected_decision: PASS
+  - id: undeclared_change
+    path: model.optimizer
+    baseline_value: adam
+    candidate_value: sgd
+    declare_equal: false
+    expected_decision: PASS
+  - id: missing_declared_path
+    path: model.encoder.width
+    baseline_value: 64
+    candidate_value: missing
+    expected_decision: BLOCK
+combined:
+  baseline:
+    training.max_epochs: 10
+    split_hash: split-a
+    training.batch_size: 32
+  candidate:
+    training.max_epochs: 20
+    split_hash: split-b
+    training.batch_size: 64
+  expected_rule_ids: [RCI-C002, RCI-C003, RCI-C004]

@@ -66,7 +66,7 @@ def _path_tuple(values: Any, field_name: str, *, required: bool = True) -> tuple
 
 @dataclass
 class ExperimentContract:
-    """仅承载 v0.1/C001/C002 所需的显式契约语义。"""
+    """承载 v0.1/C001-C004 所需的显式契约语义。"""
 
     contract_version: str
     experiment_id: str
@@ -77,6 +77,8 @@ class ExperimentContract:
     paired_seeds: tuple[int, ...]
     equal_budget_fields: tuple[str, ...]
     allowed_to_change: tuple[str, ...]
+    require_same_split: bool = False
+    equal_config_fields: tuple[str, ...] = ()
     require_all_declared_seeds: bool = True
     primary_metric: str | None = None
 
@@ -108,6 +110,20 @@ class ExperimentContract:
         equal_budget_fields = _path_tuple(
             comparison.get("equal_budget_fields"), "comparison.equal_budget_fields"
         )
+        require_same_split = comparison.get("require_same_split", False)
+        if not isinstance(require_same_split, bool):
+            raise ModelValidationError("comparison.require_same_split must be a boolean")
+        equal_config_fields = _path_tuple(
+            comparison.get("equal_config_fields", []),
+            "comparison.equal_config_fields",
+            required=False,
+        )
+        overlap = sorted(set(equal_budget_fields) & set(equal_config_fields))
+        if overlap:
+            raise ModelValidationError(
+                "comparison.equal_budget_fields and comparison.equal_config_fields overlap: "
+                + ", ".join(overlap)
+            )
         allowed_to_change = _path_tuple(
             comparison.get("allowed_to_change", []), "comparison.allowed_to_change", required=False
         )
@@ -147,6 +163,8 @@ class ExperimentContract:
             paired_seeds=seeds,
             equal_budget_fields=equal_budget_fields,
             allowed_to_change=allowed_to_change,
+            require_same_split=require_same_split,
+            equal_config_fields=equal_config_fields,
             require_all_declared_seeds=require_all,
             primary_metric=primary_metric,
         )
