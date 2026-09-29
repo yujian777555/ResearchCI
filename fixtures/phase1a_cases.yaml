@@ -1,0 +1,47 @@
+version: "phase-1a"
+c001:
+  - id: valid_paired_seeds
+    baseline_seed_set: [1, 2, 3]
+    candidate_seed_set: [1, 2, 3]
+    expected_decision: PASS
+  - id: candidate_missing_seed
+    baseline_seed_set: [1, 2, 3]
+    candidate_seed_set: [1, 2]
+    expected_decision: BLOCK
+  - id: different_seed_sets
+    baseline_seed_set: [1, 2, 3]
+    candidate_seed_set: [1, 2, 4]
+    expected_decision: BLOCK
+  - id: unexpected_extra_seed
+    baseline_seed_set: [1, 2, 3, 4]
+    candidate_seed_set: [1, 2, 3]
+    expected_decision: BLOCK
+c002:
+  - id: equal_max_epochs
+    path: training.max_epochs
+    baseline_value: 10
+    candidate_value: 10
+    expected_decision: PASS
+  - id: mismatched_max_epochs
+    path: training.max_epochs
+    baseline_value: 10
+    candidate_value: 20
+    expected_decision: BLOCK
+  - id: mismatched_max_steps
+    path: training.max_steps
+    baseline_value: 100
+    candidate_value: 200
+    expected_decision: BLOCK
+  - id: mismatched_evaluation_budget
+    path: evaluation.max_batches
+    baseline_value: 5
+    candidate_value: 7
+    expected_decision: BLOCK
+  - id: allowed_field_changed
+    path: training.batch_size
+    baseline_value: 32
+    candidate_value: 128
+    expected_decision: PASS
+composite:
+  pre_run_runs_c002_only: true
+  pre_aggregate_runs_c001_only: true
