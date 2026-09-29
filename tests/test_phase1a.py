@@ -33,7 +33,7 @@ comparison:
   paired_seeds:
     required: true
     seeds: [1, 2, 3]
-  equal_fields:
+  equal_budget_fields:
     - training.max_epochs
     - training.max_steps
     - evaluation.max_batches
@@ -92,7 +92,7 @@ def test_contract_parser_loads_v01_yaml_and_canonicalizes_paths():
     assert contract.contract_version == "0.1"
     assert contract.experiment_id == "exp-001"
     assert contract.paired_seeds == (1, 2, 3)
-    assert contract.equal_fields == (
+    assert contract.equal_budget_fields == (
         "training.max_epochs",
         "training.max_steps",
         "evaluation.max_batches",
@@ -112,11 +112,18 @@ def test_contract_parser_rejects_malformed_yaml():
 
 def test_contract_parser_rejects_missing_active_rule_fields():
     missing_comparison = CONTRACT_YAML.replace(
-        "  equal_fields:\n    - training.max_epochs\n    - training.max_steps\n    - evaluation.max_batches\n    - training.batch_size\n",
+        "  equal_budget_fields:\n    - training.max_epochs\n    - training.max_steps\n    - evaluation.max_batches\n    - training.batch_size\n",
         "",
     )
     with pytest.raises(ContractParseError):
         parse_contract(missing_comparison)
+
+
+def test_contract_parser_rejects_retired_equal_fields_name():
+    retired_name = CONTRACT_YAML.replace("equal_budget_fields:", "equal_fields:")
+
+    with pytest.raises(ContractParseError):
+        parse_contract(retired_name)
 
 
 def test_contract_parser_rejects_missing_seed_completeness_semantics():
@@ -215,6 +222,62 @@ def test_pre_run_equal_budgets_pass_and_allowed_change_does_not_false_block():
 
     assert result.decision == "PASS"
     assert result.violations == ()
+
+
+def test_official_example_with_identical_intents_passes_pre_run():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+
+    result = InvariantEngine().check_pre_run(
+        contract,
+        make_run("baseline", 1),
+        make_run("candidate", 1),
+    )
+
+    assert result.decision == "PASS"
+    assert result.violations == ()
+
+
+def test_non_budget_split_and_metric_changes_are_not_owned_by_c002():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    baseline = make_run("baseline", 1)
+    candidate = make_run("candidate", 1)
+    baseline.resolved_config["data"] = {"split_hash": "split-a"}
+    candidate.resolved_config["data"] = {"split_hash": "split-b"}
+    baseline.resolved_config["evaluation"]["primary_metric"] = "accuracy"
+    candidate.resolved_config["evaluation"]["primary_metric"] = "f1"
+
+    result = InvariantEngine().check_pre_run(contract, baseline, candidate)
+
+    assert result.decision == "PASS"
+    assert all(violation.rule_id != "RCI-C002" for violation in result.violations)
+
+
+@pytest.mark.parametrize(
+    ("baseline_role", "candidate_role", "location", "expected", "observed"),
+    [
+        ("candidate", "candidate", "baseline.role", "baseline", "candidate"),
+        ("baseline", "baseline", "candidate.role", "candidate", "baseline"),
+    ],
+)
+def test_pre_run_role_mismatch_is_schema_error_before_c002(
+    baseline_role, candidate_role, location, expected, observed
+):
+    contract = parse_contract(CONTRACT_YAML)
+    baseline = make_run(baseline_role, 1, epochs=10)
+    candidate = make_run(candidate_role, 1, epochs=20)
+
+    result = InvariantEngine().check_pre_run(contract, baseline, candidate)
+
+    assert result.decision == "BLOCK"
+    assert len(result.violations) == 1
+    violation = result.violations[0]
+    assert violation.rule_id == "SCHEMA"
+    assert violation.type == "schema_error"
+    assert violation.stage == "pre_run"
+    assert violation.location == location
+    assert violation.expected == expected
+    assert violation.observed == observed
+    assert violation.repair == {"operation": "set", "path": location, "value": expected}
 
 
 @pytest.mark.parametrize(
@@ -341,6 +404,14 @@ def test_example_contract_file_is_parseable():
 def test_phase1a_fixture_matrix_declares_all_required_cases():
     matrix = yaml.safe_load((ROOT / "fixtures" / "phase1a_cases.yaml").read_text(encoding="utf-8"))
 
+    assert matrix["contract_fields"] == {
+        "equal_budget_fields": [
+            "training.max_epochs",
+            "training.max_steps",
+            "evaluation.max_batches",
+        ],
+        "excluded_from_c002": ["data.split_hash", "evaluation.primary_metric"],
+    }
     assert {case["id"] for case in matrix["c001"]} == {
         "valid_paired_seeds",
         "candidate_missing_seed",

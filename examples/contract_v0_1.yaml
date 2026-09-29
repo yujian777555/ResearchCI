@@ -10,12 +10,10 @@ comparison:
   paired_seeds:
     required: true
     seeds: [1, 2, 3]
-  equal_fields:
+  equal_budget_fields:
     - training.max_epochs
     - training.max_steps
     - evaluation.max_batches
-    - data.split_hash
-    - evaluation.primary_metric
   allowed_to_change:
     - model.optimizer
 

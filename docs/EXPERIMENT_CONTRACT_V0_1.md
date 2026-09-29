@@ -39,13 +39,10 @@ comparison:
     required: true
     seeds: [1, 2, 3, 4, 5]
 
-  equal_fields:
+  equal_budget_fields:
     - training.max_epochs
-    - training.batch_size
-    - data.split_hash
-    - data.preprocessing_hash
-    - evaluation.evaluator_hash
-    - evaluation.primary_metric
+    - training.max_steps
+    - evaluation.max_batches
 
   allowed_to_change:
     - model.optimizer

@@ -41,11 +41,11 @@ def _schema_error(path: str, observed: Any) -> Violation:
 def check_budget(
     contract: ExperimentContract, baseline: RunIntent, candidate: RunIntent
 ) -> list[Violation]:
-    """比较全部声明字段；allowed_to_change 对差异具有明确豁免作用。"""
+    """只比较契约明确归属于 C002 的预算字段。"""
 
     allowed = set(contract.allowed_to_change)
     violations: list[Violation] = []
-    for path in contract.equal_fields:
+    for path in contract.equal_budget_fields:
         if path in allowed:
             continue
         baseline_value = _get_path(baseline.resolved_config, path)

@@ -1,4 +1,12 @@
 version: "phase-1a"
+contract_fields:
+  equal_budget_fields:
+    - training.max_epochs
+    - training.max_steps
+    - evaluation.max_batches
+  excluded_from_c002:
+    - data.split_hash
+    - evaluation.primary_metric
 c001:
   - id: valid_paired_seeds
     baseline_seed_set: [1, 2, 3]

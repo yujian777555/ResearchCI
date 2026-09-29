@@ -75,7 +75,7 @@ class ExperimentContract:
     candidate_role: str
     paired_seeds_required: bool
     paired_seeds: tuple[int, ...]
-    equal_fields: tuple[str, ...]
+    equal_budget_fields: tuple[str, ...]
     allowed_to_change: tuple[str, ...]
     require_all_declared_seeds: bool = True
     primary_metric: str | None = None
@@ -101,7 +101,13 @@ class ExperimentContract:
             raise ModelValidationError("comparison.paired_seeds.required must be a boolean")
 
         seeds = _seed_tuple(paired.get("seeds"), "comparison.paired_seeds.seeds", required=required)
-        equal_fields = _path_tuple(comparison.get("equal_fields"), "comparison.equal_fields")
+        if "equal_fields" in comparison:
+            raise ModelValidationError(
+                "comparison.equal_fields is retired; use comparison.equal_budget_fields"
+            )
+        equal_budget_fields = _path_tuple(
+            comparison.get("equal_budget_fields"), "comparison.equal_budget_fields"
+        )
         allowed_to_change = _path_tuple(
             comparison.get("allowed_to_change", []), "comparison.allowed_to_change", required=False
         )
@@ -139,7 +145,7 @@ class ExperimentContract:
             candidate_role=_require_non_empty_string(comparison.get("candidate"), "comparison.candidate"),
             paired_seeds_required=required,
             paired_seeds=seeds,
-            equal_fields=equal_fields,
+            equal_budget_fields=equal_budget_fields,
             allowed_to_change=allowed_to_change,
             require_all_declared_seeds=require_all,
             primary_metric=primary_metric,
