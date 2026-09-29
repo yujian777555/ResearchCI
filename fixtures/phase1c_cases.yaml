@@ -1,0 +1,27 @@
+version: "phase-1c"
+c005:
+  matching_keys: [git_commit, config_hash, dataset_hash, evaluator_hash]
+  stale_keys: [git_commit, config_hash, dataset_hash, evaluator_hash]
+  undeclared_change: environment_hash
+  missing_declared_key: config_hash
+c006:
+  - id: all_success_included
+    expected_decision: PASS
+  - id: failed_explicitly_reported
+    expected_decision: PASS
+  - id: failed_omitted
+    expected_decision: BLOCK
+  - id: failed_included
+    expected_decision: BLOCK
+  - id: success_omitted
+    expected_decision: BLOCK
+  - id: declared_run_without_result
+    expected_decision: BLOCK
+  - id: success_reported_failed
+    expected_decision: BLOCK
+  - id: unknown_accounting_id
+    expected_decision: BLOCK
+  - id: duplicate_result_id
+    expected_decision: BLOCK
+combined:
+  expected_rule_ids: [RCI-C001, RCI-C006]

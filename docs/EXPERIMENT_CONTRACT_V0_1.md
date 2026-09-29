@@ -97,6 +97,11 @@ RCI-C004. The parser rejects a path declared in both equal field lists.
 `allowed_to_change` exempts a declared equal field. If the Phase 1B fields are
 absent from an older contract, split and config checks remain inactive.
 
+For Phase 1C, `completeness.failed_runs.must_be_explicit` enables RCI-C006
+run accounting, while `cache.invalidation_keys` explicitly selects the
+provenance fields checked by RCI-C005. Cache provenance is never repaired by
+rewriting a hash label; stale artifacts require invalidation and recomputation.
+
 ## 4. Canonical RunIntent
 
 Every executable experiment must resolve to a canonical `RunIntent` before process launch.

@@ -1,10 +1,19 @@
-"""RCI Phase 1A 的无副作用 invariant engine。"""
+"""RCI Phase 1 的无副作用 invariant engine。"""
 
 from __future__ import annotations
 
-from .models import AggregateIntent, CheckResult, ExperimentContract, RunIntent, Violation
+from .models import (
+    AggregateIntent,
+    CacheConsumeIntent,
+    CheckResult,
+    ExperimentContract,
+    RunIntent,
+    Violation,
+)
 from .rules.budget import check_budget
+from .rules.cache import check_cache_provenance
 from .rules.config_drift import check_config_drift
+from .rules.failed_runs import check_failed_runs
 from .rules.seed_set import check_seed_set
 from .rules.split_drift import check_split_drift
 
@@ -106,7 +115,16 @@ class InvariantEngine:
     def check_pre_aggregate(
         self, contract: ExperimentContract, aggregate_intent: AggregateIntent
     ) -> CheckResult:
-        return CheckResult.from_violations(check_seed_set(contract, aggregate_intent))
+        violations = [
+            *check_seed_set(contract, aggregate_intent),
+            *check_failed_runs(contract, aggregate_intent),
+        ]
+        return CheckResult.from_violations(violations)
+
+    def check_pre_cache_consume(
+        self, contract: ExperimentContract, cache_intent: CacheConsumeIntent
+    ) -> CheckResult:
+        return CheckResult.from_violations(check_cache_provenance(contract, cache_intent))
 
 
 def check_pre_run(
@@ -121,3 +139,11 @@ def check_pre_aggregate(contract: ExperimentContract, aggregate_intent: Aggregat
     """函数式 pre_aggregate 入口。"""
 
     return InvariantEngine().check_pre_aggregate(contract, aggregate_intent)
+
+
+def check_pre_cache_consume(
+    contract: ExperimentContract, cache_intent: CacheConsumeIntent
+) -> CheckResult:
+    """函数式 pre_cache_consume 入口。"""
+
+    return InvariantEngine().check_pre_cache_consume(contract, cache_intent)

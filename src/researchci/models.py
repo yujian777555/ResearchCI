@@ -1,4 +1,4 @@
-"""ResearchCI Phase 1A 的规范化数据模型。"""
+"""ResearchCI Phase 1 的规范化数据模型。"""
 
 from __future__ import annotations
 
@@ -81,6 +81,8 @@ class ExperimentContract:
     equal_config_fields: tuple[str, ...] = ()
     require_all_declared_seeds: bool = True
     primary_metric: str | None = None
+    failed_runs_must_be_explicit: bool = False
+    cache_invalidation_keys: tuple[str, ...] = ()
 
     @classmethod
     def from_mapping(cls, raw: Mapping[str, Any]) -> "ExperimentContract":
@@ -141,6 +143,48 @@ class ExperimentContract:
                 "completeness.aggregation.require_all_declared_seeds is required and must be a boolean"
             )
 
+        failed_runs_present = "failed_runs" in completeness
+        failed_runs = completeness.get("failed_runs", None)
+        failed_runs_must_be_explicit = False
+        if failed_runs_present:
+            if not isinstance(failed_runs, Mapping):
+                raise ModelValidationError("completeness.failed_runs must be a mapping")
+            failed_runs_must_be_explicit = failed_runs.get("must_be_explicit")
+            if not isinstance(failed_runs_must_be_explicit, bool):
+                raise ModelValidationError(
+                    "completeness.failed_runs.must_be_explicit must be a boolean"
+                )
+
+        cache_present = "cache" in data
+        cache = data.get("cache", None)
+        cache_invalidation_keys: tuple[str, ...] = ()
+        supported_cache_keys = {
+            "git_commit",
+            "config_hash",
+            "dataset_hash",
+            "split_hash",
+            "evaluator_hash",
+            "environment_hash",
+        }
+        if cache_present:
+            if not isinstance(cache, Mapping):
+                raise ModelValidationError("cache must be a mapping")
+            raw_cache_keys = cache.get("invalidation_keys", [])
+            if isinstance(raw_cache_keys, (str, bytes)) or not isinstance(
+                raw_cache_keys, (list, tuple)
+            ):
+                raise ModelValidationError("cache.invalidation_keys must be a sequence")
+            cache_invalidation_keys = tuple(
+                _require_non_empty_string(key, "cache.invalidation_keys") for key in raw_cache_keys
+            )
+            if len(set(cache_invalidation_keys)) != len(cache_invalidation_keys):
+                raise ModelValidationError("cache.invalidation_keys contains duplicate keys")
+            unknown_cache_keys = sorted(set(cache_invalidation_keys) - supported_cache_keys)
+            if unknown_cache_keys:
+                raise ModelValidationError(
+                    "unknown cache invalidation key(s): " + ", ".join(unknown_cache_keys)
+                )
+
         metrics = data.get("metrics", {})
         primary_metric = None
         if metrics is not None:
@@ -167,6 +211,8 @@ class ExperimentContract:
             equal_config_fields=equal_config_fields,
             require_all_declared_seeds=require_all,
             primary_metric=primary_metric,
+            failed_runs_must_be_explicit=failed_runs_must_be_explicit,
+            cache_invalidation_keys=cache_invalidation_keys,
         )
 
 
@@ -228,15 +274,20 @@ class RunResult:
     run_id: str
     status: str
     metrics: dict[str, Any]
-    artifact_hash: str
+    artifact_hash: str | None
     seed: int | None = None
     role: str | None = None
 
     def __post_init__(self) -> None:
         self.run_id = _require_non_empty_string(self.run_id, "run_id")
         self.status = _require_non_empty_string(self.status, "status")
+        if self.status not in {"success", "failed"}:
+            raise ModelValidationError("status must be success or failed")
         self.metrics = _require_mapping(self.metrics, "metrics")
-        self.artifact_hash = _require_non_empty_string(self.artifact_hash, "artifact_hash")
+        if self.status == "success":
+            self.artifact_hash = _require_non_empty_string(self.artifact_hash, "artifact_hash")
+        elif self.artifact_hash is not None:
+            self.artifact_hash = _require_non_empty_string(self.artifact_hash, "artifact_hash")
         if self.seed is not None:
             self.seed = _require_seed(self.seed, "seed")
         if self.role is not None:
@@ -260,6 +311,35 @@ class RunResult:
 
 
 @dataclass
+class CachedArtifactManifest:
+    """实际生成缓存 artifact 时记录的 provenance。"""
+
+    artifact_id: str
+    artifact_hash: str
+    source_provenance: dict[str, str]
+
+    def __post_init__(self) -> None:
+        self.artifact_id = _require_non_empty_string(self.artifact_id, "artifact_id")
+        self.artifact_hash = _require_non_empty_string(self.artifact_hash, "artifact_hash")
+        raw = _require_mapping(self.source_provenance, "source_provenance")
+        provenance: dict[str, str] = {}
+        for key, value in raw.items():
+            canonical_key = _require_non_empty_string(key, "source_provenance.key")
+            provenance[canonical_key] = _require_non_empty_string(
+                value, f"source_provenance.{canonical_key}"
+            )
+        self.source_provenance = provenance
+
+
+@dataclass
+class CacheConsumeIntent:
+    """当前运行消费已有缓存时的显式输入。"""
+
+    current_run: RunIntent
+    cached_artifact: CachedArtifactManifest
+
+
+@dataclass
 class AggregateIntent:
     """聚合前的声明、运行引用和观测 seed 集合。"""
 
@@ -273,6 +353,8 @@ class AggregateIntent:
     baseline_runs: tuple[RunIntent, ...] = field(default_factory=tuple)
     candidate_runs: tuple[RunIntent, ...] = field(default_factory=tuple)
     observed_results: tuple[RunResult, ...] = field(default_factory=tuple)
+    included_run_ids: tuple[str, ...] = field(default_factory=tuple)
+    reported_failed_run_ids: tuple[str, ...] = field(default_factory=tuple)
 
     def __post_init__(self) -> None:
         self.experiment_id = _require_non_empty_string(self.experiment_id, "experiment_id")
@@ -297,6 +379,13 @@ class AggregateIntent:
         self.baseline_runs = tuple(self.baseline_runs)
         self.candidate_runs = tuple(self.candidate_runs)
         self.observed_results = tuple(self.observed_results)
+        self.included_run_ids = tuple(
+            _require_non_empty_string(value, "included_run_ids") for value in self.included_run_ids
+        )
+        self.reported_failed_run_ids = tuple(
+            _require_non_empty_string(value, "reported_failed_run_ids")
+            for value in self.reported_failed_run_ids
+        )
         if self.baseline_seed_set is None and self.baseline_runs:
             self.baseline_seed_set = _seed_tuple(
                 [run.seed for run in self.baseline_runs], "baseline_runs.seed", required=True

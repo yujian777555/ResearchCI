@@ -1,8 +1,15 @@
 """ResearchCI：面向科学可比性的最小契约检查器。"""
 
-from .engine import InvariantEngine, check_pre_aggregate, check_pre_run
+from .engine import (
+    InvariantEngine,
+    check_pre_aggregate,
+    check_pre_cache_consume,
+    check_pre_run,
+)
 from .models import (
     AggregateIntent,
+    CacheConsumeIntent,
+    CachedArtifactManifest,
     CheckResult,
     ExperimentContract,
     ModelValidationError,
@@ -14,6 +21,8 @@ from .schema import ContractParseError, UnsupportedContractVersion, load_contrac
 
 __all__ = [
     "AggregateIntent",
+    "CacheConsumeIntent",
+    "CachedArtifactManifest",
     "CheckResult",
     "ContractParseError",
     "ExperimentContract",
@@ -24,6 +33,7 @@ __all__ = [
     "UnsupportedContractVersion",
     "Violation",
     "check_pre_aggregate",
+    "check_pre_cache_consume",
     "check_pre_run",
     "load_contract",
     "parse_contract",
