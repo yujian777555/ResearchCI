@@ -14,39 +14,76 @@ class InvariantEngine:
     def _validate_roles(
         contract: ExperimentContract, baseline_intent: RunIntent, candidate_intent: RunIntent
     ) -> list[Violation]:
-        violations: list[Violation] = []
-        if baseline_intent.role != contract.baseline_role:
-            violations.append(
+        baseline_matches = baseline_intent.role == contract.baseline_role
+        candidate_matches = candidate_intent.role == contract.candidate_role
+        if baseline_matches and candidate_matches:
+            return []
+
+        exact_swap = (
+            contract.baseline_role != contract.candidate_role
+            and baseline_intent.role == contract.candidate_role
+            and candidate_intent.role == contract.baseline_role
+        )
+        if exact_swap:
+            return [
                 Violation(
                     rule_id="SCHEMA",
                     type="schema_error",
                     stage="pre_run",
-                    location="baseline.role",
-                    message="baseline intent role does not match the contract baseline role",
-                    expected=contract.baseline_role,
-                    observed=baseline_intent.role,
+                    location="comparison.roles",
+                    message="baseline and candidate intents appear to be swapped",
+                    expected={
+                        "baseline": contract.baseline_role,
+                        "candidate": contract.candidate_role,
+                    },
+                    observed={
+                        "baseline": baseline_intent.role,
+                        "candidate": candidate_intent.role,
+                    },
                     repair={
-                        "operation": "set",
-                        "path": "baseline.role",
-                        "value": contract.baseline_role,
+                        "operation": "swap_intents",
+                        "paths": ["baseline_intent", "candidate_intent"],
                     },
                 )
+            ]
+
+        mismatches = []
+        if not baseline_matches:
+            mismatches.append(
+                (
+                    "baseline",
+                    "baseline_intent",
+                    contract.baseline_role,
+                    baseline_intent.role,
+                )
             )
-        if candidate_intent.role != contract.candidate_role:
+        if not candidate_matches:
+            mismatches.append(
+                (
+                    "candidate",
+                    "candidate_intent",
+                    contract.candidate_role,
+                    candidate_intent.role,
+                )
+            )
+        operation = "provide_matching_intent" if len(mismatches) == 1 else "manual_resolution_required"
+        violations: list[Violation] = []
+        for side, intent_path, expected_role, observed_role in mismatches:
+            repair = {
+                "operation": operation,
+                "path": intent_path,
+                "expected_role": expected_role,
+            }
             violations.append(
                 Violation(
                     rule_id="SCHEMA",
                     type="schema_error",
                     stage="pre_run",
-                    location="candidate.role",
-                    message="candidate intent role does not match the contract candidate role",
-                    expected=contract.candidate_role,
-                    observed=candidate_intent.role,
-                    repair={
-                        "operation": "set",
-                        "path": "candidate.role",
-                        "value": contract.candidate_role,
-                    },
+                    location=f"{side}.role",
+                    message=f"{side} intent role does not match the contract {side} role",
+                    expected=expected_role,
+                    observed=observed_role,
+                    repair=repair,
                 )
             )
         return violations

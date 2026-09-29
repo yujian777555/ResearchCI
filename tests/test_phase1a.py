@@ -253,14 +253,14 @@ def test_non_budget_split_and_metric_changes_are_not_owned_by_c002():
 
 
 @pytest.mark.parametrize(
-    ("baseline_role", "candidate_role", "location", "expected", "observed"),
+    ("baseline_role", "candidate_role", "location", "expected", "observed", "intent_path"),
     [
-        ("candidate", "candidate", "baseline.role", "baseline", "candidate"),
-        ("baseline", "baseline", "candidate.role", "candidate", "baseline"),
+        ("candidate", "candidate", "baseline.role", "baseline", "candidate", "baseline_intent"),
+        ("baseline", "baseline", "candidate.role", "candidate", "baseline", "candidate_intent"),
     ],
 )
 def test_pre_run_role_mismatch_is_schema_error_before_c002(
-    baseline_role, candidate_role, location, expected, observed
+    baseline_role, candidate_role, location, expected, observed, intent_path
 ):
     contract = parse_contract(CONTRACT_YAML)
     baseline = make_run(baseline_role, 1, epochs=10)
@@ -277,7 +277,49 @@ def test_pre_run_role_mismatch_is_schema_error_before_c002(
     assert violation.location == location
     assert violation.expected == expected
     assert violation.observed == observed
-    assert violation.repair == {"operation": "set", "path": location, "value": expected}
+    assert violation.repair == {
+        "operation": "provide_matching_intent",
+        "path": intent_path,
+        "expected_role": expected,
+    }
+    assert ".role" not in violation.repair["path"]
+    assert baseline.role == baseline_role
+    assert candidate.role == candidate_role
+
+
+def test_exact_swapped_intents_use_non_destructive_swap_repair():
+    contract = parse_contract(CONTRACT_YAML)
+    baseline_intent = make_run("candidate", 1, epochs=10)
+    candidate_intent = make_run("baseline", 1, epochs=20)
+
+    result = InvariantEngine().check_pre_run(contract, baseline_intent, candidate_intent)
+
+    assert result.decision == "BLOCK"
+    assert len(result.violations) == 1
+    violation = result.violations[0]
+    assert violation.location == "comparison.roles"
+    assert violation.repair == {
+        "operation": "swap_intents",
+        "paths": ["baseline_intent", "candidate_intent"],
+    }
+    assert violation.repair["operation"] != "set"
+    assert baseline_intent.role == "candidate"
+    assert candidate_intent.role == "baseline"
+
+
+def test_unresolvable_role_mismatch_requires_manual_resolution():
+    contract = parse_contract(CONTRACT_YAML)
+    baseline_intent = make_run("unknown-a", 1)
+    candidate_intent = make_run("unknown-b", 1)
+
+    result = InvariantEngine().check_pre_run(contract, baseline_intent, candidate_intent)
+
+    assert result.decision == "BLOCK"
+    assert len(result.violations) == 2
+    assert {v.repair["operation"] for v in result.violations} == {
+        "manual_resolution_required"
+    }
+    assert all("role" not in v.repair.get("path", "") for v in result.violations)
 
 
 @pytest.mark.parametrize(
