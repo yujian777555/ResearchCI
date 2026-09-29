@@ -31,7 +31,7 @@ def check_cache_provenance(
                     expected=expected,
                     observed="missing",
                     repair={
-                        "operation": "provide_cache_provenance",
+                        "operation": "invalidate_and_recompute",
                         "artifact_id": intent.cached_artifact.artifact_id,
                         "mismatched_key": key,
                     },

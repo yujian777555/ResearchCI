@@ -114,6 +114,10 @@ def check_failed_runs(contract: ExperimentContract, aggregate: AggregateIntent) 
         )
 
     results_by_id: dict[str, RunResult] = {}
+    expected_role_by_id = {
+        **{run_id: contract.baseline_role for run_id in aggregate.baseline_run_ids},
+        **{run_id: contract.candidate_role for run_id in aggregate.candidate_run_ids},
+    }
     for result in aggregate.observed_results:
         results_by_id.setdefault(result.run_id, result)
         if result.run_id not in declared:
@@ -126,6 +130,19 @@ def check_failed_runs(contract: ExperimentContract, aggregate: AggregateIntent) 
                     repair={
                         "operation": "remove_unknown_run_result",
                         "run_id": result.run_id,
+                    },
+                )
+            )
+        elif result.role != expected_role_by_id.get(result.run_id):
+            violations.append(
+                _error(
+                    location=f"observed_results.{result.run_id}.role",
+                    message="observed RunResult role does not match declared run ownership",
+                    expected=expected_role_by_id.get(result.run_id),
+                    observed=result.role,
+                    repair={
+                        "operation": "manual_resolution_required",
+                        "path": f"observed_results.{result.run_id}",
                     },
                 )
             )

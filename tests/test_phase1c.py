@@ -45,14 +45,14 @@ def run(role: str, seed: int = 1, *, split_hash="split-a"):
     )
 
 
-def result(run_id: str, status: str, *, artifact_hash="artifact-a"):
+def result(run_id: str, status: str, *, artifact_hash="artifact-a", seed=1, role=None):
     return RunResult(
         run_id=run_id,
         status=status,
         metrics={} if status == "failed" else {"accuracy": 0.8},
         artifact_hash=None if status == "failed" else artifact_hash,
-        seed=1,
-        role="baseline" if run_id.startswith("baseline") else "candidate",
+        seed=seed,
+        role=role or ("baseline" if run_id.startswith("baseline") else "candidate"),
     )
 
 
@@ -235,11 +235,18 @@ def test_c005_ignores_undeclared_provenance_and_blocks_missing_declared_key():
     assert checked.decision == "BLOCK"
     assert checked.violations[0].type == "schema_error"
     assert checked.violations[0].location == "cached_artifact.source_provenance.config_hash"
+    assert checked.violations[0].repair == {
+        "operation": "invalidate_and_recompute",
+        "artifact_id": "cache-123",
+        "mismatched_key": "config_hash",
+    }
 
 
 @pytest.mark.parametrize("case", FIXTURES["c006"], ids=lambda case: case["id"])
 def test_c006_accounting_fixture_matrix(case):
-    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    raw_contract = contract_mapping()
+    raw_contract["comparison"]["paired_seeds"]["seeds"] = [1]
+    contract = parse_contract(raw_contract)
     if case["id"] == "all_success_included":
         intent = aggregate(
             observed_results=(result("baseline-1", "success"), result("candidate-1", "success")),
@@ -289,6 +296,9 @@ def test_c006_accounting_fixture_matrix(case):
             included_run_ids=("baseline-1", "candidate-1"),
         )
 
+    intent.baseline_seed_set = (1,)
+    intent.candidate_seed_set = (1,)
+    intent.declared_seed_set = (1,)
     checked = InvariantEngine().check_pre_aggregate(contract, intent)
     assert checked.decision == case["expected_decision"]
     if case["id"] == "failed_omitted":
@@ -320,6 +330,77 @@ def test_c001_and_c006_accumulate_deterministically():
     assert rule_ids[0] == "RCI-C001"
     assert rule_ids[-1] == "RCI-C006"
     assert set(rule_ids) == {"RCI-C001", "RCI-C006"}
+
+
+def test_phase1c_false_pass_is_blocked_by_evidence_backed_seed_accounting():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    intent = aggregate(
+        observed_results=(result("baseline-1", "success"), result("candidate-1", "success")),
+        included_run_ids=("baseline-1", "candidate-1"),
+        baseline_seed_set=(1, 2, 3),
+        candidate_seed_set=(1, 2, 3),
+    )
+
+    checked = InvariantEngine().check_pre_aggregate(contract, intent)
+
+    assert checked.decision == "BLOCK"
+    c001 = [violation for violation in checked.violations if violation.rule_id == "RCI-C001"]
+    assert c001
+    missing = next(
+        violation
+        for violation in c001
+        if violation.location == "baseline.seed_set" and violation.type == "seed_set_mismatch"
+    )
+    assert missing.observed == [1]
+    assert "[2, 3]" in missing.message
+
+
+def test_clean_evidence_for_all_paired_seeds_passes_c001_and_c006():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    observed = tuple(
+        result(f"{role}-{seed}", "success", seed=seed)
+        for role in ("baseline", "candidate")
+        for seed in (1, 2, 3)
+    )
+    intent = AggregateIntent(
+        experiment_id="exp-001",
+        baseline_run_ids=("baseline-1", "baseline-2", "baseline-3"),
+        candidate_run_ids=("candidate-1", "candidate-2", "candidate-3"),
+        declared_seed_set=(1, 2, 3),
+        aggregation_metric="accuracy",
+        baseline_seed_set=(1, 2, 3),
+        candidate_seed_set=(1, 2, 3),
+        observed_results=observed,
+        included_run_ids=tuple(result.run_id for result in observed),
+    )
+
+    checked = InvariantEngine().check_pre_aggregate(contract, intent)
+
+    assert checked.decision == "PASS"
+    assert checked.violations == ()
+
+
+def test_c006_blocks_declared_run_role_mismatch_without_id_prefix_inference():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    wrong_role = RunResult(
+        run_id="baseline-1",
+        status="success",
+        metrics={"accuracy": 0.8},
+        artifact_hash="artifact-a",
+        seed=1,
+        role="candidate",
+    )
+    intent = aggregate(
+        observed_results=(wrong_role, result("candidate-1", "success")),
+        included_run_ids=("baseline-1", "candidate-1"),
+    )
+
+    checked = InvariantEngine().check_pre_aggregate(contract, intent)
+
+    assert checked.decision == "BLOCK"
+    role_error = next(v for v in checked.violations if v.location == "observed_results.baseline-1.role")
+    assert role_error.rule_id == "RCI-C006"
+    assert role_error.type == "run_accounting_error"
 
 
 def test_c006_rejects_duplicate_accounting_ids():
