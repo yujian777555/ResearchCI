@@ -1,0 +1,1 @@
+{"case_id":"case_73b5c1149110","declared_cost_units":100,"expected_decision":"BLOCK","expected_locations":["cached_artifact.source_provenance.config_hash"],"expected_rule_ids":["RCI-C005"],"label":"invalid","repair_capability":"requires_reexecution","target_rule_id":"RCI-C005","target_stage":"pre_cache_consume"}

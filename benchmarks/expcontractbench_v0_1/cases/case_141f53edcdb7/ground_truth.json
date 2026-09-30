@@ -1,0 +1,1 @@
+{"case_id":"case_141f53edcdb7","declared_cost_units":100,"expected_decision":"BLOCK","expected_locations":["candidate.training.max_epochs"],"expected_rule_ids":["RCI-C002"],"label":"invalid","repair_capability":"auto_repairable","target_rule_id":"RCI-C002","target_stage":"pre_run"}

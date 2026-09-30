@@ -1,0 +1,1 @@
+{"changed_paths":["pre_run.candidate_intent.resolved_config.training.batch_size"],"operator":"equal_config_field_change","operator_version":"0.1","parameters":{"path":"training.batch_size"},"seed":4}

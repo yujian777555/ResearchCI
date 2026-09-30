@@ -1,0 +1,1 @@
+{"changed_paths":["pre_cache_consume.cached_artifact.source_provenance.git_commit"],"operator":"stale_cache_provenance","operator_version":"0.1","parameters":{"key":"git_commit"},"seed":0}

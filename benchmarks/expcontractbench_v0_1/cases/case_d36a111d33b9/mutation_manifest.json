@@ -1,0 +1,1 @@
+{"changed_paths":["pre_cache_consume.cached_artifact.source_provenance.dataset_hash"],"operator":"stale_cache_provenance","operator_version":"0.1","parameters":{"key":"dataset_hash"},"seed":6}
