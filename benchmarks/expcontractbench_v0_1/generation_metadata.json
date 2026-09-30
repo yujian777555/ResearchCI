@@ -1,1 +1,1 @@
-{"benchmark_tree_hash":"sha256:3133de6b7b910cb5f60dc242793cdbe9c94c404b63cf71902b0bce960892f981","benchmark_version":"0.1","case_count":240,"generator_version":"0.1","reproducible":true}
+{"benchmark_tree_hash":"sha256:7ecca493d4f25f4b643a93a7c254b50ee88acf640508ce80942b835b4927f798","benchmark_version":"0.1","case_count":240,"generator_version":"0.1","reproducibility":{"compared_file_count":1691,"mismatch_count":0,"passed":true},"reproducible":true}

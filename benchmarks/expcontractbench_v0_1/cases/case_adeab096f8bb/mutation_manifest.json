@@ -1,1 +1,0 @@
-{"changed_paths":["pre_cache_consume.cached_artifact.source_provenance.config_hash"],"operator":"stale_cache_provenance","operator_version":"0.1","parameters":{"key":"config_hash"},"seed":1}

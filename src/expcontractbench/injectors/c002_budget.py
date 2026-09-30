@@ -4,19 +4,21 @@ from copy import deepcopy
 
 
 OPERATOR_VERSION = "0.1"
-PATHS = ("training.max_epochs", "training.max_steps", "evaluation.max_batches")
-
-
 def _set(config, path, value):
-    section, key = path.split(".")
-    config[section][key] = value
+    parts = path.split(".")
+    for part in parts[:-1]:
+        config = config[part]
+    config[parts[-1]] = value
 
 
 def inject(case: dict, seed: int) -> tuple[dict, dict]:
     mutated = deepcopy(case)
-    path = PATHS[seed % len(PATHS)]
+    path = tuple(mutated["contract"]["comparison"]["equal_budget_fields"])[seed % len(mutated["contract"]["comparison"]["equal_budget_fields"])]
     current = mutated["pre_run"]["candidate_intent"]["resolved_config"]
-    _set(current, path, current[path.split(".")[0]][path.split(".")[1]] + seed + 1)
+    value = current
+    for part in path.split("."):
+        value = value[part]
+    _set(current, path, value + seed + 1)
     return mutated, {
         "operator": "budget_field_change",
         "operator_version": OPERATOR_VERSION,

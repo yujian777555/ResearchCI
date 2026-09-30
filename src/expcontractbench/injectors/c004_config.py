@@ -4,18 +4,19 @@ from copy import deepcopy
 
 
 OPERATOR_VERSION = "0.1"
-PATHS = ("training.batch_size", "model.encoder.width")
-
-
 def inject(case: dict, seed: int) -> tuple[dict, dict]:
     mutated = deepcopy(case)
-    path = PATHS[seed % len(PATHS)]
-    section, key = path.split(".") if path.count(".") == 1 else ("model.encoder", "width")
+    paths = tuple(mutated["contract"]["comparison"]["equal_config_fields"])
+    path = paths[seed % len(paths)]
     config = mutated["pre_run"]["candidate_intent"]["resolved_config"]
-    if path == "training.batch_size":
-        config["training"]["batch_size"] += seed + 1
-    else:
-        config["model"]["encoder"]["width"] += seed + 1
+    parts = path.split(".")
+    current = config
+    for part in parts:
+        current = current[part]
+    current = config
+    for part in parts[:-1]:
+        current = current[part]
+    current[parts[-1]] += seed + 1 if isinstance(current[parts[-1]], (int, float)) else "-changed"
     return mutated, {
         "operator": "equal_config_field_change",
         "operator_version": OPERATOR_VERSION,

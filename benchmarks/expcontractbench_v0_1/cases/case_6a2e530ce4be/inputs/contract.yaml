@@ -6,16 +6,16 @@ cache:
   - evaluator_hash
 comparison:
   allowed_to_change:
-  - model.optimizer
+  - model.solver
   baseline: baseline
   candidate: candidate
   equal_budget_fields:
-  - training.max_epochs
-  - training.max_steps
-  - evaluation.max_batches
+  - training.max_iterations
+  - training.sample_count
+  - evaluation.max_folds
   equal_config_fields:
-  - training.batch_size
-  - model.encoder.width
+  - preprocessing.scaler
+  - model.max_depth
   paired_seeds:
     required: true
     seeds:

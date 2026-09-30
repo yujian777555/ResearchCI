@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import json
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from .canonical import canonical_bytes, opaque_case_id, sha256_value, tree_hash
+from .canonical import canonical_bytes, canonical_diff, file_hash_map, opaque_case_id, sha256_value, tree_hash
 from .injectors import INJECTORS
 from .profiles import Profile, clone_case, profiles
 
@@ -98,7 +99,7 @@ def _case_record(profile: Profile, split: str, label: str, base_id: str, data: d
     return case, truth, mutation
 
 
-def generate_benchmark(output: str | Path) -> Path:
+def generate_benchmark(output: str | Path, *, _verify_reproducibility: bool = True) -> Path:
     root = Path(output)
     if root.exists():
         shutil.rmtree(root)
@@ -141,7 +142,11 @@ def generate_benchmark(output: str | Path) -> Path:
                 split = "dev" if seed < 5 else "locked"
                 valid_index = seed if seed < 5 else 10 + (seed - 5)
                 base_id = opaque_case_id({"benchmark_version": BENCHMARK_VERSION, "repo_id": profile.repo_id, "valid_index": valid_index, "split": split})
-                mutated, mutation = injector(profile.base_case(valid_index), seed)
+                base_data = profile.base_case(valid_index)
+                mutated, mutation = injector(base_data, seed)
+                diff = canonical_diff(base_data, mutated)
+                mutation["canonical_diff"] = diff
+                mutation["changed_paths"] = [item["path"] for item in diff]
                 case, truth, mutation = _case_record(profile, split, "invalid", base_id, mutated, rule_id, seed, mutation)
                 _write_case(root, case, truth, mutation)
                 manifests.append({key: value for key, value in case.items() if key != "data"})
@@ -166,7 +171,24 @@ def generate_benchmark(output: str | Path) -> Path:
         "generator_version": BENCHMARK_VERSION,
         "case_count": len(manifests),
         "benchmark_tree_hash": tree_hash(root, excluded_names={"integrity_report.json", "integrity_report.md", "generation_metadata.json"}),
-        "reproducible": True,
+        "reproducible": False,
+        "reproducibility": {"compared_file_count": 0, "mismatch_count": None, "passed": False},
     }
     _write_json(root / "generation_metadata.json", metadata)
+    if _verify_reproducibility:
+        with tempfile.TemporaryDirectory(prefix="expcontractbench-r1-") as temp_dir:
+            second = Path(temp_dir) / "benchmark"
+            generate_benchmark(second, _verify_reproducibility=False)
+            first_map = file_hash_map(root, deterministic_only=True)
+            second_map = file_hash_map(second, deterministic_only=True)
+            mismatches = sorted(
+                path for path in set(first_map) | set(second_map) if first_map.get(path) != second_map.get(path)
+            )
+            metadata["reproducible"] = not mismatches
+            metadata["reproducibility"] = {
+                "compared_file_count": len(first_map),
+                "mismatch_count": len(mismatches),
+                "passed": not mismatches,
+            }
+            _write_json(root / "generation_metadata.json", metadata)
     return root

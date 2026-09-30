@@ -1,1 +1,0 @@
-{"case_id":"case_05475cbdb612","declared_cost_units":100,"expected_decision":"BLOCK","expected_locations":["candidate.split_hash"],"expected_rule_ids":["RCI-C003"],"label":"invalid","repair_capability":"requires_reexecution","target_rule_id":"RCI-C003","target_stage":"pre_run"}

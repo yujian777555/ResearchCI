@@ -3,7 +3,9 @@ cache:
   - git_commit
   - config_hash
   - dataset_hash
+  - split_hash
   - evaluator_hash
+  - environment_hash
 comparison:
   allowed_to_change:
   - model.optimizer
@@ -15,6 +17,7 @@ comparison:
   - evaluation.max_batches
   equal_config_fields:
   - training.batch_size
+  - augmentation.horizontal_flip
   - model.encoder.width
   paired_seeds:
     required: true

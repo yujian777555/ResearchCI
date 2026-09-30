@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import time
+from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -32,6 +33,8 @@ class AdapterResult:
     stage_results: dict[str, Any]
     elapsed_ms: float
     repair_capability: str | None = None
+    repair_attempted_count: int = 0
+    repair_success_count: int = 0
 
     def as_dict(self) -> dict[str, Any]:
         return self.__dict__.copy()
@@ -76,32 +79,49 @@ class RuntimeResearchCIAdapter:
         locations: list[str] = []
         blocked_stage = None
         decision = "PASS"
+        repair_attempted = 0
+        repair_success = 0
+
+        def check_stage(stage: str, payload: dict):
+            if stage == "pre_run":
+                return engine.check_pre_run(contract, RunIntent.from_mapping(payload["baseline_intent"]), RunIntent.from_mapping(payload["candidate_intent"]))
+            if stage == "pre_cache_consume":
+                return engine.check_pre_cache_consume(contract, CacheConsumeIntent(current_run=RunIntent.from_mapping(payload["current_run"]), cached_artifact=CachedArtifactManifest(**payload["cached_artifact"])))
+            return engine.check_pre_aggregate(contract, _aggregate(payload))
+
+        def apply_auto_repairs(stage: str, payload: dict, result):
+            nonlocal repair_attempted, repair_success
+            eligible = [v for v in result.violations if v.repair.get("operation") in {"set", "report_failed_run"}]
+            if not eligible:
+                return
+            repair_attempted += len(eligible)
+            repaired = deepcopy(payload)
+            for violation in eligible:
+                repair = violation.repair
+                if repair["operation"] == "set" and stage == "pre_run":
+                    path = repair["path"]
+                    if path.startswith("candidate."):
+                        current = repaired["candidate_intent"]["resolved_config"]
+                        parts = path[len("candidate."):].split(".")
+                        for part in parts[:-1]:
+                            current = current[part]
+                        current[parts[-1]] = repair["value"]
+                elif repair["operation"] == "report_failed_run" and stage == "pre_aggregate":
+                    repaired["reported_failed_run_ids"].append(repair["run_id"])
+            if check_stage(stage, repaired).decision == "PASS":
+                repair_success += len(eligible)
         for stage in ("pre_run", "pre_cache_consume", "pre_aggregate"):
             if stage not in stages:
                 continue
             payload = stages[stage]
-            if stage == "pre_run":
-                result = engine.check_pre_run(
-                    contract,
-                    RunIntent.from_mapping(payload["baseline_intent"]),
-                    RunIntent.from_mapping(payload["candidate_intent"]),
-                )
-            elif stage == "pre_cache_consume":
-                result = engine.check_pre_cache_consume(
-                    contract,
-                    CacheConsumeIntent(
-                        current_run=RunIntent.from_mapping(payload["current_run"]),
-                        cached_artifact=CachedArtifactManifest(**payload["cached_artifact"]),
-                    ),
-                )
-            else:
-                result = engine.check_pre_aggregate(contract, _aggregate(payload))
+            result = check_stage(stage, payload)
             stage_results[stage] = result.as_dict()
             if result.decision == "BLOCK":
                 decision = "BLOCK"
                 blocked_stage = stage
                 detected_ids = [item.rule_id for item in result.violations]
                 locations = [item.location for item in result.violations]
+                apply_auto_repairs(stage, payload, result)
                 break
         return AdapterResult(
             case_id=case_dir.name,
@@ -112,6 +132,8 @@ class RuntimeResearchCIAdapter:
             detected_locations=locations,
             stage_results=stage_results,
             elapsed_ms=round((time.perf_counter() - started) * 1000, 6),
+            repair_attempted_count=repair_attempted,
+            repair_success_count=repair_success,
         )
 
 
@@ -119,7 +141,7 @@ class NoCheckAdapter:
     name = "no_check"
 
     def check(self, case_dir: Path) -> AdapterResult:
-        return AdapterResult(case_dir.name, self.name, "PASS", None, [], [], {}, 0.0)
+        return AdapterResult(case_dir.name, self.name, "PASS", None, [], [], {}, 0.0, None, 0, 0)
 
 
 def evaluate_split(root: str | Path, split: str, adapter) -> tuple[list[dict], list[dict]]:

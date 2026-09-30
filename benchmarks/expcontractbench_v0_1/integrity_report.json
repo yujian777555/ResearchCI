@@ -1,5 +1,6 @@
 {
-  "benchmark_tree_hash": "sha256:3133de6b7b910cb5f60dc242793cdbe9c94c404b63cf71902b0bce960892f981",
+  "benchmark_tree_hash": "sha256:7ecca493d4f25f4b643a93a7c254b50ee88acf640508ce80942b835b4927f798",
+  "complete_diff_validation_count": 180,
   "duplicate_case_ids": 0,
   "errors": [],
   "generator_version": "0.1",

@@ -1,1 +1,0 @@
-{"changed_paths":["pre_aggregate.observed_results.candidate-1.status","pre_aggregate.included_run_ids","pre_aggregate.reported_failed_run_ids"],"operator":"failed_run_omission","operator_version":"0.1","parameters":{"run_id":"candidate-1"},"seed":3}
