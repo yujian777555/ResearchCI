@@ -353,6 +353,11 @@ def test_phase1c_false_pass_is_blocked_by_evidence_backed_seed_accounting():
     )
     assert missing.observed == [1]
     assert "[2, 3]" in missing.message
+    assert missing.repair == {
+        "operation": "provide_missing_seed_runs",
+        "role": "baseline",
+        "seeds": [2, 3],
+    }
 
 
 def test_clean_evidence_for_all_paired_seeds_passes_c001_and_c006():
@@ -401,6 +406,99 @@ def test_c006_blocks_declared_run_role_mismatch_without_id_prefix_inference():
     role_error = next(v for v in checked.violations if v.location == "observed_results.baseline-1.role")
     assert role_error.rule_id == "RCI-C006"
     assert role_error.type == "run_accounting_error"
+
+
+def test_c001_blocks_duplicate_runintent_evidence_instead_of_merging_seeds():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    baseline_one = run("baseline", 1)
+    baseline_two = run("baseline", 2)
+    baseline_two.run_id = "baseline-1"
+    candidate_one = run("candidate", 1)
+    candidate_two = run("candidate", 2)
+    candidate_two.run_id = "candidate-1"
+    intent = AggregateIntent(
+        experiment_id="exp-001",
+        baseline_run_ids=("baseline-1",),
+        candidate_run_ids=("candidate-1",),
+        declared_seed_set=(1, 2, 3),
+        aggregation_metric="accuracy",
+        baseline_seed_set=(1, 2, 3),
+        candidate_seed_set=(1, 2, 3),
+        baseline_runs=(baseline_one, baseline_two),
+        candidate_runs=(candidate_one, candidate_two),
+        observed_results=(result("baseline-1", "success"), result("candidate-1", "success")),
+        included_run_ids=("baseline-1", "candidate-1"),
+    )
+
+    checked = InvariantEngine().check_pre_aggregate(contract, intent)
+
+    assert checked.decision == "BLOCK"
+    assert any("duplicate IDs" in violation.message for violation in checked.violations)
+
+
+def test_c001_blocks_partial_and_unknown_runintent_evidence():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    partial = run("baseline", 1)
+    candidate = run("candidate", 1)
+    partial_intent = AggregateIntent(
+        experiment_id="exp-001",
+        baseline_run_ids=("baseline-1", "baseline-2"),
+        candidate_run_ids=("candidate-1",),
+        declared_seed_set=(1, 2, 3),
+        aggregation_metric="accuracy",
+        baseline_seed_set=(1, 2, 3),
+        candidate_seed_set=(1, 2, 3),
+        baseline_runs=(partial,),
+        candidate_runs=(candidate,),
+        observed_results=(result("baseline-1", "success"), result("candidate-1", "success")),
+        included_run_ids=("baseline-1", "candidate-1"),
+    )
+    assert InvariantEngine().check_pre_aggregate(contract, partial_intent).decision == "BLOCK"
+
+    unknown = run("baseline", 1)
+    unknown.run_id = "rogue-1"
+    unknown_intent = AggregateIntent(
+        experiment_id="exp-001",
+        baseline_run_ids=("baseline-1",),
+        candidate_run_ids=("candidate-1",),
+        declared_seed_set=(1, 2, 3),
+        aggregation_metric="accuracy",
+        baseline_seed_set=(1, 2, 3),
+        candidate_seed_set=(1, 2, 3),
+        baseline_runs=(unknown,),
+        candidate_runs=(candidate,),
+        observed_results=(result("baseline-1", "success"), result("candidate-1", "success")),
+        included_run_ids=("baseline-1", "candidate-1"),
+    )
+    assert InvariantEngine().check_pre_aggregate(contract, unknown_intent).decision == "BLOCK"
+
+
+def test_clean_one_to_one_runintent_evidence_passes_c001_and_c006():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    baseline_runs = tuple(run("baseline", seed) for seed in (1, 2, 3))
+    candidate_runs = tuple(run("candidate", seed) for seed in (1, 2, 3))
+    observed = tuple(
+        result(f"{role}-{seed}", "success", seed=seed)
+        for role in ("baseline", "candidate")
+        for seed in (1, 2, 3)
+    )
+    intent = AggregateIntent(
+        experiment_id="exp-001",
+        baseline_run_ids=tuple(item.run_id for item in baseline_runs),
+        candidate_run_ids=tuple(item.run_id for item in candidate_runs),
+        declared_seed_set=(1, 2, 3),
+        aggregation_metric="accuracy",
+        baseline_seed_set=(1, 2, 3),
+        candidate_seed_set=(1, 2, 3),
+        baseline_runs=baseline_runs,
+        candidate_runs=candidate_runs,
+        observed_results=observed,
+        included_run_ids=tuple(item.run_id for item in observed),
+    )
+
+    checked = InvariantEngine().check_pre_aggregate(contract, intent)
+
+    assert checked.decision == "PASS"
 
 
 def test_c006_rejects_duplicate_accounting_ids():

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from typing import Any
 
 from ..models import AggregateIntent, ExperimentContract, RunIntent, RunResult, Violation
@@ -28,6 +29,43 @@ def _evidence_seed_set(
     evidence: list[RunIntent | RunResult]
     if run_intents:
         evidence = list(run_intents)
+        run_ids = [item.run_id for item in evidence]
+        duplicate_ids = sorted(run_id for run_id, count in Counter(run_ids).items() if count > 1)
+        unknown_ids = sorted(set(run_ids) - declared_ids)
+        missing_ids = sorted(declared_ids - set(run_ids))
+        identity_errors: list[Violation] = []
+        if duplicate_ids:
+            identity_errors.append(
+                _schema_error(
+                    f"{role}_runs",
+                    "unique RunIntent IDs",
+                    duplicate_ids,
+                    "run intent evidence contains duplicate IDs",
+                    repair={"operation": "manual_resolution_required", "path": f"{role}_runs"},
+                )
+            )
+        if unknown_ids:
+            identity_errors.append(
+                _schema_error(
+                    f"{role}_runs",
+                    sorted(declared_ids),
+                    unknown_ids,
+                    "run intent evidence contains undeclared IDs",
+                    repair={"operation": "manual_resolution_required", "path": f"{role}_runs"},
+                )
+            )
+        if missing_ids:
+            identity_errors.append(
+                _schema_error(
+                    f"{role}_runs",
+                    sorted(declared_ids),
+                    missing_ids,
+                    "run intent evidence does not cover all declared IDs",
+                    repair={"operation": "manual_resolution_required", "path": f"{role}_runs"},
+                )
+            )
+        if identity_errors:
+            return None, identity_errors
     else:
         evidence = [
             result
@@ -49,6 +87,10 @@ def _evidence_seed_set(
                     expected_role,
                     item.role,
                     f"{role} run intent role does not match the contract role",
+                    repair={
+                        "operation": "manual_resolution_required",
+                        "path": f"{role}_runs.{item.run_id}",
+                    },
                 )
             ]
         if item.seed is None:
@@ -58,13 +100,24 @@ def _evidence_seed_set(
                     "seed evidence",
                     None,
                     "declared run evidence must carry a seed",
+                    repair={
+                        "operation": "manual_resolution_required",
+                        "path": f"observed_results.{item.run_id}",
+                    },
                 )
             ]
         seeds.add(item.seed)
     return (tuple(sorted(seeds)) if seeds else None), []
 
 
-def _schema_error(location: str, expected: Any, observed: Any, message: str) -> Violation:
+def _schema_error(
+    location: str,
+    expected: Any,
+    observed: Any,
+    message: str,
+    *,
+    repair: dict[str, Any] | None = None,
+) -> Violation:
     return Violation(
         rule_id=RULE_ID,
         type="schema_error",
@@ -73,7 +126,7 @@ def _schema_error(location: str, expected: Any, observed: Any, message: str) -> 
         message=message,
         expected=expected,
         observed=observed,
-        repair={"operation": "provide", "path": location, "value": expected},
+        repair=repair or {"operation": "provide", "path": location, "value": expected},
     )
 
 
@@ -111,6 +164,10 @@ def check_seed_set(contract: ExperimentContract, aggregate: AggregateIntent) -> 
                         list(evidence_set),
                         list(explicit_set),
                         "legacy seed declaration disagrees with evidence-derived seed set",
+                        repair={
+                            "operation": "manual_resolution_required",
+                            "path": f"{role}_seed_set",
+                        },
                     )
                 )
     else:
@@ -139,6 +196,15 @@ def check_seed_set(contract: ExperimentContract, aggregate: AggregateIntent) -> 
         missing = sorted(declared - observed)
         if missing:
             location = f"{role}.seed_set"
+            repair = (
+                {
+                    "operation": "provide_missing_seed_runs",
+                    "role": role,
+                    "seeds": missing,
+                }
+                if contract.failed_runs_must_be_explicit
+                else {"operation": "add", "path": location, "seeds": missing}
+            )
             violations.append(
                 Violation(
                     rule_id=RULE_ID,
@@ -148,12 +214,21 @@ def check_seed_set(contract: ExperimentContract, aggregate: AggregateIntent) -> 
                     message=f"{role} is missing declared seeds: {missing}",
                     expected=sorted(declared),
                     observed=sorted(observed),
-                    repair={"operation": "add", "path": location, "seeds": missing},
+                    repair=repair,
                 )
             )
         extra = sorted(observed - declared)
         if extra:
             location = f"{role}.seed_set"
+            repair = (
+                {
+                    "operation": "manual_resolution_required",
+                    "path": f"{role}_runs",
+                    "reason": "unexpected seed evidence",
+                }
+                if contract.failed_runs_must_be_explicit
+                else {"operation": "remove", "path": location, "seeds": extra}
+            )
             violations.append(
                 Violation(
                     rule_id=RULE_ID,
@@ -163,11 +238,24 @@ def check_seed_set(contract: ExperimentContract, aggregate: AggregateIntent) -> 
                     message=f"{role} contains undeclared seeds: {extra}",
                     expected=sorted(declared),
                     observed=sorted(observed),
-                    repair={"operation": "remove", "path": location, "seeds": extra},
+                    repair=repair,
                 )
             )
 
     if baseline_set != candidate_set:
+        repair = (
+            {
+                "operation": "manual_resolution_required",
+                "path": "comparison.paired_seed_set",
+                "reason": "align evidence-backed run identities",
+            }
+            if contract.failed_runs_must_be_explicit
+            else {
+                "operation": "align",
+                "path": "candidate.seed_set",
+                "value": sorted(baseline_set),
+            }
+        )
         violations.append(
             Violation(
                 rule_id=RULE_ID,
@@ -177,11 +265,7 @@ def check_seed_set(contract: ExperimentContract, aggregate: AggregateIntent) -> 
                 message="baseline and candidate observed seed sets differ",
                 expected=sorted(baseline_set),
                 observed=sorted(candidate_set),
-                repair={
-                    "operation": "align",
-                    "path": "candidate.seed_set",
-                    "value": sorted(baseline_set),
-                },
+                repair=repair,
             )
         )
     return violations
