@@ -501,6 +501,65 @@ def test_clean_one_to_one_runintent_evidence_passes_c001_and_c006():
     assert checked.decision == "PASS"
 
 
+def test_c006_blocks_runintent_runresult_seed_identity_mismatch():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    baseline_intent = run("baseline", 2)
+    candidate_intent = run("candidate", 1)
+    intent = AggregateIntent(
+        experiment_id="exp-001",
+        baseline_run_ids=("baseline-2",),
+        candidate_run_ids=("candidate-1",),
+        declared_seed_set=(1, 2, 3),
+        aggregation_metric="accuracy",
+        baseline_seed_set=(1, 2, 3),
+        candidate_seed_set=(1, 2, 3),
+        baseline_runs=(baseline_intent,),
+        candidate_runs=(candidate_intent,),
+        observed_results=(result("baseline-2", "success", seed=1), result("candidate-1", "success")),
+        included_run_ids=("baseline-2", "candidate-1"),
+    )
+
+    checked = InvariantEngine().check_pre_aggregate(contract, intent)
+
+    mismatch = next(
+        violation for violation in checked.violations
+        if violation.location == "observed_results.baseline-2.seed"
+    )
+    assert mismatch.rule_id == "RCI-C006"
+    assert mismatch.type == "run_accounting_error"
+    assert mismatch.expected == 2
+    assert mismatch.observed == 1
+    assert mismatch.repair["operation"] == "manual_resolution_required"
+
+
+def test_missing_runresult_seed_does_not_invent_cross_channel_mismatch():
+    contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
+    baseline_runs = tuple(run("baseline", seed) for seed in (1, 2, 3))
+    candidate_runs = tuple(run("candidate", seed) for seed in (1, 2, 3))
+    observed = tuple(
+        result(f"{role}-{seed}", "success", seed=None)
+        for role in ("baseline", "candidate")
+        for seed in (1, 2, 3)
+    )
+    intent = AggregateIntent(
+        experiment_id="exp-001",
+        baseline_run_ids=tuple(item.run_id for item in baseline_runs),
+        candidate_run_ids=tuple(item.run_id for item in candidate_runs),
+        declared_seed_set=(1, 2, 3),
+        aggregation_metric="accuracy",
+        baseline_seed_set=(1, 2, 3),
+        candidate_seed_set=(1, 2, 3),
+        baseline_runs=baseline_runs,
+        candidate_runs=candidate_runs,
+        observed_results=observed,
+        included_run_ids=tuple(item.run_id for item in observed),
+    )
+
+    checked = InvariantEngine().check_pre_aggregate(contract, intent)
+
+    assert checked.decision == "PASS"
+
+
 def test_c006_rejects_duplicate_accounting_ids():
     contract = parse_contract(ROOT / "examples" / "contract_v0_1.yaml")
     intent = aggregate(

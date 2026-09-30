@@ -118,6 +118,11 @@ def check_failed_runs(contract: ExperimentContract, aggregate: AggregateIntent) 
         **{run_id: contract.baseline_role for run_id in aggregate.baseline_run_ids},
         **{run_id: contract.candidate_role for run_id in aggregate.candidate_run_ids},
     }
+    intent_seed_by_id = {
+        run.run_id: run.seed
+        for run in (*aggregate.baseline_runs, *aggregate.candidate_runs)
+        if run.run_id in declared
+    }
     for result in aggregate.observed_results:
         results_by_id.setdefault(result.run_id, result)
         if result.run_id not in declared:
@@ -140,6 +145,23 @@ def check_failed_runs(contract: ExperimentContract, aggregate: AggregateIntent) 
                     message="observed RunResult role does not match declared run ownership",
                     expected=expected_role_by_id.get(result.run_id),
                     observed=result.role,
+                    repair={
+                        "operation": "manual_resolution_required",
+                        "path": f"observed_results.{result.run_id}",
+                    },
+                )
+            )
+        if (
+            result.run_id in intent_seed_by_id
+            and result.seed is not None
+            and result.seed != intent_seed_by_id[result.run_id]
+        ):
+            violations.append(
+                _error(
+                    location=f"observed_results.{result.run_id}.seed",
+                    message="RunIntent and RunResult seed identities disagree",
+                    expected=intent_seed_by_id[result.run_id],
+                    observed=result.seed,
                     repair={
                         "operation": "manual_resolution_required",
                         "path": f"observed_results.{result.run_id}",
