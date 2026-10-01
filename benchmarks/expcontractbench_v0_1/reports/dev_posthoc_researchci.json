@@ -1,87 +1,79 @@
 {
-  "adapter": "runtime_researchci",
+  "adapter": "posthoc_researchci",
   "metrics": {
-    "attempted_auto_repair_count": 45,
+    "attempted_auto_repair_count": 0,
     "case_count": 120,
-    "conditional_repair_success_rate": 1.0,
+    "conditional_repair_success_rate": null,
     "detection_stage_distribution": {
-      "pre_aggregate": 30,
-      "pre_cache_consume": 15,
-      "pre_run": 45
+      "post_hoc": 90
     },
     "false_block_rate": 0.0,
-    "invalid_experiment_escape_rate": 0.0,
+    "invalid_experiment_escape_rate": 1.0,
     "location_accuracy": 1.0,
-    "prevented_invalid_work_units": 9000,
-    "prevention_rate": 1.0,
+    "prevented_invalid_work_units": 0,
+    "prevention_rate": 0.0,
     "repair_eligibility_rate": 0.5,
     "rule_id_accuracy": 1.0,
-    "runtime_overhead_ms": 4.478149166666666,
-    "successful_auto_repair_count": 45,
+    "runtime_overhead_ms": 5.1861016666666675,
+    "successful_auto_repair_count": 0,
     "violation_precision": 1.0,
     "violation_recall": 1.0
   },
   "per_repo": {
     "tabular_sklearn": {
-      "attempted_auto_repair_count": 15,
+      "attempted_auto_repair_count": 0,
       "case_count": 40,
-      "conditional_repair_success_rate": 1.0,
+      "conditional_repair_success_rate": null,
       "detection_stage_distribution": {
-        "pre_aggregate": 10,
-        "pre_cache_consume": 5,
-        "pre_run": 15
+        "post_hoc": 30
       },
       "false_block_rate": 0.0,
-      "invalid_experiment_escape_rate": 0.0,
+      "invalid_experiment_escape_rate": 1.0,
       "location_accuracy": 1.0,
-      "prevented_invalid_work_units": 3000,
-      "prevention_rate": 1.0,
+      "prevented_invalid_work_units": 0,
+      "prevention_rate": 0.0,
       "repair_eligibility_rate": 0.5,
       "rule_id_accuracy": 1.0,
-      "runtime_overhead_ms": 4.485555,
-      "successful_auto_repair_count": 15,
+      "runtime_overhead_ms": 4.9280625,
+      "successful_auto_repair_count": 0,
       "violation_precision": 1.0,
       "violation_recall": 1.0
     },
     "text_classification": {
-      "attempted_auto_repair_count": 15,
+      "attempted_auto_repair_count": 0,
       "case_count": 40,
-      "conditional_repair_success_rate": 1.0,
+      "conditional_repair_success_rate": null,
       "detection_stage_distribution": {
-        "pre_aggregate": 10,
-        "pre_cache_consume": 5,
-        "pre_run": 15
+        "post_hoc": 30
       },
       "false_block_rate": 0.0,
-      "invalid_experiment_escape_rate": 0.0,
+      "invalid_experiment_escape_rate": 1.0,
       "location_accuracy": 1.0,
-      "prevented_invalid_work_units": 3000,
-      "prevention_rate": 1.0,
+      "prevented_invalid_work_units": 0,
+      "prevention_rate": 0.0,
       "repair_eligibility_rate": 0.5,
       "rule_id_accuracy": 1.0,
-      "runtime_overhead_ms": 4.45078,
-      "successful_auto_repair_count": 15,
+      "runtime_overhead_ms": 5.2781175,
+      "successful_auto_repair_count": 0,
       "violation_precision": 1.0,
       "violation_recall": 1.0
     },
     "vision_pytorch": {
-      "attempted_auto_repair_count": 15,
+      "attempted_auto_repair_count": 0,
       "case_count": 40,
-      "conditional_repair_success_rate": 1.0,
+      "conditional_repair_success_rate": null,
       "detection_stage_distribution": {
-        "pre_aggregate": 10,
-        "pre_cache_consume": 5,
-        "pre_run": 15
+        "post_hoc": 30
       },
       "false_block_rate": 0.0,
-      "invalid_experiment_escape_rate": 0.0,
+      "invalid_experiment_escape_rate": 1.0,
       "location_accuracy": 1.0,
-      "prevented_invalid_work_units": 3000,
-      "prevention_rate": 1.0,
+      "prevented_invalid_work_units": 0,
+      "prevention_rate": 0.0,
       "repair_eligibility_rate": 0.5,
       "rule_id_accuracy": 1.0,
-      "runtime_overhead_ms": 4.4981124999999995,
-      "successful_auto_repair_count": 15,
+      "runtime_overhead_ms": 5.352125,
+      "successful_auto_repair_count": 0,
       "violation_precision": 1.0,
       "violation_recall": 1.0
     }
@@ -120,8 +112,8 @@
   },
   "predictions": [
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_004473637fa6",
       "detected_locations": [
         "cached_artifact.source_provenance.config_hash"
@@ -129,14 +121,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 4.5006,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.0975,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -163,8 +159,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_00d8dc029f6f",
       "detected_locations": [
         "candidate.split_hash"
@@ -172,14 +168,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.6414,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.3887,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -202,13 +206,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_025418200dc6",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.1318,
+      "elapsed_ms": 3.8555,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -230,8 +234,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_03b4dd5565ae",
       "detected_locations": [
         "candidate.evaluation.max_calls"
@@ -239,14 +243,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.2026,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.114,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -269,8 +281,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_0459de5f7943",
       "detected_locations": [
         "cached_artifact.source_provenance.evaluator_hash"
@@ -278,14 +290,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 4.5559,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.2907,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -312,13 +328,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_05e10c9efc59",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.7454,
+      "elapsed_ms": 5.0516,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -340,8 +356,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_0655b271bb76",
       "detected_locations": [
         "candidate.training.max_updates"
@@ -349,14 +365,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.1017,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.3433,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -379,8 +403,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_0c7a5337f232",
       "detected_locations": [
         "candidate.tokenization.max_length"
@@ -388,14 +412,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.941,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.2674,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -418,8 +450,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_10122461ef02",
       "detected_locations": [
         "cached_artifact.source_provenance.dataset_hash"
@@ -427,14 +459,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 4.1496,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.5388,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -461,8 +497,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_104a3bc8a7ce",
       "detected_locations": [
         "candidate.seed_set",
@@ -472,9 +508,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.7566,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.1665,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -540,13 +576,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_12af48918eb5",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.1961,
+      "elapsed_ms": 5.4676,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -568,8 +604,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_16187e56b570",
       "detected_locations": [
         "candidate.augmentation.horizontal_flip"
@@ -577,14 +613,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.6231,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 6.2051,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -607,8 +651,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_16401c11a9dd",
       "detected_locations": [
         "candidate.training.sample_count"
@@ -616,14 +660,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.5223,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 6.2681,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -646,8 +698,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_17fd34ea1634",
       "detected_locations": [
         "cached_artifact.source_provenance.evaluator_hash"
@@ -655,14 +707,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 5.6808,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.6422,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -689,8 +745,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_1bf7ad6899f0",
       "detected_locations": [
         "candidate.training.max_steps"
@@ -698,14 +754,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 6.0603,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.739,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -728,8 +792,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_1cf41201541e",
       "detected_locations": [
         "candidate.seed_set",
@@ -739,9 +803,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 6.7728,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 6.02,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -807,13 +871,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_2077bbb05d90",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.9688,
+      "elapsed_ms": 5.0934,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -835,8 +899,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_2121a02745fc",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -844,12 +908,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 5.2703,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.6941,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -884,8 +948,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_21f6d2f70947",
       "detected_locations": [
         "candidate.model.max_depth"
@@ -893,14 +957,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.1288,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 3.9831,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -923,13 +995,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_2409b20e368e",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 5.1243,
+      "elapsed_ms": 4.7555,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -951,8 +1023,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_24167edb4641",
       "detected_locations": [
         "candidate.preprocessing.scaler"
@@ -960,14 +1032,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.8238,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.4579,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -990,8 +1070,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_2664df747a44",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -999,12 +1079,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 7.1233,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.8602,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -1039,8 +1119,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_2a4657146a90",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -1048,12 +1128,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 6.8808,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.7532,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -1088,8 +1168,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_2a7f3e1ef6aa",
       "detected_locations": [
         "candidate.split_hash"
@@ -1097,14 +1177,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.4783,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.528,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -1127,13 +1215,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_2be574e343c7",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.6088,
+      "elapsed_ms": 5.6663,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -1155,8 +1243,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_2d168b4e9a94",
       "detected_locations": [
         "candidate.seed_set",
@@ -1166,9 +1254,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 3.9682,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.8432,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -1234,8 +1322,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_2dc0f05cc7bb",
       "detected_locations": [
         "candidate.training.batch_size"
@@ -1243,14 +1331,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.8114,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.2482,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -1273,8 +1369,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_31104c7e48b2",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -1282,12 +1378,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 5.0953,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.755,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -1322,8 +1418,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_34a981fecf4b",
       "detected_locations": [
         "candidate.seed_set",
@@ -1333,9 +1429,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.5313,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 7.79,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -1401,13 +1497,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_37f31c0a3eea",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 3.7347,
+      "elapsed_ms": 8.0488,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -1429,8 +1525,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_3b44df7771cd",
       "detected_locations": [
         "candidate.tokenization.lowercase"
@@ -1438,14 +1534,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.9784,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.9702,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -1468,13 +1572,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_404962b6576b",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.5205,
+      "elapsed_ms": 6.2025,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -1496,8 +1600,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_4517484d1fd3",
       "detected_locations": [
         "cached_artifact.source_provenance.git_commit"
@@ -1505,14 +1609,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 3.3597,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.7279,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -1539,8 +1647,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_465ede92a75c",
       "detected_locations": [
         "candidate.training.max_updates"
@@ -1548,14 +1656,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.1639,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.9019,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -1578,8 +1694,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_473b5d8d37a1",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -1587,12 +1703,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.4343,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.9018,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -1627,8 +1743,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_492077613759",
       "detected_locations": [
         "cached_artifact.source_provenance.git_commit"
@@ -1636,14 +1752,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 3.6294,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.2671,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -1670,13 +1790,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_4935bb7f277a",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 3.9902,
+      "elapsed_ms": 5.3572,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -1698,13 +1818,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_4d4364cbc42f",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.2022,
+      "elapsed_ms": 4.6351,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -1726,8 +1846,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_4f43f50ed2dc",
       "detected_locations": [
         "cached_artifact.source_provenance.git_commit"
@@ -1735,14 +1855,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 3.4616,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.0101,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -1769,8 +1893,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_518a8b50d5af",
       "detected_locations": [
         "baseline.seed_set",
@@ -1780,9 +1904,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.4059,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.2834,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -1848,8 +1972,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_540783b4ec43",
       "detected_locations": [
         "candidate.classifier.regularization"
@@ -1857,14 +1981,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.1259,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.4922,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -1887,8 +2019,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_5447589be171",
       "detected_locations": [
         "candidate.split_hash"
@@ -1896,14 +2028,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.5576,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.0549,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -1926,8 +2066,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_5672d181ff24",
       "detected_locations": [
         "candidate.training.batch_size"
@@ -1935,14 +2075,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 5.3015,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.8905,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -1965,8 +2113,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_57fc9207d6fe",
       "detected_locations": [
         "candidate.preprocessing.scaler"
@@ -1974,14 +2122,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.2544,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.219,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2004,8 +2160,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_59d759259fcc",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -2013,12 +2169,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.546,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.499,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -2053,8 +2209,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_5ac0982fd4e5",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -2062,12 +2218,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.6579,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.9485,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -2102,8 +2258,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_5bf9997ea8bc",
       "detected_locations": [
         "candidate.split_hash"
@@ -2111,14 +2267,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.4798,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.2338,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2141,13 +2305,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_5c589286dde7",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 5.3242,
+      "elapsed_ms": 4.9282,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -2169,8 +2333,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_5e01ab2ce0ae",
       "detected_locations": [
         "candidate.split_hash"
@@ -2178,14 +2342,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.4804,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.1326,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2208,8 +2380,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_5f9542eb1459",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -2217,12 +2389,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 5.0682,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.8235,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -2257,8 +2429,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_62a6f34e78ff",
       "detected_locations": [
         "baseline.seed_set",
@@ -2268,9 +2440,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.3846,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.2024,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -2336,8 +2508,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_632e22282a92",
       "detected_locations": [
         "candidate.tokenization.lowercase"
@@ -2345,14 +2517,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.9135,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.9515,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2375,13 +2555,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_6600e2587d5c",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 3.97,
+      "elapsed_ms": 4.7101,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -2403,8 +2583,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_6a07aef4c06a",
       "detected_locations": [
         "candidate.split_hash"
@@ -2412,14 +2592,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.5697,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.3182,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2442,8 +2630,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_6cc36e61eeae",
       "detected_locations": [
         "baseline.seed_set",
@@ -2453,9 +2641,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.704,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.5535,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -2521,8 +2709,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_6d6cff7405ea",
       "detected_locations": [
         "candidate.split_hash"
@@ -2530,14 +2718,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.7142,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.1612,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2560,8 +2756,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_6e83fe716866",
       "detected_locations": [
         "candidate.training.sample_count"
@@ -2569,14 +2765,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.2042,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.3074,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2599,8 +2803,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_6f6a09b53442",
       "detected_locations": [
         "candidate.split_hash"
@@ -2608,14 +2812,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.91,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.1128,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2638,8 +2850,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_7069fc72d5c7",
       "detected_locations": [
         "baseline.seed_set",
@@ -2649,9 +2861,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 5.1812,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.4747,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -2717,8 +2929,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_74146b2da949",
       "detected_locations": [
         "candidate.evaluation.max_batches"
@@ -2726,14 +2938,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 5.0333,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.7852,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2756,8 +2976,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_7434b0b37c34",
       "detected_locations": [
         "candidate.split_hash"
@@ -2765,14 +2985,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 5.591,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.1744,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2795,8 +3023,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_805d6b681ce1",
       "detected_locations": [
         "candidate.split_hash"
@@ -2804,14 +3032,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.3117,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 6.0983,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2834,8 +3070,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_8163cafa8f00",
       "detected_locations": [
         "candidate.training.max_steps"
@@ -2843,14 +3079,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.8993,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.8749,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -2873,8 +3117,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_8670ab09eb2d",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -2882,12 +3126,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.9631,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.7695,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -2922,8 +3166,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_8d5ae8eeff1b",
       "detected_locations": [
         "cached_artifact.source_provenance.dataset_hash"
@@ -2931,14 +3175,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 3.5826,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.1867,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -2965,8 +3213,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_8dd8995b341e",
       "detected_locations": [
         "cached_artifact.source_provenance.evaluator_hash"
@@ -2974,14 +3222,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 4.2286,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.7539,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -3008,13 +3260,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_90c7863e7bbf",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.9093,
+      "elapsed_ms": 4.9832,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -3036,8 +3288,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_911b08023597",
       "detected_locations": [
         "baseline.seed_set",
@@ -3047,9 +3299,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.6071,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.8146,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -3115,13 +3367,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_95efaee7a6b5",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 3.7206,
+      "elapsed_ms": 5.7525,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -3143,8 +3395,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_97e842cae3ed",
       "detected_locations": [
         "baseline.seed_set",
@@ -3154,9 +3406,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.4987,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 6.2556,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -3222,8 +3474,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_9b48254022a4",
       "detected_locations": [
         "candidate.training.max_iterations"
@@ -3231,14 +3483,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.8422,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 7.0849,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -3261,8 +3521,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_9bf1ef4a7f28",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -3270,12 +3530,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.9135,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.7793,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -3310,8 +3570,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_9c36dbcf9685",
       "detected_locations": [
         "candidate.training.max_epochs"
@@ -3319,14 +3579,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.5709,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.0396,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -3349,8 +3617,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_9c6e2c2862bb",
       "detected_locations": [
         "cached_artifact.source_provenance.config_hash"
@@ -3358,14 +3626,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 4.3004,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.8964,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -3392,13 +3664,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_9d22fed077ba",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.2696,
+      "elapsed_ms": 6.3218,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -3420,8 +3692,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_a132e9a1c6f1",
       "detected_locations": [
         "candidate.training.max_iterations"
@@ -3429,14 +3701,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.5259,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.5507,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -3459,8 +3739,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_a436f78eca07",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -3468,12 +3748,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 5.1489,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.4549,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -3508,8 +3788,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_a7dd54a59044",
       "detected_locations": [
         "candidate.training.token_budget"
@@ -3517,14 +3797,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.4459,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.8455,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -3547,8 +3835,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_aa97b712b1db",
       "detected_locations": [
         "candidate.preprocessing.scaler"
@@ -3556,14 +3844,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.761,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.1723,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -3586,13 +3882,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_ab86e2bbf38a",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.1792,
+      "elapsed_ms": 7.1308,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -3614,13 +3910,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_ad1a10e810f1",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.7364,
+      "elapsed_ms": 6.8208,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -3642,13 +3938,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_aebac1f1dc60",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 5.0639,
+      "elapsed_ms": 6.087,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -3670,8 +3966,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_b2cdc2a98b73",
       "detected_locations": [
         "cached_artifact.source_provenance.environment_hash"
@@ -3679,14 +3975,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 3.6713,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.7306,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -3713,13 +4013,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_b5764d5727ec",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.1898,
+      "elapsed_ms": 3.8196,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -3741,8 +4041,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_b94034b33c24",
       "detected_locations": [
         "candidate.augmentation.horizontal_flip"
@@ -3750,14 +4050,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.4493,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.0584,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -3780,8 +4088,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_ba69eeb26ecc",
       "detected_locations": [
         "candidate.split_hash"
@@ -3789,14 +4097,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.8745,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.2709,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -3819,8 +4135,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_bb92bf3d31ff",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -3828,12 +4144,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.4899,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.5776,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -3868,8 +4184,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_bdf8acd36a5f",
       "detected_locations": [
         "candidate.training.token_budget"
@@ -3877,14 +4193,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.7897,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.2261,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -3907,13 +4231,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_be154a8f6b9f",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.3201,
+      "elapsed_ms": 4.6072,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -3935,13 +4259,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_c32e33791562",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 3.9176,
+      "elapsed_ms": 4.3581,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -3963,8 +4287,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_c3ff3bef7b8a",
       "detected_locations": [
         "cached_artifact.source_provenance.split_hash"
@@ -3972,14 +4296,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 4.2154,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.7346,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -4006,8 +4334,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_c85066dc3f98",
       "detected_locations": [
         "candidate.split_hash"
@@ -4015,14 +4343,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.3481,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 6.0577,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -4045,8 +4381,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_c8af99a009f3",
       "detected_locations": [
         "candidate.tokenization.max_length"
@@ -4054,14 +4390,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 5.6067,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.9039,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -4084,13 +4428,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_cba23712f4cf",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 3.9879,
+      "elapsed_ms": 5.4924,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -4112,8 +4456,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_cc9a0785146d",
       "detected_locations": [
         "candidate.split_hash"
@@ -4121,14 +4465,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.7191,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.5013,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -4151,8 +4503,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_d1e4d13049fe",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -4160,12 +4512,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 5.5295,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.9793,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -4200,8 +4552,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_d22c70327b37",
       "detected_locations": [
         "baseline.seed_set",
@@ -4211,9 +4563,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.8511,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.2113,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -4279,8 +4631,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_d398a2e3979b",
       "detected_locations": [
         "candidate.model.max_depth"
@@ -4288,14 +4640,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.6577,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.4226,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -4318,13 +4678,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_d86ea69c5cf6",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.7677,
+      "elapsed_ms": 4.4399,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -4346,8 +4706,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_daf81ff23665",
       "detected_locations": [
         "cached_artifact.source_provenance.config_hash"
@@ -4355,14 +4715,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 4.4701,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.7031,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -4389,8 +4753,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_db3c17035b40",
       "detected_locations": [
         "candidate.seed_set",
@@ -4400,9 +4764,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 5.6093,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.4123,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -4468,13 +4832,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_ded53dce28e4",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.1839,
+      "elapsed_ms": 4.4347,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -4496,8 +4860,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_df8f0c1a3a59",
       "detected_locations": [
         "candidate.evaluation.max_folds"
@@ -4505,14 +4869,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.769,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.4904,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -4535,8 +4907,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_e2c501ebf32d",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -4544,12 +4916,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.852,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.874,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -4584,13 +4956,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_e57010516f1f",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.0179,
+      "elapsed_ms": 5.4816,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -4612,13 +4984,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_e7cbcc9084c4",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.1938,
+      "elapsed_ms": 5.5272,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -4640,8 +5012,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_e96a72d5f228",
       "detected_locations": [
         "reported_failed_run_ids"
@@ -4649,12 +5021,12 @@
       "detected_rule_ids": [
         "RCI-C006"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.7399,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.8502,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
         "pre_aggregate": {
@@ -4689,8 +5061,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_e98195eb9e3e",
       "detected_locations": [
         "candidate.seed_set",
@@ -4700,9 +5072,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 4.7564,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.4211,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -4768,8 +5140,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_eabb240ddb7b",
       "detected_locations": [
         "candidate.training.max_epochs"
@@ -4777,14 +5149,22 @@
       "detected_rule_ids": [
         "RCI-C002"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 4.4075,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.9064,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -4807,8 +5187,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_eb7a6399b332",
       "detected_locations": [
         "candidate.split_hash"
@@ -4816,14 +5196,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.6791,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.1891,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -4846,13 +5234,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_eb8947b67aeb",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.2514,
+      "elapsed_ms": 5.0393,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -4874,8 +5262,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_ebf21ee650ea",
       "detected_locations": [
         "baseline.seed_set",
@@ -4885,9 +5273,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 3.8817,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.8893,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -4953,8 +5341,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_ecf8a4d23995",
       "detected_locations": [
         "candidate.model.encoder.width"
@@ -4962,14 +5350,22 @@
       "detected_rule_ids": [
         "RCI-C004"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.9865,
-      "escaped": false,
-      "repair_attempted_count": 1,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 5.7154,
+      "escaped": true,
+      "repair_attempted_count": 0,
       "repair_capability": null,
-      "repair_success_count": 1,
+      "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -4992,13 +5388,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_f069e2b365f8",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 4.1755,
+      "elapsed_ms": 5.6192,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -5020,8 +5416,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_run",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_f198a03b224b",
       "detected_locations": [
         "candidate.split_hash"
@@ -5029,14 +5425,22 @@
       "detected_rule_ids": [
         "RCI-C003"
       ],
-      "detection_stage": "pre_run",
-      "elapsed_ms": 3.7195,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.4797,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
+        "pre_cache_consume": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_run": {
           "decision": "BLOCK",
           "violations": [
@@ -5059,8 +5463,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_f2c0a13dcb23",
       "detected_locations": [
         "cached_artifact.source_provenance.config_hash"
@@ -5068,14 +5472,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 3.8497,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.7519,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -5102,8 +5510,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_aggregate",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_f499391dac36",
       "detected_locations": [
         "baseline.seed_set",
@@ -5113,9 +5521,9 @@
         "RCI-C001",
         "RCI-C001"
       ],
-      "detection_stage": "pre_aggregate",
-      "elapsed_ms": 5.3496,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 4.6726,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
@@ -5181,13 +5589,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_f4c98c6bbf93",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 5.8437,
+      "elapsed_ms": 4.6289,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -5209,13 +5617,13 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
+      "adapter": "posthoc_researchci",
       "blocked_stage": null,
       "case_id": "case_f610897b9ea8",
       "detected_locations": [],
       "detected_rule_ids": [],
       "detection_stage": null,
-      "elapsed_ms": 6.0079,
+      "elapsed_ms": 4.5516,
       "escaped": false,
       "repair_attempted_count": 0,
       "repair_capability": null,
@@ -5237,8 +5645,8 @@
       }
     },
     {
-      "adapter": "runtime_researchci",
-      "blocked_stage": "pre_cache_consume",
+      "adapter": "posthoc_researchci",
+      "blocked_stage": "post_hoc",
       "case_id": "case_f988b24e93fb",
       "detected_locations": [
         "cached_artifact.source_provenance.dataset_hash"
@@ -5246,14 +5654,18 @@
       "detected_rule_ids": [
         "RCI-C005"
       ],
-      "detection_stage": "pre_cache_consume",
-      "elapsed_ms": 4.5215,
-      "escaped": false,
+      "detection_stage": "post_hoc",
+      "elapsed_ms": 6.4658,
+      "escaped": true,
       "repair_attempted_count": 0,
       "repair_capability": null,
       "repair_success_count": 0,
       "runtime_decision": "BLOCK",
       "stage_results": {
+        "pre_aggregate": {
+          "decision": "PASS",
+          "violations": []
+        },
         "pre_cache_consume": {
           "decision": "BLOCK",
           "violations": [
@@ -5281,10 +5693,10 @@
     }
   ],
   "repair": {
-    "attempted_auto_repair_count": 45,
-    "conditional_repair_success_rate": 1.0,
-    "successful_auto_repair_count": 45,
-    "supported": true
+    "attempted_auto_repair_count": null,
+    "conditional_repair_success_rate": null,
+    "successful_auto_repair_count": null,
+    "supported": false
   },
   "split": "dev"
 }

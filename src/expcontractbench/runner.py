@@ -37,7 +37,10 @@ class AdapterResult:
     repair_success_count: int = 0
 
     def as_dict(self) -> dict[str, Any]:
-        return self.__dict__.copy()
+        result = self.__dict__.copy()
+        result["detection_stage"] = self.blocked_stage if self.detected_rule_ids else None
+        result["escaped"] = False
+        return result
 
 
 def _load_case(case_dir: Path) -> tuple[Any, dict[str, Any]]:
@@ -147,11 +150,10 @@ class NoCheckAdapter:
 def evaluate_split(root: str | Path, split: str, adapter) -> tuple[list[dict], list[dict]]:
     root = Path(root)
     manifests = [json.loads(line) for line in (root / "manifests" / "cases.jsonl").read_text().splitlines() if line.strip()]
-    truths = {json.loads(line)["case_id"]: json.loads(line) for line in (root / "manifests" / "ground_truth.jsonl").read_text().splitlines() if line.strip()}
     predictions = []
-    selected_truth = []
     for manifest in sorted((item for item in manifests if item["split"] == split), key=lambda item: item["case_id"]):
         result = adapter.check(root / "cases" / manifest["case_id"])
         predictions.append(result.as_dict())
-        selected_truth.append(truths[manifest["case_id"]])
+    truths = {json.loads(line)["case_id"]: json.loads(line) for line in (root / "manifests" / "ground_truth.jsonl").read_text().splitlines() if line.strip()}
+    selected_truth = [truths[manifest["case_id"]] for manifest in sorted((item for item in manifests if item["split"] == split), key=lambda item: item["case_id"])]
     return predictions, selected_truth
