@@ -1,0 +1,117 @@
+{
+  "decision": "GO",
+  "gates": {
+    "conditional_repair_success": true,
+    "false_block_rate": true,
+    "ier": true,
+    "per_rule_recall": true,
+    "reproducibility": true,
+    "rule_id_accuracy": true,
+    "violation_recall": true
+  },
+  "ours_metrics": {
+    "attempted_auto_repair_count": 45,
+    "case_count": 120,
+    "conditional_repair_success_rate": 1.0,
+    "detection_stage_distribution": {
+      "pre_aggregate": 30,
+      "pre_cache_consume": 15,
+      "pre_run": 45
+    },
+    "false_block_rate": 0.0,
+    "invalid_experiment_escape_rate": 0.0,
+    "location_accuracy": 1.0,
+    "prevented_invalid_work_units": 9000,
+    "prevention_rate": 1.0,
+    "repair_eligibility_rate": 0.5,
+    "rule_id_accuracy": 1.0,
+    "runtime_overhead_ms": 4.7097175,
+    "successful_auto_repair_count": 45,
+    "violation_precision": 1.0,
+    "violation_recall": 1.0
+  },
+  "ours_per_repo": {
+    "tabular_sklearn": {
+      "attempted_auto_repair_count": 15,
+      "case_count": 40,
+      "conditional_repair_success_rate": 1.0,
+      "detection_stage_distribution": {
+        "pre_aggregate": 10,
+        "pre_cache_consume": 5,
+        "pre_run": 15
+      },
+      "false_block_rate": 0.0,
+      "invalid_experiment_escape_rate": 0.0,
+      "location_accuracy": 1.0,
+      "prevented_invalid_work_units": 3000,
+      "prevention_rate": 1.0,
+      "repair_eligibility_rate": 0.5,
+      "rule_id_accuracy": 1.0,
+      "runtime_overhead_ms": 4.6064175,
+      "successful_auto_repair_count": 15,
+      "violation_precision": 1.0,
+      "violation_recall": 1.0
+    },
+    "text_classification": {
+      "attempted_auto_repair_count": 15,
+      "case_count": 40,
+      "conditional_repair_success_rate": 1.0,
+      "detection_stage_distribution": {
+        "pre_aggregate": 10,
+        "pre_cache_consume": 5,
+        "pre_run": 15
+      },
+      "false_block_rate": 0.0,
+      "invalid_experiment_escape_rate": 0.0,
+      "location_accuracy": 1.0,
+      "prevented_invalid_work_units": 3000,
+      "prevention_rate": 1.0,
+      "repair_eligibility_rate": 0.5,
+      "rule_id_accuracy": 1.0,
+      "runtime_overhead_ms": 4.59807,
+      "successful_auto_repair_count": 15,
+      "violation_precision": 1.0,
+      "violation_recall": 1.0
+    },
+    "vision_pytorch": {
+      "attempted_auto_repair_count": 15,
+      "case_count": 40,
+      "conditional_repair_success_rate": 1.0,
+      "detection_stage_distribution": {
+        "pre_aggregate": 10,
+        "pre_cache_consume": 5,
+        "pre_run": 15
+      },
+      "false_block_rate": 0.0,
+      "invalid_experiment_escape_rate": 0.0,
+      "location_accuracy": 1.0,
+      "prevented_invalid_work_units": 3000,
+      "prevention_rate": 1.0,
+      "repair_eligibility_rate": 0.5,
+      "rule_id_accuracy": 1.0,
+      "runtime_overhead_ms": 4.924665,
+      "successful_auto_repair_count": 15,
+      "violation_precision": 1.0,
+      "violation_recall": 1.0
+    }
+  },
+  "ours_per_rule_recall": {
+    "RCI-C001": 1.0,
+    "RCI-C002": 1.0,
+    "RCI-C003": 1.0,
+    "RCI-C004": 1.0,
+    "RCI-C005": 1.0,
+    "RCI-C006": 1.0
+  },
+  "output_hash_scope": "locked_adapter_reports+comparison_json+comparison_markdown",
+  "output_hashes": {
+    "locked_comparison.json": "20afa0d2be8ae017f66e3cebc92e49186de5de94ff3818a465331d51e934db49",
+    "locked_comparison.md": "7dba5f143d03854cd6eb1f068be84ece9f8cb76929bac6614275ecbef8a514ce",
+    "locked_no_check.json": "1b2e7d017ba4bcc9a5d1ed0e6201dccb5556444aa23806524e9abb7cc5b6b29a",
+    "locked_posthoc_researchci.json": "b01899dd38e0661e8bb957beabf8a17088b12ee801a230deb23e2b1a191af685",
+    "locked_provenance_only.json": "1ad533f84365eb087e5afe8eba0c44312604a2becbf357a07b98a7f45f022a68",
+    "locked_runtime_researchci.json": "8cf84163a620b7a0024251b2c864798a4f4b38209e1a5d7e8887b3b3b5a1124e",
+    "locked_schema_validation.json": "e2273504d099a6175d3924374188719927f04dc0fdb89c95193e3aa061b21a54"
+  },
+  "run_id": "locked-20261001-6c7170c"
+}

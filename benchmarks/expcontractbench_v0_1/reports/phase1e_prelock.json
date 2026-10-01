@@ -1,0 +1,43 @@
+{
+  "benchmark_hash_actual": "sha256:5615f8bab852d7286d7150fe54c47e579ced9f943c4114e544a44e446721686f",
+  "benchmark_hash_expected": "sha256:5615f8bab852d7286d7150fe54c47e579ced9f943c4114e544a44e446721686f",
+  "benchmark_hash_match": true,
+  "dev_matrix": {
+    "deterministic": true,
+    "semantic_fingerprint_first": "9e9e32cfc655dd3eccc484b59587457ca48279eecc07ab636b91148a099f4cf8",
+    "semantic_fingerprint_second": "9e9e32cfc655dd3eccc484b59587457ca48279eecc07ab636b91148a099f4cf8"
+  },
+  "evaluator_sha": "6c7170c8ca90ed55f2a80e7a72eee6d32b0fda62",
+  "evaluator_source_hashes": {
+    "src/expcontractbench/__main__.py": "13e00e819eed9a53c73d890c0101f12cc9888075bad4c4f5de749768db619869",
+    "src/expcontractbench/metrics.py": "a253aad9bfd51806a662a07d8ed8f20117f4f2a1f226352739b2dbfc6f84ea07",
+    "src/expcontractbench/phase1e.py": "7747dc97ebcbbb550074c538a0b12f2a23b1d19f25ef7cc242c4507c35f0dcef",
+    "src/expcontractbench/runner.py": "6712bb20530e705c2176fd8158a0ea475aad26e0a055f0967f0c128f237cd04a"
+  },
+  "existing_locked_outputs": [],
+  "passed": true,
+  "rule_blob_identity": {
+    "actual": {
+      "src/researchci/rules/__init__.py": "6b358fc46547f7084d335504d402ecfb804a53328c69a8a67374315455bde85b",
+      "src/researchci/rules/budget.py": "f745cdbeff111c32ddfccc8f8594f539823807db8bf8e88c4f05d306a59cd47b",
+      "src/researchci/rules/cache.py": "6ad9dbf9e58a1fee0607258f54931a24853d5154fde553852597488f1f2a7579",
+      "src/researchci/rules/config_drift.py": "1ecdbfbc2d760fc17941a60c76466f0db08c435a6ab6a45049df5de608aa78ef",
+      "src/researchci/rules/failed_runs.py": "99accb8059a093301c5b4db0b75fc41348141aafa769e6609675a2146e6931c9",
+      "src/researchci/rules/seed_set.py": "2f36e3d8fa77b4976413de88f95cc875ccd6bd43036ffe85ddfe1daae175221b",
+      "src/researchci/rules/split_drift.py": "455c2b00a79727239a81acd9a04fe4aaf3e936dd138ca0ad04fb2d50721ab49c"
+    },
+    "actual_tree": "sha256:7c8835297079d503be9e8adfdd132126c1a6b7a1fc2f9c72de23fc7e69dd9cf2",
+    "frozen": {
+      "src/researchci/rules/__init__.py": "6b358fc46547f7084d335504d402ecfb804a53328c69a8a67374315455bde85b",
+      "src/researchci/rules/budget.py": "f745cdbeff111c32ddfccc8f8594f539823807db8bf8e88c4f05d306a59cd47b",
+      "src/researchci/rules/cache.py": "6ad9dbf9e58a1fee0607258f54931a24853d5154fde553852597488f1f2a7579",
+      "src/researchci/rules/config_drift.py": "1ecdbfbc2d760fc17941a60c76466f0db08c435a6ab6a45049df5de608aa78ef",
+      "src/researchci/rules/failed_runs.py": "99accb8059a093301c5b4db0b75fc41348141aafa769e6609675a2146e6931c9",
+      "src/researchci/rules/seed_set.py": "2f36e3d8fa77b4976413de88f95cc875ccd6bd43036ffe85ddfe1daae175221b",
+      "src/researchci/rules/split_drift.py": "455c2b00a79727239a81acd9a04fe4aaf3e936dd138ca0ad04fb2d50721ab49c"
+    },
+    "frozen_commit": "316d4897aa07c5eedf27709ca049e6e14b1b2316",
+    "frozen_tree": "sha256:7c8835297079d503be9e8adfdd132126c1a6b7a1fc2f9c72de23fc7e69dd9cf2"
+  },
+  "rules_match": true
+}

@@ -1,0 +1,589 @@
+{
+  "adapters": {
+    "no_check": {
+      "metrics": {
+        "attempted_auto_repair_count": 0,
+        "case_count": 120,
+        "conditional_repair_success_rate": null,
+        "detection_stage_distribution": {},
+        "false_block_rate": 0.0,
+        "invalid_experiment_escape_rate": 1.0,
+        "location_accuracy": 0.0,
+        "prevented_invalid_work_units": 0,
+        "prevention_rate": 0.0,
+        "repair_eligibility_rate": 0.5,
+        "rule_id_accuracy": 0.0,
+        "runtime_overhead_ms": 0.0,
+        "successful_auto_repair_count": 0,
+        "violation_precision": 0.0,
+        "violation_recall": 0.0
+      },
+      "per_repo": {
+        "tabular_sklearn": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {},
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 1.0,
+          "location_accuracy": 0.0,
+          "prevented_invalid_work_units": 0,
+          "prevention_rate": 0.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 0.0,
+          "runtime_overhead_ms": 0.0,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 0.0,
+          "violation_recall": 0.0
+        },
+        "text_classification": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {},
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 1.0,
+          "location_accuracy": 0.0,
+          "prevented_invalid_work_units": 0,
+          "prevention_rate": 0.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 0.0,
+          "runtime_overhead_ms": 0.0,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 0.0,
+          "violation_recall": 0.0
+        },
+        "vision_pytorch": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {},
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 1.0,
+          "location_accuracy": 0.0,
+          "prevented_invalid_work_units": 0,
+          "prevention_rate": 0.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 0.0,
+          "runtime_overhead_ms": 0.0,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 0.0,
+          "violation_recall": 0.0
+        }
+      },
+      "per_rule": {
+        "RCI-C001": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C002": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C003": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C004": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C005": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C006": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        }
+      },
+      "repair": {
+        "attempted_auto_repair_count": null,
+        "conditional_repair_success_rate": null,
+        "successful_auto_repair_count": null,
+        "supported": false
+      }
+    },
+    "posthoc_researchci": {
+      "metrics": {
+        "attempted_auto_repair_count": 0,
+        "case_count": 120,
+        "conditional_repair_success_rate": null,
+        "detection_stage_distribution": {
+          "post_hoc": 90
+        },
+        "false_block_rate": 0.0,
+        "invalid_experiment_escape_rate": 1.0,
+        "location_accuracy": 1.0,
+        "prevented_invalid_work_units": 0,
+        "prevention_rate": 0.0,
+        "repair_eligibility_rate": 0.5,
+        "rule_id_accuracy": 1.0,
+        "runtime_overhead_ms": 5.4991425000000005,
+        "successful_auto_repair_count": 0,
+        "violation_precision": 1.0,
+        "violation_recall": 1.0
+      },
+      "per_repo": {
+        "tabular_sklearn": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {
+            "post_hoc": 30
+          },
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 1.0,
+          "location_accuracy": 1.0,
+          "prevented_invalid_work_units": 0,
+          "prevention_rate": 0.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 1.0,
+          "runtime_overhead_ms": 5.46037,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 1.0,
+          "violation_recall": 1.0
+        },
+        "text_classification": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {
+            "post_hoc": 30
+          },
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 1.0,
+          "location_accuracy": 1.0,
+          "prevented_invalid_work_units": 0,
+          "prevention_rate": 0.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 1.0,
+          "runtime_overhead_ms": 5.5682175,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 1.0,
+          "violation_recall": 1.0
+        },
+        "vision_pytorch": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {
+            "post_hoc": 30
+          },
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 1.0,
+          "location_accuracy": 1.0,
+          "prevented_invalid_work_units": 0,
+          "prevention_rate": 0.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 1.0,
+          "runtime_overhead_ms": 5.46884,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 1.0,
+          "violation_recall": 1.0
+        }
+      },
+      "per_rule": {
+        "RCI-C001": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C002": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C003": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C004": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C005": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C006": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        }
+      },
+      "repair": {
+        "attempted_auto_repair_count": null,
+        "conditional_repair_success_rate": null,
+        "successful_auto_repair_count": null,
+        "supported": false
+      }
+    },
+    "provenance_only": {
+      "metrics": {
+        "attempted_auto_repair_count": 0,
+        "case_count": 120,
+        "conditional_repair_success_rate": null,
+        "detection_stage_distribution": {
+          "pre_cache_consume": 15
+        },
+        "false_block_rate": 0.0,
+        "invalid_experiment_escape_rate": 0.8333333333333334,
+        "location_accuracy": 0.0,
+        "prevented_invalid_work_units": 1500,
+        "prevention_rate": 0.16666666666666666,
+        "repair_eligibility_rate": 0.5,
+        "rule_id_accuracy": 0.16666666666666666,
+        "runtime_overhead_ms": 4.4389,
+        "successful_auto_repair_count": 0,
+        "violation_precision": 1.0,
+        "violation_recall": 0.16666666666666666
+      },
+      "per_repo": {
+        "tabular_sklearn": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {
+            "pre_cache_consume": 5
+          },
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 0.8333333333333334,
+          "location_accuracy": 0.0,
+          "prevented_invalid_work_units": 500,
+          "prevention_rate": 0.16666666666666666,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 0.16666666666666666,
+          "runtime_overhead_ms": 4.490875,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 1.0,
+          "violation_recall": 0.16666666666666666
+        },
+        "text_classification": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {
+            "pre_cache_consume": 5
+          },
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 0.8333333333333334,
+          "location_accuracy": 0.0,
+          "prevented_invalid_work_units": 500,
+          "prevention_rate": 0.16666666666666666,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 0.16666666666666666,
+          "runtime_overhead_ms": 4.3786025,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 1.0,
+          "violation_recall": 0.16666666666666666
+        },
+        "vision_pytorch": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {
+            "pre_cache_consume": 5
+          },
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 0.8333333333333334,
+          "location_accuracy": 0.0,
+          "prevented_invalid_work_units": 500,
+          "prevention_rate": 0.16666666666666666,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 0.16666666666666666,
+          "runtime_overhead_ms": 4.4472225000000005,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 1.0,
+          "violation_recall": 0.16666666666666666
+        }
+      },
+      "per_rule": {
+        "RCI-C001": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C002": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C003": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C004": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C005": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C006": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        }
+      },
+      "repair": {
+        "attempted_auto_repair_count": null,
+        "conditional_repair_success_rate": null,
+        "successful_auto_repair_count": null,
+        "supported": false
+      }
+    },
+    "runtime_researchci": {
+      "metrics": {
+        "attempted_auto_repair_count": 45,
+        "case_count": 120,
+        "conditional_repair_success_rate": 1.0,
+        "detection_stage_distribution": {
+          "pre_aggregate": 30,
+          "pre_cache_consume": 15,
+          "pre_run": 45
+        },
+        "false_block_rate": 0.0,
+        "invalid_experiment_escape_rate": 0.0,
+        "location_accuracy": 1.0,
+        "prevented_invalid_work_units": 9000,
+        "prevention_rate": 1.0,
+        "repair_eligibility_rate": 0.5,
+        "rule_id_accuracy": 1.0,
+        "runtime_overhead_ms": 4.7097175,
+        "successful_auto_repair_count": 45,
+        "violation_precision": 1.0,
+        "violation_recall": 1.0
+      },
+      "per_repo": {
+        "tabular_sklearn": {
+          "attempted_auto_repair_count": 15,
+          "case_count": 40,
+          "conditional_repair_success_rate": 1.0,
+          "detection_stage_distribution": {
+            "pre_aggregate": 10,
+            "pre_cache_consume": 5,
+            "pre_run": 15
+          },
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 0.0,
+          "location_accuracy": 1.0,
+          "prevented_invalid_work_units": 3000,
+          "prevention_rate": 1.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 1.0,
+          "runtime_overhead_ms": 4.6064175,
+          "successful_auto_repair_count": 15,
+          "violation_precision": 1.0,
+          "violation_recall": 1.0
+        },
+        "text_classification": {
+          "attempted_auto_repair_count": 15,
+          "case_count": 40,
+          "conditional_repair_success_rate": 1.0,
+          "detection_stage_distribution": {
+            "pre_aggregate": 10,
+            "pre_cache_consume": 5,
+            "pre_run": 15
+          },
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 0.0,
+          "location_accuracy": 1.0,
+          "prevented_invalid_work_units": 3000,
+          "prevention_rate": 1.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 1.0,
+          "runtime_overhead_ms": 4.59807,
+          "successful_auto_repair_count": 15,
+          "violation_precision": 1.0,
+          "violation_recall": 1.0
+        },
+        "vision_pytorch": {
+          "attempted_auto_repair_count": 15,
+          "case_count": 40,
+          "conditional_repair_success_rate": 1.0,
+          "detection_stage_distribution": {
+            "pre_aggregate": 10,
+            "pre_cache_consume": 5,
+            "pre_run": 15
+          },
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 0.0,
+          "location_accuracy": 1.0,
+          "prevented_invalid_work_units": 3000,
+          "prevention_rate": 1.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 1.0,
+          "runtime_overhead_ms": 4.924665,
+          "successful_auto_repair_count": 15,
+          "violation_precision": 1.0,
+          "violation_recall": 1.0
+        }
+      },
+      "per_rule": {
+        "RCI-C001": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C002": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C003": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C004": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C005": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        },
+        "RCI-C006": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 1.0,
+          "recall": 1.0
+        }
+      },
+      "repair": {
+        "attempted_auto_repair_count": 45,
+        "conditional_repair_success_rate": 1.0,
+        "successful_auto_repair_count": 45,
+        "supported": true
+      }
+    },
+    "schema_validation": {
+      "metrics": {
+        "attempted_auto_repair_count": 0,
+        "case_count": 120,
+        "conditional_repair_success_rate": null,
+        "detection_stage_distribution": {},
+        "false_block_rate": 0.0,
+        "invalid_experiment_escape_rate": 1.0,
+        "location_accuracy": 0.0,
+        "prevented_invalid_work_units": 0,
+        "prevention_rate": 0.0,
+        "repair_eligibility_rate": 0.5,
+        "rule_id_accuracy": 0.0,
+        "runtime_overhead_ms": 4.82907,
+        "successful_auto_repair_count": 0,
+        "violation_precision": 0.0,
+        "violation_recall": 0.0
+      },
+      "per_repo": {
+        "tabular_sklearn": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {},
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 1.0,
+          "location_accuracy": 0.0,
+          "prevented_invalid_work_units": 0,
+          "prevention_rate": 0.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 0.0,
+          "runtime_overhead_ms": 4.71035,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 0.0,
+          "violation_recall": 0.0
+        },
+        "text_classification": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {},
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 1.0,
+          "location_accuracy": 0.0,
+          "prevented_invalid_work_units": 0,
+          "prevention_rate": 0.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 0.0,
+          "runtime_overhead_ms": 4.8347999999999995,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 0.0,
+          "violation_recall": 0.0
+        },
+        "vision_pytorch": {
+          "attempted_auto_repair_count": 0,
+          "case_count": 40,
+          "conditional_repair_success_rate": null,
+          "detection_stage_distribution": {},
+          "false_block_rate": 0.0,
+          "invalid_experiment_escape_rate": 1.0,
+          "location_accuracy": 0.0,
+          "prevented_invalid_work_units": 0,
+          "prevention_rate": 0.0,
+          "repair_eligibility_rate": 0.5,
+          "rule_id_accuracy": 0.0,
+          "runtime_overhead_ms": 4.94206,
+          "successful_auto_repair_count": 0,
+          "violation_precision": 0.0,
+          "violation_recall": 0.0
+        }
+      },
+      "per_rule": {
+        "RCI-C001": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C002": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C003": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C004": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C005": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        },
+        "RCI-C006": {
+          "case_count": 15,
+          "exact_rule_id_accuracy": 0.0,
+          "recall": 0.0
+        }
+      },
+      "repair": {
+        "attempted_auto_repair_count": null,
+        "conditional_repair_success_rate": null,
+        "successful_auto_repair_count": null,
+        "supported": false
+      }
+    }
+  },
+  "locked_case_count": 120,
+  "run_id": "locked-20261001-6c7170c",
+  "split": "locked"
+}

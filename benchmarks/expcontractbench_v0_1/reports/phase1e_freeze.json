@@ -1,0 +1,62 @@
+{
+  "accepted_phase1d_r1_implementation_sha": "46725ce280a77f1b8ccb96ce476c26f75d74d57d",
+  "benchmark_tree_hash": "sha256:5615f8bab852d7286d7150fe54c47e579ced9f943c4114e544a44e446721686f",
+  "benchmark_version": "0.1",
+  "evaluator_sha": "6c7170c8ca90ed55f2a80e7a72eee6d32b0fda62",
+  "evaluator_source_hashes": {
+    "src/expcontractbench/__main__.py": "13e00e819eed9a53c73d890c0101f12cc9888075bad4c4f5de749768db619869",
+    "src/expcontractbench/metrics.py": "a253aad9bfd51806a662a07d8ed8f20117f4f2a1f226352739b2dbfc6f84ea07",
+    "src/expcontractbench/phase1e.py": "7747dc97ebcbbb550074c538a0b12f2a23b1d19f25ef7cc242c4507c35f0dcef",
+    "src/expcontractbench/runner.py": "6712bb20530e705c2176fd8158a0ea475aad26e0a055f0967f0c128f237cd04a"
+  },
+  "generator_version": "0.1-r1",
+  "go_no_go_sha256": "ce2fb0fb29afb3806f42b3164c1406cc465aa49f2bd2c0b31a69367ff694c97b",
+  "locked_case_count": 120,
+  "locked_label_counts": {
+    "invalid": 90,
+    "valid": 30
+  },
+  "output_hash_scope": "locked_adapter_reports+comparison_json+comparison_markdown",
+  "output_hashes": {
+    "locked_comparison.json": "20afa0d2be8ae017f66e3cebc92e49186de5de94ff3818a465331d51e934db49",
+    "locked_comparison.md": "7dba5f143d03854cd6eb1f068be84ece9f8cb76929bac6614275ecbef8a514ce",
+    "locked_no_check.json": "1b2e7d017ba4bcc9a5d1ed0e6201dccb5556444aa23806524e9abb7cc5b6b29a",
+    "locked_posthoc_researchci.json": "b01899dd38e0661e8bb957beabf8a17088b12ee801a230deb23e2b1a191af685",
+    "locked_provenance_only.json": "1ad533f84365eb087e5afe8eba0c44312604a2becbf357a07b98a7f45f022a68",
+    "locked_runtime_researchci.json": "8cf84163a620b7a0024251b2c864798a4f4b38209e1a5d7e8887b3b3b5a1124e",
+    "locked_schema_validation.json": "e2273504d099a6175d3924374188719927f04dc0fdb89c95193e3aa061b21a54"
+  },
+  "reproducibility_evidence": {
+    "compared_file_count": 1690,
+    "first_tree_hash": "sha256:5615f8bab852d7286d7150fe54c47e579ced9f943c4114e544a44e446721686f",
+    "mismatch_count": 0,
+    "passed": true,
+    "reference_mismatch_count": 0,
+    "reference_tree_hash": "sha256:5615f8bab852d7286d7150fe54c47e579ced9f943c4114e544a44e446721686f",
+    "second_tree_hash": "sha256:5615f8bab852d7286d7150fe54c47e579ced9f943c4114e544a44e446721686f"
+  },
+  "rule_blob_identity": {
+    "actual": {
+      "src/researchci/rules/__init__.py": "6b358fc46547f7084d335504d402ecfb804a53328c69a8a67374315455bde85b",
+      "src/researchci/rules/budget.py": "f745cdbeff111c32ddfccc8f8594f539823807db8bf8e88c4f05d306a59cd47b",
+      "src/researchci/rules/cache.py": "6ad9dbf9e58a1fee0607258f54931a24853d5154fde553852597488f1f2a7579",
+      "src/researchci/rules/config_drift.py": "1ecdbfbc2d760fc17941a60c76466f0db08c435a6ab6a45049df5de608aa78ef",
+      "src/researchci/rules/failed_runs.py": "99accb8059a093301c5b4db0b75fc41348141aafa769e6609675a2146e6931c9",
+      "src/researchci/rules/seed_set.py": "2f36e3d8fa77b4976413de88f95cc875ccd6bd43036ffe85ddfe1daae175221b",
+      "src/researchci/rules/split_drift.py": "455c2b00a79727239a81acd9a04fe4aaf3e936dd138ca0ad04fb2d50721ab49c"
+    },
+    "actual_tree": "sha256:7c8835297079d503be9e8adfdd132126c1a6b7a1fc2f9c72de23fc7e69dd9cf2",
+    "frozen": {
+      "src/researchci/rules/__init__.py": "6b358fc46547f7084d335504d402ecfb804a53328c69a8a67374315455bde85b",
+      "src/researchci/rules/budget.py": "f745cdbeff111c32ddfccc8f8594f539823807db8bf8e88c4f05d306a59cd47b",
+      "src/researchci/rules/cache.py": "6ad9dbf9e58a1fee0607258f54931a24853d5154fde553852597488f1f2a7579",
+      "src/researchci/rules/config_drift.py": "1ecdbfbc2d760fc17941a60c76466f0db08c435a6ab6a45049df5de608aa78ef",
+      "src/researchci/rules/failed_runs.py": "99accb8059a093301c5b4db0b75fc41348141aafa769e6609675a2146e6931c9",
+      "src/researchci/rules/seed_set.py": "2f36e3d8fa77b4976413de88f95cc875ccd6bd43036ffe85ddfe1daae175221b",
+      "src/researchci/rules/split_drift.py": "455c2b00a79727239a81acd9a04fe4aaf3e936dd138ca0ad04fb2d50721ab49c"
+    },
+    "frozen_commit": "316d4897aa07c5eedf27709ca049e6e14b1b2316",
+    "frozen_tree": "sha256:7c8835297079d503be9e8adfdd132126c1a6b7a1fc2f9c72de23fc7e69dd9cf2"
+  },
+  "run_id": "locked-20261001-6c7170c"
+}
