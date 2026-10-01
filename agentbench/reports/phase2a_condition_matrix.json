@@ -1,0 +1,48 @@
+{
+  "conditions": {
+    "A0_no_check": {
+      "attempted": 18,
+      "crossed": 18,
+      "posthoc": 0,
+      "repaired_success": 0,
+      "scenarios": 18,
+      "valid_false_blocks": 0
+    },
+    "A1_schema_validation": {
+      "attempted": 18,
+      "crossed": 18,
+      "posthoc": 0,
+      "repaired_success": 0,
+      "scenarios": 18,
+      "valid_false_blocks": 0
+    },
+    "A2_provenance_only": {
+      "attempted": 18,
+      "crossed": 15,
+      "posthoc": 0,
+      "repaired_success": 3,
+      "scenarios": 18,
+      "valid_false_blocks": 0
+    },
+    "A3_posthoc_researchci": {
+      "attempted": 18,
+      "crossed": 18,
+      "posthoc": 18,
+      "repaired_success": 0,
+      "scenarios": 18,
+      "valid_false_blocks": 0
+    },
+    "A4_runtime_researchci": {
+      "attempted": 18,
+      "crossed": 0,
+      "posthoc": 0,
+      "repaired_success": 18,
+      "scenarios": 18,
+      "valid_false_blocks": 0
+    }
+  },
+  "replay_deterministic": true,
+  "scenario_count": 18,
+  "valid_agent_false_block_total": 0,
+  "validator_independent": true
+}\n
