@@ -1,0 +1,1 @@
+{"case_id":"case_bdf8acd36a5f","declared_cost_units":100,"expected_decision":"BLOCK","expected_locations":["candidate.training.token_budget"],"expected_rule_ids":["RCI-C002"],"label":"invalid","repair_capability":"auto_repairable","target_rule_id":"RCI-C002","target_stage":"pre_run"}

@@ -4,6 +4,8 @@ import pytest
 
 from expcontractbench.metrics import compute_metrics
 from expcontractbench.profiles import profiles
+from expcontractbench.injectors import INJECTORS
+from expcontractbench.validator import _accounting_ok, _paired_ok
 
 
 def toy():
@@ -81,3 +83,41 @@ def test_profiles_have_twenty_scientifically_distinct_controls():
         assert len({sha256_value(state) for state in states}) == 20
         schemas.append(profile.contract()["comparison"]["equal_budget_fields"])
     assert len({tuple(schema) for schema in schemas}) == 3
+
+
+def test_independent_accounting_rejects_duplicates_unknown_ids_and_role_conflicts():
+    original = profiles()[0].base_case(0)["pre_aggregate"]
+    duplicate = deepcopy(original)
+    duplicate["observed_results"].append(deepcopy(duplicate["observed_results"][0]))
+    unknown = deepcopy(original)
+    unknown["included_run_ids"].append("undeclared-run")
+    wrong_role = deepcopy(original)
+    wrong_role["observed_results"][0]["role"] = "candidate"
+    assert not _accounting_ok(duplicate)
+    assert not _accounting_ok(unknown)
+    assert not _accounting_ok(wrong_role)
+
+
+def test_independent_seed_check_rejects_conflicting_result_evidence():
+    data = profiles()[0].base_case(0)
+    data["pre_aggregate"]["observed_results"][1]["seed"] = 1
+    assert not _paired_ok(data["contract"], data["pre_aggregate"])
+
+
+def test_profile_stage_inputs_do_not_alias_one_another():
+    data = profiles()[1].base_case(0)
+    before = deepcopy(data)
+    data["pre_run"]["candidate_intent"]["split_hash"] = "changed"
+    assert data["pre_cache_consume"] == before["pre_cache_consume"]
+    assert data["pre_aggregate"] == before["pre_aggregate"]
+
+
+def test_injector_diff_has_no_collateral_stage_changes():
+    from expcontractbench.canonical import canonical_diff
+
+    for profile in profiles():
+        base = profile.base_case(0)
+        for rule_id in ("RCI-C002", "RCI-C003", "RCI-C004"):
+            mutated, _ = INJECTORS[rule_id](base, 0)
+            assert all(item["path"].startswith("pre_run.candidate_intent.")
+                       for item in canonical_diff(base, mutated))

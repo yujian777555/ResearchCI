@@ -14,7 +14,7 @@ UNORDERED_FIELDS = {
     "equal_budget_fields", "equal_config_fields", "allowed_to_change", "invalidation_keys",
     "expected_rule_ids", "expected_locations", "changed_paths", "allowed_changed_paths",
 }
-DERIVED_FILES = {"integrity_report.json", "integrity_report.md", "reproducibility_report.json"}
+DERIVED_FILES = {"generation_metadata.json", "integrity_report.json", "integrity_report.md", "reproducibility_report.json"}
 
 
 def canonicalize(value: Any, field: str = "") -> Any:

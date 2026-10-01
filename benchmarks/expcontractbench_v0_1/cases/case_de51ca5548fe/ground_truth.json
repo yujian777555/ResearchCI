@@ -1,1 +1,0 @@
-{"case_id":"case_de51ca5548fe","declared_cost_units":100,"expected_decision":"BLOCK","expected_locations":["reported_failed_run_ids"],"expected_rule_ids":["RCI-C006"],"label":"invalid","repair_capability":"auto_repairable","target_rule_id":"RCI-C006","target_stage":"pre_aggregate"}

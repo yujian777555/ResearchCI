@@ -12,10 +12,12 @@ import yaml
 
 from .canonical import canonical_bytes, canonical_diff, file_hash_map, opaque_case_id, sha256_value, tree_hash
 from .injectors import INJECTORS
-from .profiles import Profile, clone_case, profiles
+from .profiles import Profile, profiles
+from .integrity import validate_mutation
 
 
 BENCHMARK_VERSION = "0.1"
+GENERATOR_VERSION = "0.1-r1"
 RULES = tuple(f"RCI-C00{i}" for i in range(1, 7))
 
 
@@ -28,14 +30,14 @@ def _write_case(root: Path, case: dict[str, Any], truth: dict[str, Any], mutatio
     case_dir = root / "cases" / case["case_id"]
     inputs = case_dir / "inputs"
     inputs.mkdir(parents=True, exist_ok=True)
-    (inputs / "contract.yaml").write_text(
-        yaml.safe_dump(case["data"]["contract"], sort_keys=True, allow_unicode=True), encoding="utf-8"
+    (inputs / "contract.yaml").write_bytes(
+        yaml.safe_dump(case["data"]["contract"], sort_keys=True, allow_unicode=True).encode("utf-8")
     )
     for stage in ("pre_run", "pre_cache_consume", "pre_aggregate"):
         if stage in case["data"]:
             _write_json(inputs / f"{stage}.json", case["data"][stage])
     case["input_tree_hash"] = tree_hash(inputs)
-    _write_json(case_dir / "case_manifest.json", case)
+    _write_json(case_dir / "case_manifest.json", {key: value for key, value in case.items() if key != "data"})
     _write_json(case_dir / "ground_truth.json", truth)
     _write_json(case_dir / "mutation_manifest.json", mutation)
 
@@ -100,8 +102,11 @@ def _case_record(profile: Profile, split: str, label: str, base_id: str, data: d
 
 
 def generate_benchmark(output: str | Path, *, _verify_reproducibility: bool = True) -> Path:
-    root = Path(output)
-    if root.exists():
+    root = Path(output).resolve()
+    if root.exists() and any(root.iterdir()):
+        # 仅允许重建由本生成器管理的目录，拒绝递归删除任意用户目录。
+        if not (root / "generation_metadata.json").is_file() or not (root / "manifests/cases.jsonl").is_file():
+            raise ValueError("refusing to replace a non-benchmark directory")
         shutil.rmtree(root)
     root.mkdir(parents=True, exist_ok=True)
     (root / "README.md").write_text(
@@ -144,9 +149,7 @@ def generate_benchmark(output: str | Path, *, _verify_reproducibility: bool = Tr
                 base_id = opaque_case_id({"benchmark_version": BENCHMARK_VERSION, "repo_id": profile.repo_id, "valid_index": valid_index, "split": split})
                 base_data = profile.base_case(valid_index)
                 mutated, mutation = injector(base_data, seed)
-                diff = canonical_diff(base_data, mutated)
-                mutation["canonical_diff"] = diff
-                mutation["changed_paths"] = [item["path"] for item in diff]
+                mutation.update(validate_mutation(base_data, mutated, rule_id, mutation))
                 case, truth, mutation = _case_record(profile, split, "invalid", base_id, mutated, rule_id, seed, mutation)
                 _write_case(root, case, truth, mutation)
                 manifests.append({key: value for key, value in case.items() if key != "data"})
@@ -168,7 +171,7 @@ def generate_benchmark(output: str | Path, *, _verify_reproducibility: bool = Tr
     )
     metadata = {
         "benchmark_version": BENCHMARK_VERSION,
-        "generator_version": BENCHMARK_VERSION,
+        "generator_version": GENERATOR_VERSION,
         "case_count": len(manifests),
         "benchmark_tree_hash": tree_hash(root, excluded_names={"integrity_report.json", "integrity_report.md", "generation_metadata.json"}),
         "reproducible": False,
@@ -176,19 +179,32 @@ def generate_benchmark(output: str | Path, *, _verify_reproducibility: bool = Tr
     }
     _write_json(root / "generation_metadata.json", metadata)
     if _verify_reproducibility:
-        with tempfile.TemporaryDirectory(prefix="expcontractbench-r1-") as temp_dir:
-            second = Path(temp_dir) / "benchmark"
-            generate_benchmark(second, _verify_reproducibility=False)
-            first_map = file_hash_map(root, deterministic_only=True)
-            second_map = file_hash_map(second, deterministic_only=True)
-            mismatches = sorted(
-                path for path in set(first_map) | set(second_map) if first_map.get(path) != second_map.get(path)
-            )
-            metadata["reproducible"] = not mismatches
-            metadata["reproducibility"] = {
-                "compared_file_count": len(first_map),
-                "mismatch_count": len(mismatches),
-                "passed": not mismatches,
-            }
-            _write_json(root / "generation_metadata.json", metadata)
+        evidence = verify_reproducibility(root)
+        metadata["reproducible"] = evidence["passed"]
+        metadata["reproducibility"] = evidence
+        _write_json(root / "generation_metadata.json", metadata)
+        if not evidence["passed"]:
+            raise ValueError("two-generation reproducibility comparison failed")
     return root
+
+
+def verify_reproducibility(reference: Path) -> dict:
+    """在两个独立临时根生成完整数据，比较每个文件并核对当前 materialized tree。"""
+    with tempfile.TemporaryDirectory(prefix="expcontractbench-r1-") as temp_dir:
+        first, second = Path(temp_dir) / "first", Path(temp_dir) / "second"
+        generate_benchmark(first, _verify_reproducibility=False)
+        generate_benchmark(second, _verify_reproducibility=False)
+        first_map = file_hash_map(first, deterministic_only=True)
+        second_map = file_hash_map(second, deterministic_only=True)
+        reference_map = file_hash_map(reference, deterministic_only=True)
+        mismatches = sorted(path for path in set(first_map) | set(second_map)
+                            if first_map.get(path) != second_map.get(path))
+        reference_mismatches = sorted(path for path in set(first_map) | set(reference_map)
+                                      if first_map.get(path) != reference_map.get(path))
+        return {
+            "compared_file_count": len(first_map), "mismatch_count": len(mismatches),
+            "reference_mismatch_count": len(reference_mismatches),
+            "first_tree_hash": sha256_value(first_map), "second_tree_hash": sha256_value(second_map),
+            "reference_tree_hash": sha256_value(reference_map),
+            "passed": not mismatches and not reference_mismatches,
+        }

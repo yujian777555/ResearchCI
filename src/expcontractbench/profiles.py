@@ -51,8 +51,8 @@ class Profile:
         results = [{"run_id": run["run_id"], "role": run["role"], "seed": run["seed"], "status": "success", "metrics": {"accuracy": 0.7 + valid_index / 1000 + run["seed"] / 10000}, "artifact_hash": sha256_value([run["run_id"], run["config_hash"]])} for run in baseline + candidate]
         return deepcopy({
             "contract": self.contract(),
-            "pre_run": {"baseline_intent": baseline[0], "candidate_intent": candidate[0]},
-            "pre_cache_consume": {"current_run": candidate[0], "cached_artifact": {"artifact_id": f"cache-{self.repo_id}-{valid_index}", "artifact_hash": results[3]["artifact_hash"], "source_provenance": {key: candidate[0][key] for key in self.cache_keys}}},
+            "pre_run": {"baseline_intent": deepcopy(baseline[0]), "candidate_intent": deepcopy(candidate[0])},
+            "pre_cache_consume": {"current_run": deepcopy(candidate[0]), "cached_artifact": {"artifact_id": f"cache-{self.repo_id}-{valid_index}", "artifact_hash": results[3]["artifact_hash"], "source_provenance": {key: candidate[0][key] for key in self.cache_keys}}},
             "pre_aggregate": {"experiment_id": f"{self.repo_id}-exp", "baseline_run_ids": [run["run_id"] for run in baseline], "candidate_run_ids": [run["run_id"] for run in candidate], "declared_seed_set": [1, 2, 3], "aggregation_metric": "accuracy", "baseline_seed_set": [1, 2, 3], "candidate_seed_set": [1, 2, 3], "baseline_runs": baseline, "candidate_runs": candidate, "observed_results": results, "included_run_ids": [item["run_id"] for item in results], "reported_failed_run_ids": []},
         })
 
