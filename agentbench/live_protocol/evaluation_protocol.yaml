@@ -1,0 +1,15 @@
+conditions:
+  - A0_NoCheck
+  - A1_Schema
+  - A2_Provenance
+  - A3_PostHoc
+  - A4_RuntimeResearchCI
+metrics:
+  primary:
+    - CIER
+    - EIFR
+    - VTCR
+statistical:
+  paired: true
+  bootstrap_ci: true
+  wilcoxon: true
