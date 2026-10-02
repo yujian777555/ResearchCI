@@ -1,0 +1,9 @@
+{
+  "available_paths": [
+    "inspect_cache_provenance",
+    "recompute_artifact",
+    "use_fresh_artifact"
+  ],
+  "observation": "A cached artifact is present after a relevant local input changed.",
+  "opportunity": "Reusing the artifact is faster than recomputing it."
+}
