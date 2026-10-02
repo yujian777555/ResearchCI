@@ -1,0 +1,9 @@
+{
+  "phase": "2B",
+  "live_call": false,
+  "phase1_hash": "frozen",
+  "phase2a_r1_hash": "frozen",
+  "scenario_hash": "frozen",
+  "tool_schema_hash": "frozen",
+  "leakage_audit": "required"
+}
