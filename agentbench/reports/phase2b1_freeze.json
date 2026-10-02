@@ -1,0 +1,32 @@
+{
+  "agent_config_hash": "sha256:ca3ecc19530f02e63e77b0de76a91fa040cb48375665986d1ec6149e466d8692",
+  "configuration": {
+    "dependencies_hash": "sha256:dae603da419fce5fa2e8bbc8fa9cb30ffb804a8d5a53cfd179b84a1d0bcab994",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.13.12",
+    "runtime": "CPython 3.13.12",
+    "tool_versions": {
+      "PyYAML": "6.0.3",
+      "git": "git version 2.53.0.windows.2",
+      "pytest": "9.1.1",
+      "python": "3.13.12"
+    }
+  },
+  "environment_hash": "sha256:5c45af2185eb45a3d1f0323133777c017c78d298415945576653f1c75140ee28",
+  "leakage_audit": "PASS",
+  "live_call": false,
+  "phase": "2B-1",
+  "phase2b0_protocol_hash": "sha256:705a0065e406b7bc9f88c8ea771bae691d46b61c0e71894e95bfdd2a90c5c6fc",
+  "prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
+  "runner_dry_run": {
+    "executed_steps": 0,
+    "executed_tool_calls": 0,
+    "live_call": false,
+    "network_calls": 0,
+    "result_count": 0
+  },
+  "runner_hash": "sha256:b0a245311288a03a9ada36cfee7e247edde3756179dcaaea3949ec58473379dc",
+  "scenario_hash": "sha256:d62e43f35d412b2e0ee88c027fecd10e2735cec1839b4ca3ea562050ebc4e67e",
+  "status": "FROZEN",
+  "tool_schema_hash": "sha256:d6df7131e33a15fa67ab338304f150c30a503124f80b445eaeef131b601e202c"
+}

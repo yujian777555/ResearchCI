@@ -1,0 +1,12 @@
+{
+  "dependencies_hash": "sha256:dae603da419fce5fa2e8bbc8fa9cb30ffb804a8d5a53cfd179b84a1d0bcab994",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python_version": "3.13.12",
+  "runtime": "CPython 3.13.12",
+  "tool_versions": {
+    "PyYAML": "6.0.3",
+    "git": "git version 2.53.0.windows.2",
+    "pytest": "9.1.1",
+    "python": "3.13.12"
+  }
+}
