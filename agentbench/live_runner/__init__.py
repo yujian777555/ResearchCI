@@ -2,6 +2,7 @@
 
 from .interfaces import AgentAdapter, EpisodeLoader, EvaluationHook, TrajectoryRecorder
 from .dry_run import DryRunSummary, dry_run
+from .budget import BudgetConfig, BudgetEnforcer
 
 __all__ = [
     "AgentAdapter",
@@ -10,4 +11,6 @@ __all__ = [
     "TrajectoryRecorder",
     "DryRunSummary",
     "dry_run",
+    "BudgetConfig",
+    "BudgetEnforcer",
 ]

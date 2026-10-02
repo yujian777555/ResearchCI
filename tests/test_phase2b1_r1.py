@@ -28,7 +28,7 @@ def test_provider_request_preview_uses_only_contract_fields():
     assert request["temperature"] == 0
     assert request["top_p"] == 1
     assert request["max_output_tokens"] == 16000
-    assert request["max_tool_calls"] == 20
+    assert "max_tool_calls" not in request
     assert request["metadata"] == {"replicate_id": "1"}
     assert "seed" not in request
     assert preview["request_contract_valid"] is True

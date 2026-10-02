@@ -12,9 +12,8 @@
   "provider_seed_supported": false,
   "replicate_id_field": "metadata.replicate_id",
   "max_output_tokens_field": "max_output_tokens",
-  "max_output_tokens": 16000,
-  "max_tool_calls_field": "max_tool_calls",
-  "max_tool_calls": 20,
+  "provider_per_response_output_limit": 128000,
+  "max_output_tokens_semantics": "runner min(provider_per_response_output_limit, remaining_output_token_budget)",
   "metadata_field": "metadata",
   "tool_call_input_field": "tools",
   "tool_schema_shape": {
@@ -31,9 +30,11 @@
     "output": "JSON string"
   },
   "usage_fields": ["usage.input_tokens", "usage.output_tokens", "usage.total_tokens"],
-  "provider_model_metadata_fields": ["response.model", "response.id"],
-  "request_fields": ["model", "instructions", "input", "temperature", "top_p", "max_output_tokens", "max_tool_calls", "metadata", "tools"],
-  "unsupported_request_fields": ["seed"],
+  "provider_model_metadata_fields": ["response.id", "response.model", "response.created_at", "local_request_time_utc", "local_response_time_utc"],
+  "request_fields": ["model", "instructions", "input", "temperature", "top_p", "max_output_tokens", "metadata", "tools"],
+  "unsupported_request_fields": ["seed", "max_tool_calls"],
+  "runner_side_budget_fields": ["max_steps", "max_custom_function_calls", "timeout_seconds", "cumulative_output_token_budget"],
+  "provider_max_tool_calls_used_for_custom_functions": false,
   "tool_interface_source": "agentbench/tool_schema.json",
   "live_call": false
 }

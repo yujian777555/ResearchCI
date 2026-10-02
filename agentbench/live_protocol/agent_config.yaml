@@ -15,6 +15,6 @@ sampling:
 
 runtime:
   max_steps: 30
-  max_tool_calls: 20
+  max_custom_function_calls: 20
   timeout_seconds: 900
-  token_budget: 16000
+  cumulative_output_token_budget: 16000

@@ -1,19 +1,19 @@
 {
-  "agent_config_hash": "sha256:b13bd0e32174e39211c1d36e43329d9bb8e2ff89d992cb37b315e8a205f3a3c4",
+  "agent_config_hash": "sha256:20a725465afa7498adb1094f250f81112b8a3af705cfa7d3d2b139280c0462f7",
   "composite_components": {
-    "agent_config_hash": "sha256:b13bd0e32174e39211c1d36e43329d9bb8e2ff89d992cb37b315e8a205f3a3c4",
+    "agent_config_hash": "sha256:20a725465afa7498adb1094f250f81112b8a3af705cfa7d3d2b139280c0462f7",
     "environment_hash": "sha256:5c45af2185eb45a3d1f0323133777c017c78d298415945576653f1c75140ee28",
     "evaluation_protocol_hash": "sha256:0a77234beda318fae785371198e7594c66edbbe911d56ec6eb08c5af10eb9d76",
     "prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
-    "provider_request_contract_hash": "sha256:5512481d2b6fdf25c21e5d22b0fab5a8f85964af952c5a315eeebb1abec3209a",
-    "runner_source_hash": "sha256:76a10e6791195c9c3abf5de36198cadd2473d42aa374413312ed521008ce9403",
+    "provider_request_contract_hash": "sha256:172c83517ff7155a1793f527bbe15d18f1da7518d5e8aa695509cf4ad6d440c1",
+    "runner_source_hash": "sha256:2aa3cdb7597232e9f57fad9dfdfecd41056de47920171e90aa951b89eda6c3e7",
     "scenario_files_hash": "sha256:dd25d5236c0f8bc28ede155d5c73e64875f520ea1a8ea5a28d5375a3a4054668",
     "scenario_hash": "sha256:d62e43f35d412b2e0ee88c027fecd10e2735cec1839b4ca3ea562050ebc4e67e",
     "seeds_hash": "sha256:7e02d524235b7aa3d62de8ef51f9f20b9c147b34d36fca3276defc248dfb52f4",
     "tool_schema_file_hash": "sha256:72babe6a5b716648c93bf379a2ce041bc3c14fe510d62f2e05b6d8f67519a160",
     "tool_schema_hash": "sha256:d6df7131e33a15fa67ab338304f150c30a503124f80b445eaeef131b601e202c"
   },
-  "composite_protocol_hash": "sha256:d8f3b88396eef80da8285bf166fc4bb640ecf568096904993af6360a6597aa4c",
+  "composite_protocol_hash": "sha256:d28b772a5e4652cd51d85d729ac88e0f8c223facace9b475eb650a1043e11a89",
   "configuration": {
     "dependencies_hash": "sha256:dae603da419fce5fa2e8bbc8fa9cb30ffb804a8d5a53cfd179b84a1d0bcab994",
     "platform": "Windows-11-10.0.26200-SP0",
@@ -41,7 +41,7 @@
   "phase": "2B-1",
   "phase2b0_protocol_hash": "sha256:705a0065e406b7bc9f88c8ea771bae691d46b61c0e71894e95bfdd2a90c5c6fc",
   "prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
-  "provider_request_contract_hash": "sha256:5512481d2b6fdf25c21e5d22b0fab5a8f85964af952c5a315eeebb1abec3209a",
+  "provider_request_contract_hash": "sha256:172c83517ff7155a1793f527bbe15d18f1da7518d5e8aa695509cf4ad6d440c1",
   "provider_seed_supported": false,
   "runner_dry_run": {
     "executed_steps": 0,
@@ -51,7 +51,16 @@
     "result_count": 0
   },
   "runner_hash": "sha256:b0a245311288a03a9ada36cfee7e247edde3756179dcaaea3949ec58473379dc",
-  "runner_source_hash": "sha256:76a10e6791195c9c3abf5de36198cadd2473d42aa374413312ed521008ce9403",
+  "runner_source_hash": "sha256:2aa3cdb7597232e9f57fad9dfdfecd41056de47920171e90aa951b89eda6c3e7",
+  "runtime_budget_semantics": {
+    "cumulative_output_token_budget": "runner",
+    "max_custom_function_calls": "runner",
+    "max_output_tokens_per_request": "min(provider_per_response_output_limit, remaining_output_token_budget)",
+    "max_steps": "runner",
+    "provider_max_tool_calls_used_for_custom_functions": false,
+    "provider_per_response_output_limit": 128000,
+    "timeout_seconds": "runner"
+  },
   "scenario_files_hash": "sha256:dd25d5236c0f8bc28ede155d5c73e64875f520ea1a8ea5a28d5375a3a4054668",
   "scenario_hash": "sha256:d62e43f35d412b2e0ee88c027fecd10e2735cec1839b4ca3ea562050ebc4e67e",
   "seed_semantics": {
@@ -71,7 +80,7 @@
   "validation": {
     "model": "gpt-5.6-sol",
     "passed": true,
-    "provider_request_contract_hash": "sha256:5512481d2b6fdf25c21e5d22b0fab5a8f85964af952c5a315eeebb1abec3209a",
+    "provider_request_contract_hash": "sha256:172c83517ff7155a1793f527bbe15d18f1da7518d5e8aa695509cf4ad6d440c1",
     "provider_seed_supported": false,
     "replicate_ids": [
       0,
