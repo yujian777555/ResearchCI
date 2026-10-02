@@ -1,4 +1,7 @@
 {
-  "status": "frozen_placeholder",
-  "seeds": []
+  "status": "frozen",
+  "semantics": "replicate_ids",
+  "replicate_ids": [0, 1, 2],
+  "provider_seed_supported": false,
+  "provider_seed_field": null
 }

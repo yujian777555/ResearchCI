@@ -1,0 +1,39 @@
+{
+  "provider": "OpenAI",
+  "api_family": "Responses API",
+  "endpoint": "/v1/responses",
+  "model_field": "model",
+  "model_identifier": "gpt-5.6-sol",
+  "model_identity_semantics": "alias_pinned",
+  "sampling_fields": {
+    "temperature": 0,
+    "top_p": 1
+  },
+  "provider_seed_supported": false,
+  "replicate_id_field": "metadata.replicate_id",
+  "max_output_tokens_field": "max_output_tokens",
+  "max_output_tokens": 16000,
+  "max_tool_calls_field": "max_tool_calls",
+  "max_tool_calls": 20,
+  "metadata_field": "metadata",
+  "tool_call_input_field": "tools",
+  "tool_schema_shape": {
+    "type": "function",
+    "name": "string",
+    "description": "string",
+    "parameters": "JSON Schema object",
+    "strict": true
+  },
+  "tool_call_output_shape": "response.output items with type=function_call",
+  "tool_call_continuation_shape": {
+    "type": "function_call_output",
+    "call_id": "provider function call id",
+    "output": "JSON string"
+  },
+  "usage_fields": ["usage.input_tokens", "usage.output_tokens", "usage.total_tokens"],
+  "provider_model_metadata_fields": ["response.model", "response.id"],
+  "request_fields": ["model", "instructions", "input", "temperature", "top_p", "max_output_tokens", "max_tool_calls", "metadata", "tools"],
+  "unsupported_request_fields": ["seed"],
+  "tool_interface_source": "agentbench/tool_schema.json",
+  "live_call": false
+}
