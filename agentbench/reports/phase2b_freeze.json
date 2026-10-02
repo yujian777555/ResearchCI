@@ -1,0 +1,31 @@
+{
+  "agent_config_hash": "sha256:ed35995995e14f9d59c8d9cc89121023314a3995c3e5c4c6f24f8a78901de0e3",
+  "evaluation_protocol_hash": "sha256:0a77234beda318fae785371198e7594c66edbbe911d56ec6eb08c5af10eb9d76",
+  "leakage_audit": {
+    "hidden_condition": false,
+    "hidden_family": false,
+    "hidden_rule": false
+  },
+  "live_call": false,
+  "phase": "2B",
+  "phase1_scope_unchanged": true,
+  "phase_plan_hash": "sha256:5fa49fcd7d48d57a3002d6b2ef0d5a8bb52d2b58a2cd2ab24444a4e3ca08d441",
+  "preflight_readiness": "PLACEHOLDER_VALUES_REMAIN",
+  "protocol_consistency": {
+    "agent_config_placeholders_present": true,
+    "bootstrap_declared": true,
+    "conditions_match": true,
+    "paired_statistics_declared": true,
+    "preflight_live_call_false": true,
+    "primary_metrics_match": true,
+    "protocol_structure_consistent": true,
+    "seed_list_empty_placeholder": true,
+    "wilcoxon_declared": true
+  },
+  "protocol_hash": "sha256:705a0065e406b7bc9f88c8ea771bae691d46b61c0e71894e95bfdd2a90c5c6fc",
+  "regression_passed": true,
+  "scenario_hash": "sha256:d62e43f35d412b2e0ee88c027fecd10e2735cec1839b4ca3ea562050ebc4e67e",
+  "seeds_hash": "sha256:8f5236af86f5d8958c17112143f864e2f330134ab7c589aec6e4fbda7ea7352b",
+  "status": "FROZEN",
+  "tool_schema_hash": "sha256:d6df7131e33a15fa67ab338304f150c30a503124f80b445eaeef131b601e202c"
+}
