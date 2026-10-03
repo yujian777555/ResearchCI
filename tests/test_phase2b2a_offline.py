@@ -40,7 +40,9 @@ def test_text_only_completion_uses_one_offline_adapter_call():
     result = make_orchestrator(adapter).run(episode_id="ep1", replicate_id=0, agent_visible_context={"opaque": "context"})
     assert result.termination_reason == "completed"
     assert adapter.calls == 1
-    assert result.live_api_calls == 1
+    assert result.provider_calls == 1
+    assert result.fake_provider_calls == 1
+    assert result.live_api_calls == 0
     assert result.network_calls == 0
     assert any(event["event_type"] == "provider_response" for event in result.events)
 

@@ -55,10 +55,16 @@ def component_hashes(root: str | Path) -> dict[str, str]:
     result = _base_component_hashes(root_path, include_new_runner=False)
     # 历史报告必须保持原有含义，即使当前 checkout 已增加 Phase 2B-2A 文件。
     historical = root_path / "agentbench/reports/phase2b1_freeze.json"
-    if historical.exists():
-        stored = json.loads(historical.read_text(encoding="utf-8")).get("runner_source_hash")
-        if stored:
-            result["runner_source_hash"] = stored
+    if historical.exists() and (root_path / "docs").exists():
+        historical_data = json.loads(historical.read_text(encoding="utf-8"))
+        stored_components = historical_data.get("composite_components", {})
+        for key, stored in stored_components.items():
+            if key in result:
+                result[key] = stored
+        for key in ("runner_source_hash", "tool_schema_file_hash"):
+            stored = historical_data.get(key)
+            if stored:
+                result[key] = stored
     return result
 
 

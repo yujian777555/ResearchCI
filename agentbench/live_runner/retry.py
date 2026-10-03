@@ -18,6 +18,14 @@ class RetryPolicy:
     def from_file(cls, path: str | Path) -> "RetryPolicy":
         return cls(json.loads(Path(path).read_text(encoding="utf-8")))
 
+    def backoff_seconds(self, retry_index: int) -> float:
+        """计算第 retry_index 次重试前的 bounded exponential backoff。"""
+        initial = float(self.backoff_policy.get("initial_seconds", 0))
+        maximum = float(self.backoff_policy.get("max_seconds", initial))
+        if retry_index < 0:
+            raise ValueError("retry_index must be non-negative")
+        return min(maximum, initial * (2 ** retry_index))
+
     def allows(self, error: BaseException, retry_index: int) -> bool:
         error_type = str(getattr(error, "error_type", type(error).__name__))
         retryable = bool(getattr(error, "retryable", error_type in self.retryable_error_types))

@@ -1,22 +1,79 @@
 {
-  "version": "phase2b2a-trajectory-0.1",
+  "version": "phase2b2a-r1-trajectory-0.2",
   "append_only": true,
-  "agent_visible_context_fields": ["opaque_episode_context"],
+  "agent_visible_context_fields": [
+    "opaque_episode_context"
+  ],
   "evaluator_private_event_fields": [
-    "episode_id", "replicate_id", "condition", "request_metadata_hash",
-    "provider_response", "usage", "model_output_types", "function_call",
-    "tool_result", "budget_state", "termination_reason", "execution_protocol"
+    "episode_id",
+    "replicate_id",
+    "condition",
+    "request_metadata_hash",
+    "provider_response",
+    "usage",
+    "model_output_types",
+    "function_call",
+    "tool_result",
+    "budget_state",
+    "termination_reason",
+    "execution_protocol"
   ],
-  "event_required_fields": ["event_type"],
+  "event_required_fields": [
+    "event_type"
+  ],
   "provider_response_fields": [
-    "id", "model", "created_at", "local_request_time_utc", "local_response_time_utc"
+    "id",
+    "model",
+    "created_at",
+    "local_request_time_utc",
+    "local_response_time_utc",
+    "previous_response_id"
   ],
-  "usage_fields": ["input_tokens", "output_tokens", "total_tokens"],
-  "function_call_fields": ["call_id", "name", "arguments_hash"],
+  "usage_fields": [
+    "input_tokens",
+    "output_tokens",
+    "total_tokens"
+  ],
+  "function_call_fields": [
+    "call_id",
+    "name",
+    "arguments_hash"
+  ],
   "termination_reasons": [
-    "completed", "step_budget_exhausted", "tool_budget_exhausted",
-    "output_token_budget_exhausted", "timeout_exhausted", "provider_error",
-    "invalid_function_arguments", "tool_rejected", "incomplete_episode"
+    "completed",
+    "step_budget_exhausted",
+    "tool_budget_exhausted",
+    "output_token_budget_exhausted",
+    "timeout_exhausted",
+    "provider_error",
+    "invalid_function_arguments",
+    "tool_rejected",
+    "incomplete_episode"
   ],
-  "secrets_stored": false
+  "secrets_stored": false,
+  "provider_accounting_fields": [
+    "provider_calls",
+    "fake_provider_calls",
+    "live_api_calls",
+    "network_calls"
+  ],
+  "provider_attempt_fields": [
+    "provider_attempt_index",
+    "retry_index",
+    "local_request_attempt_time_utc",
+    "request_hash",
+    "error_type",
+    "backoff_seconds"
+  ],
+  "continuation_fields": [
+    "previous_response_id",
+    "response.id",
+    "function_call.call_id"
+  ],
+  "request_fields": [
+    "request_kind",
+    "request_hash",
+    "request_metadata_hash",
+    "max_output_tokens"
+  ]
 }

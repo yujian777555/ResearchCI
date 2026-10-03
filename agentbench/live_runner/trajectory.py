@@ -24,8 +24,14 @@ class TrajectoryResult:
     replicate_id: int
     termination_reason: str
     events: tuple[dict[str, Any], ...]
+    provider_calls: int
+    fake_provider_calls: int
     live_api_calls: int
     network_calls: int
+
+    @property
+    def calls(self) -> int:
+        return self.provider_calls
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -33,6 +39,8 @@ class TrajectoryResult:
             "replicate_id": self.replicate_id,
             "termination_reason": self.termination_reason,
             "events": [deepcopy(event) for event in self.events],
+            "provider_calls": self.provider_calls,
+            "fake_provider_calls": self.fake_provider_calls,
             "live_api_calls": self.live_api_calls,
             "network_calls": self.network_calls,
         }

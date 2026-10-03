@@ -1,0 +1,27 @@
+{
+  "phase": "2B-2A-R1",
+  "status": "PASS",
+  "matrix": {
+    "continuation_previous_response_id": "PASS",
+    "exact_provider_ids": "PASS",
+    "multi_call_continuation": "PASS",
+    "all_eight_tool_schemas": "PASS",
+    "invalid_payload_rejection": "PASS",
+    "run_experiment_complex_e2e": "PASS",
+    "consume_cache_complex_e2e": "PASS",
+    "record_run_result_complex_e2e": "PASS",
+    "propose_aggregate_complex_e2e": "PASS",
+    "retry_backoff_1_2": "PASS",
+    "retry_timeout_recheck": "PASS",
+    "tool_no_replay": "PASS",
+    "accounting_split": "PASS",
+    "no_network_guard": "PASS",
+    "leakage": "PASS"
+  },
+  "provider_calls": 3,
+  "fake_provider_calls": 3,
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0,
+  "formal_results_generated": false
+}
