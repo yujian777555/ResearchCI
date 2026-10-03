@@ -1,0 +1,28 @@
+{
+  "phase": "2B-2A",
+  "status": "PASS",
+  "matrix": {
+    "text_only_completion": "PASS",
+    "function_call_continuation": "PASS",
+    "multiple_function_calls": "PASS",
+    "twenty_first_tool_call_blocked": "PASS",
+    "step_budget_exhaustion": "PASS",
+    "cumulative_output_token_exhaustion": "PASS",
+    "remaining_output_limit": "PASS",
+    "monotonic_timeout": "PASS",
+    "provider_error_retry": "PASS",
+    "retry_budget_persistence": "PASS",
+    "malformed_function_arguments": "PASS",
+    "mediator_rejection": "PASS",
+    "incomplete_episode": "PASS",
+    "explicit_successful_completion": "PASS",
+    "condition_independence": "PASS",
+    "leakage": "PASS",
+    "no_network_guard": "PASS"
+  },
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0,
+  "provider": "deterministic_fake_only",
+  "formal_results_generated": false
+}

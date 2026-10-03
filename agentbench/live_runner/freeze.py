@@ -17,20 +17,23 @@ def _digest(value: Any) -> str:
     return "sha256:" + hashlib.sha256(payload).hexdigest()
 
 
-def runner_source_hash(root: str | Path) -> str:
+_HISTORICAL_RUNNER_FILES = ("__init__.py", "budget.py", "dry_run.py", "freeze.py", "interfaces.py")
+
+
+def runner_source_hash(root: str | Path, *, include_new: bool = True) -> str:
     root = Path(root)
-    files = {path.relative_to(root).as_posix(): _sha256(path) for path in sorted((root / "agentbench" / "live_runner").glob("*.py"))}
+    runner = root / "agentbench" / "live_runner"
+    paths = sorted(runner.glob("*.py")) if include_new else [runner / name for name in _HISTORICAL_RUNNER_FILES if (runner / name).exists()]
+    files = {path.relative_to(root).as_posix(): _sha256(path) for path in paths}
     return _digest(files)
 
 
-def component_hashes(root: str | Path) -> dict[str, str]:
-    root = Path(root)
+def _base_component_hashes(root: Path, *, include_new_runner: bool) -> dict[str, str]:
     generation = json.loads((root / "agentbench" / "generation_metadata.json").read_text(encoding="utf-8"))
     scenario_files = {
         path.relative_to(root).as_posix(): _sha256(path)
         for path in sorted((root / "agentbench" / "scenarios").glob("*.json"))
     }
-    tool_schema_hash = _sha256(root / "agentbench/tool_schema.json")
     return {
         "agent_config_hash": _sha256(root / "agentbench/live_protocol/agent_config.yaml"),
         "evaluation_protocol_hash": _sha256(root / "agentbench/live_protocol/evaluation_protocol.yaml"),
@@ -41,13 +44,35 @@ def component_hashes(root: str | Path) -> dict[str, str]:
         "scenario_hash": generation["scenario_semantic_hash"],
         "scenario_files_hash": _digest(scenario_files),
         "tool_schema_hash": generation["tool_schema_hash"],
-        "tool_schema_file_hash": tool_schema_hash,
-        "runner_source_hash": runner_source_hash(root),
+        "tool_schema_file_hash": _sha256(root / "agentbench/tool_schema.json"),
+        "runner_source_hash": runner_source_hash(root, include_new=include_new_runner),
     }
+
+
+def component_hashes(root: str | Path) -> dict[str, str]:
+    """返回 Phase 2B-1 历史语义所需的组件视图。"""
+    root_path = Path(root)
+    result = _base_component_hashes(root_path, include_new_runner=False)
+    # 历史报告必须保持原有含义，即使当前 checkout 已增加 Phase 2B-2A 文件。
+    historical = root_path / "agentbench/reports/phase2b1_freeze.json"
+    if historical.exists():
+        stored = json.loads(historical.read_text(encoding="utf-8")).get("runner_source_hash")
+        if stored:
+            result["runner_source_hash"] = stored
+    return result
+
+
+def execution_component_hashes(root: str | Path) -> dict[str, str]:
+    """返回包含 Phase 2B-2A 新 runner 源码的执行协议组件。"""
+    return _base_component_hashes(Path(root), include_new_runner=True)
 
 
 def composite_protocol_hash(root: str | Path) -> str:
     return _digest(component_hashes(root))
+
+
+def execution_protocol_hash(components: dict[str, str]) -> str:
+    return _digest(components)
 
 
 def validate_configuration(root: str | Path) -> dict[str, Any]:
@@ -71,16 +96,14 @@ def validate_configuration(root: str | Path) -> dict[str, Any]:
     return {"passed": passed and request["request_contract_valid"], "model": model, "version": version, "replicate_ids": replicate_ids, "provider_seed_supported": False, "provider_request_contract_hash": _sha256(root / "agentbench/live_protocol/provider_request_contract.json"), "request_contract_valid": request["request_contract_valid"]}
 
 
-def request_preview(root: str | Path, replicate_id: int) -> dict[str, Any]:
-    root = Path(root)
-    contract = json.loads((root / "agentbench/live_protocol/provider_request_contract.json").read_text(encoding="utf-8"))
-    actions = json.loads((root / "agentbench/tool_schema.json").read_text(encoding="utf-8"))["actions"]
-    tools = []
-    for action in actions:
-        object_fields = {"baseline_intent", "candidate_intent", "current_run", "cached_artifact", "run_result", "aggregate"}
-        properties = {field: {"type": "object" if field in object_fields else "string"} for field in action["fields"]}
-        tools.append({"type": "function", "name": action["type"], "description": f"Controlled ResearchCI action: {action['type']}", "parameters": {"type": "object", "properties": properties, "required": list(action["fields"]), "additionalProperties": False}, "strict": True})
-    remaining_output_token_budget = 16000
-    request = {"model": contract["model_identifier"], "instructions": "<frozen system prompt>", "input": "<episode input>", "temperature": contract["sampling_fields"]["temperature"], "top_p": contract["sampling_fields"]["top_p"], "max_output_tokens": min(contract["provider_per_response_output_limit"], remaining_output_token_budget), "metadata": {"replicate_id": str(replicate_id)}, "tools": tools}
-    request_contract_valid = set(request) == {"model", "instructions", "input", "temperature", "top_p", "max_output_tokens", "metadata", "tools"} and all(tool["strict"] and tool["parameters"]["additionalProperties"] is False for tool in tools)
+def request_preview(root: str | Path, replicate_id: int, *, remaining_output_token_budget: int = 16000) -> dict[str, Any]:
+    from agentbench.live_adapter.openai_responses import ResponsesRequestBuilder
+
+    builder = ResponsesRequestBuilder(root, system_prompt="<frozen system prompt>")
+    request = builder.build(agent_visible_context="<episode input>", replicate_id=replicate_id, remaining_output_token_budget=remaining_output_token_budget)
+    request_contract_valid = (
+        set(request) == {"model", "instructions", "input", "temperature", "top_p", "max_output_tokens", "metadata", "tools"}
+        and all(tool["strict"] and tool["parameters"]["additionalProperties"] is False for tool in request["tools"])
+        and all("seed" not in tool and "max_tool_calls" not in tool for tool in request["tools"])
+    )
     return {"request": request, "request_contract_valid": request_contract_valid}

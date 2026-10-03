@@ -1,0 +1,70 @@
+{
+  "phase": "2B-2A",
+  "status": "FROZEN",
+  "execution_protocol_version": "phase2b2a_execution_protocol",
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0,
+  "parent_phase2b1_composite_hash": "sha256:d28b772a5e4652cd51d85d729ac88e0f8c223facace9b475eb650a1043e11a89",
+  "agent_config_hash": "sha256:20a725465afa7498adb1094f250f81112b8a3af705cfa7d3d2b139280c0462f7",
+  "provider_request_contract_hash": "sha256:172c83517ff7155a1793f527bbe15d18f1da7518d5e8aa695509cf4ad6d440c1",
+  "retry_policy_hash": "sha256:e8f92980bfa32002f99fa59631955887e69ea3e9f98bbb2d51d9665c238f2c01",
+  "trajectory_schema_hash": "sha256:10ba774bb0af070d445c6673290ad1af6494b7664bfae7527c72f9d586186382",
+  "prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
+  "environment_hash": "sha256:5c45af2185eb45a3d1f0323133777c017c78d298415945576653f1c75140ee28",
+  "scenario_hash": "sha256:d62e43f35d412b2e0ee88c027fecd10e2735cec1839b4ca3ea562050ebc4e67e",
+  "tool_schema_hash": "sha256:d6df7131e33a15fa67ab338304f150c30a503124f80b445eaeef131b601e202c",
+  "runner_source_hash": "sha256:722faa83bdd2649c49b7f9ba103122b6ded92bd3d7ab581f3eaf89f2b8ffecb0",
+  "adapter_source_hash": "sha256:794e5bd26b616f7330af8eb318dfa9682d2f608b04f183e505b8c815888ee163",
+  "phase2b2a_execution_protocol_hash": "sha256:e644e4017ec6fc5855db857e3c996dde51145155764c9d79751b4ef8c784981f",
+  "execution_protocol_components": {
+    "parent_phase2b1_composite_hash": "sha256:d28b772a5e4652cd51d85d729ac88e0f8c223facace9b475eb650a1043e11a89",
+    "agent_config_hash": "sha256:20a725465afa7498adb1094f250f81112b8a3af705cfa7d3d2b139280c0462f7",
+    "provider_request_contract_hash": "sha256:172c83517ff7155a1793f527bbe15d18f1da7518d5e8aa695509cf4ad6d440c1",
+    "retry_policy_hash": "sha256:e8f92980bfa32002f99fa59631955887e69ea3e9f98bbb2d51d9665c238f2c01",
+    "trajectory_schema_hash": "sha256:10ba774bb0af070d445c6673290ad1af6494b7664bfae7527c72f9d586186382",
+    "prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
+    "environment_hash": "sha256:5c45af2185eb45a3d1f0323133777c017c78d298415945576653f1c75140ee28",
+    "scenario_hash": "sha256:d62e43f35d412b2e0ee88c027fecd10e2735cec1839b4ca3ea562050ebc4e67e",
+    "tool_schema_hash": "sha256:d6df7131e33a15fa67ab338304f150c30a503124f80b445eaeef131b601e202c",
+    "runner_source_hash": "sha256:722faa83bdd2649c49b7f9ba103122b6ded92bd3d7ab581f3eaf89f2b8ffecb0",
+    "adapter_source_hash": "sha256:794e5bd26b616f7330af8eb318dfa9682d2f608b04f183e505b8c815888ee163"
+  },
+  "configuration": {
+    "model": "gpt-5.6-sol",
+    "identity": "alias_pinned",
+    "replicate_ids": [
+      0,
+      1,
+      2
+    ],
+    "max_steps": 30,
+    "max_custom_function_calls": 20,
+    "timeout_seconds": 900,
+    "cumulative_output_token_budget": 16000
+  },
+  "retry_policy": {
+    "max_retries": 2,
+    "retryable_error_types": [
+      "TransientProviderError",
+      "RateLimitError",
+      "TimeoutError",
+      "ConnectionError"
+    ],
+    "non_retryable_error_types": [
+      "AuthenticationError",
+      "InvalidRequestError",
+      "MalformedResponseError"
+    ],
+    "backoff_policy": {
+      "type": "bounded_exponential",
+      "initial_seconds": 1,
+      "max_seconds": 4,
+      "sleep": false,
+      "offline_test_behavior": "zero_delay"
+    },
+    "tool_replay_policy": "never_replay_after_success_or_ambiguous_provider_response"
+  },
+  "leakage_audit": "PASS",
+  "fake_provider_only": true
+}

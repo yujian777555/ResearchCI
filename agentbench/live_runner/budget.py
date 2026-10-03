@@ -39,6 +39,10 @@ class BudgetEnforcer:
             return True
         return False
 
+    def check_timeout(self) -> bool:
+        """执行一次公开的单调时钟检查。"""
+        return self._timeout()
+
     def admit_step(self) -> bool:
         if self._timeout():
             return False

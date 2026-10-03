@@ -1,0 +1,22 @@
+{
+  "max_retries": 2,
+  "retryable_error_types": [
+    "TransientProviderError",
+    "RateLimitError",
+    "TimeoutError",
+    "ConnectionError"
+  ],
+  "non_retryable_error_types": [
+    "AuthenticationError",
+    "InvalidRequestError",
+    "MalformedResponseError"
+  ],
+  "backoff_policy": {
+    "type": "bounded_exponential",
+    "initial_seconds": 1,
+    "max_seconds": 4,
+    "sleep": false,
+    "offline_test_behavior": "zero_delay"
+  },
+  "tool_replay_policy": "never_replay_after_success_or_ambiguous_provider_response"
+}
