@@ -108,7 +108,7 @@ def request_preview(root: str | Path, replicate_id: int, *, remaining_output_tok
     builder = ResponsesRequestBuilder(root, system_prompt="<frozen system prompt>")
     request = builder.build(agent_visible_context="<episode input>", replicate_id=replicate_id, remaining_output_token_budget=remaining_output_token_budget)
     request_contract_valid = (
-        set(request) == {"model", "instructions", "input", "temperature", "top_p", "max_output_tokens", "metadata", "tools"}
+        set(request) == set(builder.contract["initial_request_fields"])
         and all(tool["strict"] and tool["parameters"]["additionalProperties"] is False for tool in request["tools"])
         and all("seed" not in tool and "max_tool_calls" not in tool for tool in request["tools"])
     )

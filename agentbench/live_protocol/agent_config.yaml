@@ -13,6 +13,17 @@ sampling:
     - 2
   provider_seed_supported: false
 
+reasoning:
+  effort: medium
+  context: all_turns
+
+provider_state:
+  store: true
+  continuation_mode: previous_response_id
+
+tool_execution:
+  parallel_tool_calls: true
+
 runtime:
   max_steps: 30
   max_custom_function_calls: 20

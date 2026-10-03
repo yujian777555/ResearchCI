@@ -15,6 +15,13 @@ class BudgetConfig:
     provider_per_response_output_limit: int = 128000
 
 
+@dataclass(frozen=True)
+class ToolAdmissionResult:
+    allowed: bool
+    reason: str | None = None
+    outcome: Any = None
+
+
 @dataclass
 class BudgetEnforcer:
     config: BudgetConfig = field(default_factory=BudgetConfig)
@@ -52,15 +59,19 @@ class BudgetEnforcer:
         self.executed_steps += 1
         return True
 
-    def execute_custom_function(self, executor: Callable[[], Any]) -> tuple[bool, Any]:
+    def execute_custom_function_result(self, executor: Callable[[], Any]) -> ToolAdmissionResult:
         if self._timeout():
-            return False, None
+            return ToolAdmissionResult(False, "timeout_exhausted")
         attempted = self.executed_custom_function_calls + 1
         if self.executed_custom_function_calls >= self.config.max_custom_function_calls:
             self.events.append({"event": "tool_budget_exhausted", "executed_custom_function_calls": self.executed_custom_function_calls, "attempted_call_index": attempted})
-            return False, None
+            return ToolAdmissionResult(False, "tool_budget_exhausted")
         self.executed_custom_function_calls += 1
-        return True, executor()
+        return ToolAdmissionResult(True, None, executor())
+
+    def execute_custom_function(self, executor: Callable[[], Any]) -> tuple[bool, Any]:
+        result = self.execute_custom_function_result(executor)
+        return result.allowed, result.outcome
 
     def max_output_tokens_for_next_response(self) -> int | None:
         if self._timeout():

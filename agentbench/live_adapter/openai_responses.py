@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .errors import NetworkDisabledError
-from .tool_schemas import validate_tool_payload
+from .tool_schemas import validate_provider_tool_schemas, validate_tool_payload
 from .types import ProviderResponse
 
 
@@ -40,14 +40,15 @@ class ResponsesRequestBuilder:
                 "parameters": parameters,
                 "strict": True,
             })
+        validate_provider_tool_schemas(tools)
         return tools
 
     @property
     def tools(self) -> list[dict[str, Any]]:
         return json.loads(_canonical_json(self._tools))
 
-    def validate_arguments(self, tool_name: str, arguments: dict[str, Any]) -> None:
-        validate_tool_payload(tool_name, arguments, self.tool_schema["actions"])
+    def validate_arguments(self, tool_name: str, arguments: dict[str, Any]) -> dict[str, Any]:
+        return validate_tool_payload(tool_name, arguments, self.tool_schema["actions"])
 
     def _max_output(self, remaining_output_token_budget: int) -> int:
         if remaining_output_token_budget <= 0:
@@ -61,6 +62,9 @@ class ResponsesRequestBuilder:
             "input": agent_visible_context,
             "temperature": self.contract["sampling_fields"]["temperature"],
             "top_p": self.contract["sampling_fields"]["top_p"],
+            "reasoning": deepcopy(self.contract["generation_config"]["reasoning"]),
+            "store": self.contract["generation_config"]["store"],
+            "parallel_tool_calls": self.contract["generation_config"]["parallel_tool_calls"],
             "max_output_tokens": self._max_output(remaining_output_token_budget),
             "metadata": {"replicate_id": str(replicate_id)},
             "tools": self.tools,
@@ -79,6 +83,11 @@ class ResponsesRequestBuilder:
             "previous_response_id": previous_response_id,
             "input": self.continuation_input(function_outputs),
             "instructions": self.system_prompt if instructions is None else instructions,
+            "temperature": self.contract["sampling_fields"]["temperature"],
+            "top_p": self.contract["sampling_fields"]["top_p"],
+            "reasoning": deepcopy(self.contract["generation_config"]["reasoning"]),
+            "store": self.contract["generation_config"]["store"],
+            "parallel_tool_calls": self.contract["generation_config"]["parallel_tool_calls"],
             "max_output_tokens": self._max_output(remaining_output_token_budget),
             "metadata": {"replicate_id": str(replicate_id)},
             "tools": self.tools,

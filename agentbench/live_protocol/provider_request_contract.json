@@ -47,6 +47,9 @@
     "input",
     "temperature",
     "top_p",
+    "reasoning",
+    "store",
+    "parallel_tool_calls",
     "max_output_tokens",
     "metadata",
     "tools"
@@ -72,6 +75,9 @@
     "input",
     "temperature",
     "top_p",
+    "reasoning",
+    "store",
+    "parallel_tool_calls",
     "max_output_tokens",
     "metadata",
     "tools"
@@ -81,6 +87,11 @@
     "previous_response_id",
     "input",
     "instructions",
+    "temperature",
+    "top_p",
+    "reasoning",
+    "store",
+    "parallel_tool_calls",
     "max_output_tokens",
     "metadata",
     "tools"
@@ -89,5 +100,21 @@
     "previous_response_id": "prior response.id",
     "instructions": "repeated because previous-response instructions are not inherited",
     "tools": "repeated so custom functions remain available on the continuation"
-  }
+  },
+  "generation_config": {
+    "reasoning": {
+      "effort": "medium",
+      "context": "all_turns"
+    },
+    "store": true,
+    "parallel_tool_calls": true
+  },
+  "generation_config_fields": [
+    "model",
+    "temperature",
+    "top_p",
+    "reasoning",
+    "store",
+    "parallel_tool_calls"
+  ]
 }

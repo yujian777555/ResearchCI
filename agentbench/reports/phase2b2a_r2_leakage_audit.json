@@ -1,0 +1,49 @@
+{
+  "phase": "2B-2A-R2",
+  "status": "PASS",
+  "forbidden_tokens": [
+    "condition",
+    "A0",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "target_rule_id",
+    "target_stage",
+    "family",
+    "ground_truth"
+  ],
+  "scanned_files": [
+    "agentbench/live_protocol/agent_config.yaml",
+    "agentbench/live_protocol/environment.json",
+    "agentbench/live_protocol/system_prompt.md",
+    "agentbench/tool_schema.json",
+    "agentbench/live_adapter/__init__.py",
+    "agentbench/live_adapter/errors.py",
+    "agentbench/live_adapter/fake_provider.py",
+    "agentbench/live_adapter/openai_responses.py",
+    "agentbench/live_adapter/tool_schemas.py",
+    "agentbench/live_adapter/types.py",
+    "agentbench/live_runner/__init__.py",
+    "agentbench/live_runner/budget.py",
+    "agentbench/live_runner/dry_run.py",
+    "agentbench/live_runner/freeze.py",
+    "agentbench/live_runner/interfaces.py",
+    "agentbench/live_runner/orchestrator.py",
+    "agentbench/live_runner/retry.py",
+    "agentbench/live_runner/trajectory.py"
+  ],
+  "initial_request_checked": true,
+  "continuation_request_checked": true,
+  "agent_visible_projection_violations": [],
+  "evaluator_private_metadata_separated": true,
+  "provider_config_allowed_fields": [
+    "reasoning",
+    "store",
+    "parallel_tool_calls"
+  ],
+  "violations": [],
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "source_scan_note": "Provider contract metadata is evaluator/provider configuration, while agent-visible initial and continuation projections were checked separately."
+}

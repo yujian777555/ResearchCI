@@ -131,9 +131,12 @@ class EpisodeOrchestrator:
                 return self._finish(episode_id, replicate_id, "provider_error", budget)
 
             response_time = _now()
+            deadline_reached = budget.check_timeout()
             usage = {"input_tokens": int(response.usage.get("input_tokens", 0)), "output_tokens": int(response.usage.get("output_tokens", 0)), "total_tokens": int(response.usage.get("total_tokens", response.usage.get("input_tokens", 0) + response.usage.get("output_tokens", 0)))}
             budget.record_usage(**usage)
-            self.recorder.append({"event_type": "provider_response", "step_index": budget.executed_steps, "previous_response_id": previous_response_id, "provider_response": {"id": response.id, "model": response.model, "created_at": response.created_at, "local_request_time_utc": request_time, "local_response_time_utc": response_time}, "usage": usage, "model_output_types": [item.get("type") for item in response.output], "budget_state": self._budget_state(budget), "accounting": self._accounting()})
+            self.recorder.append({"event_type": "provider_response", "step_index": budget.executed_steps, "previous_response_id": previous_response_id, "provider_response": {"id": response.id, "model": response.model, "created_at": response.created_at, "local_request_time_utc": request_time, "local_response_time_utc": response_time}, "usage": usage, "deadline_reached": deadline_reached, "budget_state": self._budget_state(budget), "accounting": self._accounting()})
+            if deadline_reached:
+                return self._finish(episode_id, replicate_id, "timeout_exhausted", budget)
             calls = response.function_calls()
             if not calls:
                 return self._finish(episode_id, replicate_id, "completed" if response.has_text_output() else "incomplete_episode", budget)
@@ -147,7 +150,7 @@ class EpisodeOrchestrator:
                     arguments = json.loads(call.arguments)
                     if not isinstance(arguments, dict):
                         raise ValueError("function arguments must be an object")
-                    self.request_builder.validate_arguments(call.name, arguments)
+                    arguments = self.request_builder.validate_arguments(call.name, arguments)
                 except (TypeError, ValueError, json.JSONDecodeError, ToolSchemaValidationError) as error:
                     call_event["error"] = "invalid_function_arguments"
                     call_event["validation_error"] = "invalid_tool_arguments"
@@ -159,13 +162,14 @@ class EpisodeOrchestrator:
                     return self.mediator(name, args)
 
                 try:
-                    allowed, outcome = budget.execute_custom_function(execute_tool)
+                    admission = budget.execute_custom_function_result(execute_tool)
                 except BaseException as error:
-                    allowed, outcome = True, {"admitted": False, "error": type(error).__name__, "message": str(error)}
-                if not allowed:
-                    call_event["tool_result"] = {"admitted": False, "blocked": True}
+                    admission = type("ToolDispatchFailure", (), {"allowed": True, "reason": None, "outcome": {"admitted": False, "error": type(error).__name__, "message": str(error)}})()
+                if not admission.allowed:
+                    call_event["tool_result"] = {"admitted": False, "blocked": True, "reason": admission.reason}
                     self.recorder.append(call_event)
-                    return self._finish(episode_id, replicate_id, "tool_budget_exhausted", budget)
+                    return self._finish(episode_id, replicate_id, admission.reason or "tool_rejected", budget)
+                outcome = admission.outcome
                 rejected = isinstance(outcome, Mapping) and (outcome.get("admitted") is False or outcome.get("decision") in {"BLOCK", "REJECT"} or outcome.get("status") in {"blocked", "rejected"})
                 call_event["tool_result"] = {"admitted": not rejected, "blocked": False, "mediator_result": deepcopy(outcome)}
                 self.recorder.append(call_event)
