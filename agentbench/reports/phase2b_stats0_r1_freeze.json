@@ -1,0 +1,79 @@
+{
+  "phase": "2B-STATS-0-R1",
+  "status": "FROZEN",
+  "parent_stats0_protocol": "sha256:d523276ca0ac1f7e4f426e5f37eebe732de62c80a768b0cab59bb05e30fd53bf",
+  "active_deepseek_protocol": "sha256:07cc0a68ec471f796dbc312c39f8386b6ff956d64524043adc11632c4bb448fe",
+  "historical_deepseek_ds0_parent": "sha256:1a74ed0bb50f615f46f1d1d83e001821a16b64d4df0e16edb8a35bcaf2d35544",
+  "historical_openai_protocol": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "matched_block_definition": "scenario_id × replicate_id",
+  "primary_comparison": [
+    "A4_RuntimeResearchCI",
+    "A3_PostHoc"
+  ],
+  "end_to_end_comparison": [
+    "A4_RuntimeResearchCI",
+    "A0_NoCheck"
+  ],
+  "vtcr_noninferiority_margin": -0.1,
+  "bootstrap": {
+    "unit": "scenario_id_cluster",
+    "resamples": 10000,
+    "seed": 20261004,
+    "ci_type": "percentile",
+    "duplicate_multiplicity_preserved": true
+  },
+  "eligibility": {
+    "shared_rule": "is_efficacy_eligible",
+    "infra_invalid_excluded_from": [
+      "EIFR",
+      "VTCR",
+      "CIER",
+      "attempt_rate"
+    ],
+    "agent_incomplete_retained": true,
+    "paired_missing_member": "drop_pair_and_report"
+  },
+  "pilot": {
+    "replicate_ids": [
+      "P0",
+      "P1",
+      "P2"
+    ],
+    "episodes": 270
+  },
+  "formal": {
+    "replicate_ids": [
+      "F0",
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5",
+      "F6",
+      "F7",
+      "F8",
+      "F9"
+    ],
+    "episodes": 900,
+    "pilot_disjoint": true
+  },
+  "failure_taxonomy": "F1-F7-v1",
+  "wilcoxon_active": false,
+  "components": {
+    "evaluation_protocol_hash": "sha256:6ada9808b3a0fd6fc55bab978bbc6ba8380e1a616205513788aeb80f55cb16f7",
+    "condition_order_manifest_hash": "sha256:6432fea58c2994942b5da5fb891a3f6f480457ee90678324c305c90c5b6b574a",
+    "pilot_manifest_hash": "sha256:9a328ff2bbd51a1ea7274295e22a95ed9fb2df58869f80d9324f4bfb04b5fe67",
+    "formal_manifest_hash": "sha256:9313fc057aa309e94a1a974ec2664879acd3120e86effc85eb427677bf8ae36c",
+    "analysis_schema_hash": "sha256:bb9f609365a328fad996214b369075589a734b27825f6a6fef7395f6abaa8db6",
+    "analysis_source_hash": "sha256:3efca6c2f28b8cc9f7c1451e0e2f62117aac7ea05f237f77a82d6869320aad59",
+    "bootstrap_semantics_hash": "sha256:d71d3d6c9099adce5d42281ed0d33e2081cd490a06081a9b76a9ad2ae00c9ac6",
+    "eligibility_policy_hash": "sha256:aa905ab47573433163ecd8b73977e8dbc6543497c2988e6d642e3976bf51e669",
+    "failure_taxonomy_hash": "sha256:5ad5b0f15baf8f280686a0818817d0e7ceadc39c13b2dddafa9ff446a3b977a8"
+  },
+  "stats0_r1_statistical_protocol_hash": "sha256:e6e262d95c55611f48541637a7ffbb8d75421632324030b52b0dd03477b5a083",
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0,
+  "scope_audit": "PASS",
+  "analysis_audit": "PASS"
+}

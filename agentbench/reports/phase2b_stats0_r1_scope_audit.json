@@ -1,0 +1,14 @@
+{
+  "phase": "2B-STATS-0-R1",
+  "baseline_commit": "4d0d74b",
+  "forbidden_changed_paths": [],
+  "historical_openai_protocol": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "active_deepseek_protocol": "sha256:07cc0a68ec471f796dbc312c39f8386b6ff956d64524043adc11632c4bb448fe",
+  "historical_deepseek_ds0_parent": "sha256:1a74ed0bb50f615f46f1d1d83e001821a16b64d4df0e16edb8a35bcaf2d35544",
+  "provider_files_modified": false,
+  "credential_leakage": false,
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0,
+  "status": "PASS"
+}

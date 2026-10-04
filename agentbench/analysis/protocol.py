@@ -3,21 +3,18 @@ from __future__ import annotations
 from typing import Any
 from .cluster_bootstrap import scenario_cluster_bootstrap,percentile
 from .paired_binary import paired_binary_effect
+from .paired_binary import build_eligible_pairs
 
 
 def vtcr_noninferiority(records:list[dict[str,Any]], treatment:str, comparator:str, *, margin:float=-0.10, n_resamples:int=10000, seed:int=20261004)->dict[str,Any]:
     def paired(sample):
-        pairs={}
-        for row in sample:
-            pairs.setdefault((row["scenario_id"],row["replicate_id"]),{})[row["condition"]]=row
-        t=[]; c=[]
-        for values in pairs.values():
-            if treatment not in values or comparator not in values: continue
-            t.append(int(values[treatment]["vtcr"])); c.append(int(values[comparator]["vtcr"]))
+        built=build_eligible_pairs(sample,treatment,comparator,"vtcr")
+        t=[int(x.get("vtcr",0)) for x,y in built["pairs"]]; c=[int(y.get("vtcr",0)) for x,y in built["pairs"]]
         if len(t)!=len(c) or not t: return None
         return sum(t)/len(t)-sum(c)/len(c)
-    point=paired(records); boot=scenario_cluster_bootstrap(records,paired,n_resamples=n_resamples,seed=seed); lower=percentile(boot["values"],0.025) if boot["values"] else None
-    return {"treatment":treatment,"comparator":comparator,"delta":point,"margin":margin,"one_sided_lower_97_5":lower,"noninferior":bool(lower is not None and lower>margin),"estimable_fraction":boot["estimable_fraction"],"n_resamples":n_resamples}
+    built=build_eligible_pairs(records,treatment,comparator,"vtcr"); point=paired(records); boot=scenario_cluster_bootstrap(records,paired,n_resamples=n_resamples,seed=seed); lower=percentile(boot["values"],0.025) if boot["values"] else None
+    t=[int(x.get("vtcr",0)) for x,y in built["pairs"]]; c=[int(y.get("vtcr",0)) for x,y in built["pairs"]]
+    return {"treatment":treatment,"comparator":comparator,"delta":point,"treatment_rate":sum(t)/len(t) if t else None,"comparator_rate":sum(c)/len(c) if c else None,"margin":margin,"one_sided_lower_97_5":lower,"noninferior":bool(lower is not None and lower>margin),"estimable_fraction":boot["estimable_fraction"],"n_resamples":n_resamples,**{k:v for k,v in built.items() if k!="pairs"}}
 
 
 def infrastructure_invalid(record:dict[str,Any])->bool:

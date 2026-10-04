@@ -1,0 +1,20 @@
+{
+  "phase": "2B-STATS-0-R1",
+  "status": "PASS",
+  "bootstrap_duplicate_multiplicity": true,
+  "bootstrap_instance_identifier": "__bootstrap_cluster_instance",
+  "paired_key_includes_instance": true,
+  "eifr_authoritative_path": true,
+  "vtcr_infra_eligibility": true,
+  "cier_infra_eligibility": true,
+  "agent_incomplete_retained": true,
+  "eligible_pair_reporting": true,
+  "old_statistical_decisions_unchanged": true,
+  "active_wilcoxon": false,
+  "active_deepseek_protocol": "sha256:07cc0a68ec471f796dbc312c39f8386b6ff956d64524043adc11632c4bb448fe",
+  "historical_deepseek_ds0_parent": "sha256:1a74ed0bb50f615f46f1d1d83e001821a16b64d4df0e16edb8a35bcaf2d35544",
+  "historical_openai_protocol": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0
+}

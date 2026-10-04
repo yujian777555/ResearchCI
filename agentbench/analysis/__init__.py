@@ -1,5 +1,5 @@
 """Phase 2 live-agent statistical protocol helpers."""
-from .paired_binary import paired_binary_effect
+from .paired_binary import paired_binary_effect, analyze_eifr_paired, build_eligible_pairs
 from .cier import cier_summary, cier_cluster_bootstrap
 from .cluster_bootstrap import scenario_cluster_bootstrap
 from .order_manifest import generate_condition_order_manifest, validate_order_manifest

@@ -1,6 +1,7 @@
 """Scenario-cluster bootstrap with pairing preserved."""
 from __future__ import annotations
 import random
+from copy import deepcopy
 from collections import defaultdict
 from typing import Any, Callable
 
@@ -13,11 +14,21 @@ def scenario_cluster_bootstrap(records:list[dict[str,Any]], statistic:Callable[[
     rng=random.Random(seed); values=[]; non_estimable=0
     for _ in range(n_resamples):
         selected=[rng.choice(scenario_ids) for _ in scenario_ids]
-        sample=[dict(record) for scenario in selected for record in clusters[scenario]]
+        sample=materialize_cluster_draw(records, selected)
         value=statistic(sample)
         if value is None: non_estimable+=1
         else: values.append(float(value))
     return {"values":values,"n_resamples":n_resamples,"estimable":len(values),"non_estimable":non_estimable,"estimable_fraction":len(values)/n_resamples}
+
+
+def materialize_cluster_draw(records:list[dict[str,Any]], selected:list[str]) -> list[dict[str,Any]]:
+    clusters=defaultdict(list)
+    for record in records: clusters[record["scenario_id"]].append(record)
+    sample=[]
+    for instance, scenario in enumerate(selected):
+        for record in clusters[scenario]:
+            copied=deepcopy(record); copied["__bootstrap_cluster_instance"]=instance; sample.append(copied)
+    return sample
 
 
 def percentile(values:list[float], q:float) -> float:
