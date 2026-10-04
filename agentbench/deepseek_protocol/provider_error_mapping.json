@@ -1,0 +1,17 @@
+{
+  "retryable_error_types": [
+    "TransientProviderError",
+    "RateLimitError",
+    "TimeoutError",
+    "ConnectionError"
+  ],
+  "non_retryable_error_types": [
+    "AuthenticationError",
+    "InvalidRequestError",
+    "MalformedResponseError"
+  ],
+  "mapping_notes": {
+    "DeepSeekRateLimitError": "RateLimitError",
+    "DeepSeekAuthenticationError": "AuthenticationError"
+  }
+}

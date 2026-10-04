@@ -1,0 +1,23 @@
+{
+  "phase": "2B-DS-0",
+  "status": "PASS",
+  "provider": "DeepSeek",
+  "initial_replay_projection_checked": true,
+  "forbidden_tokens": [
+    "condition",
+    "A0",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "target_rule_id",
+    "target_stage",
+    "family",
+    "ground_truth"
+  ],
+  "violations": [],
+  "evaluator_private_metadata_separated": true,
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0
+}

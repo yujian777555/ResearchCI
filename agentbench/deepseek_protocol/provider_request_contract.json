@@ -1,0 +1,38 @@
+{
+  "provider": "DeepSeek",
+  "base_url": "https://api.deepseek.com",
+  "api_family": "Responses API",
+  "endpoint": "/responses",
+  "model": "deepseek-v4-pro",
+  "reasoning": {
+    "effort": "max"
+  },
+  "sampling": {
+    "top_p": 0.95,
+    "temperature": "omitted"
+  },
+  "tool_choice": "auto",
+  "provider_seed_supported": false,
+  "stateless_replay": true,
+  "request_allowlist": [
+    "model",
+    "instructions",
+    "input",
+    "reasoning",
+    "top_p",
+    "max_output_tokens",
+    "tools",
+    "tool_choice"
+  ],
+  "unsupported_request_fields": [
+    "temperature",
+    "seed",
+    "previous_response_id",
+    "conversation",
+    "store",
+    "metadata",
+    "parallel_tool_calls"
+  ],
+  "max_output_tokens_semantics": "runner min(provider_per_response_output_limit, remaining_output_token_budget)",
+  "tool_schema_strict": false
+}

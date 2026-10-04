@@ -1,0 +1,19 @@
+provider: DeepSeek
+base_url: https://api.deepseek.com
+api_family: Responses API
+endpoint: /responses
+model: deepseek-v4-pro
+reasoning:
+  effort: max
+sampling:
+  top_p: 0.95
+  temperature: omitted
+provider_seed: false
+tool_choice: auto
+state:
+  mode: stateless_full_history_replay
+  previous_response_id: forbidden
+  conversation: forbidden
+  store: forbidden
+  metadata: forbidden
+  parallel_tool_calls: omitted

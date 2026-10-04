@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import Any, Mapping, Protocol
 
@@ -20,6 +21,7 @@ class ProviderResponse:
     created_at: str | int | None
     output: tuple[dict[str, Any], ...] = ()
     usage: dict[str, int] = field(default_factory=dict)
+    usage_details: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
     def from_raw(cls, raw: Any) -> "ProviderResponse":
@@ -33,20 +35,35 @@ class ProviderResponse:
         output: list[dict[str, Any]] = []
         for item in output_raw:
             if isinstance(item, Mapping):
-                output.append(dict(item))
+                output.append(deepcopy(dict(item)))
+            elif hasattr(item, "model_dump"):
+                output.append(deepcopy(item.model_dump(exclude_none=False)))
             else:
-                output.append({key: getattr(item, key) for key in ("type", "id", "call_id", "name", "arguments", "content") if hasattr(item, key)})
+                output.append({key: getattr(item, key) for key in ("type", "id", "call_id", "name", "arguments", "content", "summary", "status") if hasattr(item, key)})
         usage_raw = read("usage", {}) or {}
+        usage_details: dict[str, Any] = {}
         if isinstance(usage_raw, Mapping):
-            usage = {key: int(value) for key, value in usage_raw.items() if value is not None}
+            usage = {}
+            for key, value in usage_raw.items():
+                if key in {"input_tokens_details", "output_tokens_details"}:
+                    usage_details[key] = deepcopy(value)
+                elif value is not None:
+                    usage[key] = int(value)
         else:
-            usage = {key: int(getattr(usage_raw, key)) for key in ("input_tokens", "output_tokens", "total_tokens") if hasattr(usage_raw, key)}
+            usage = {}
+            for key in ("input_tokens", "output_tokens", "total_tokens"):
+                if hasattr(usage_raw, key): usage[key] = int(getattr(usage_raw, key))
+            for key in ("input_tokens_details", "output_tokens_details"):
+                if hasattr(usage_raw, key):
+                    value = getattr(usage_raw, key)
+                    usage_details[key] = value.model_dump(exclude_none=False) if hasattr(value, "model_dump") else deepcopy(value.__dict__ if hasattr(value, "__dict__") else value)
         return cls(
             id=str(read("id", "")),
             model=str(read("model", "")),
             created_at=read("created_at"),
             output=tuple(output),
             usage=usage,
+            usage_details=usage_details,
         )
 
     def function_calls(self) -> tuple[FunctionCall, ...]:

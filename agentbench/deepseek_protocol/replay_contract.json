@@ -1,0 +1,22 @@
+{
+  "version": "deepseek-stateless-replay-0.1",
+  "mode": "stateless_full_history_replay",
+  "initial_history": [
+    "instructions",
+    "user_task"
+  ],
+  "replay_history_order": [
+    "initial_history",
+    "provider_output_items_in_original_order",
+    "function_call_output_items_in_call_order"
+  ],
+  "provider_output_preserved": [
+    "reasoning",
+    "message",
+    "function_call"
+  ],
+  "call_id_policy": "exact_string_preservation",
+  "response_id_role": "audit_metadata_only",
+  "tool_reexecution": "never_replay_historical_function_calls",
+  "evaluator_private_metadata_in_history": false
+}

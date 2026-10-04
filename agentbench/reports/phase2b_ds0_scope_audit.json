@@ -1,0 +1,26 @@
+{
+  "phase": "2B-DS-0",
+  "baseline_commit": "29678a0",
+  "historical_openai_protocol": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "historical_openai_files_modified": false,
+  "changed_paths": [
+    "agentbench/deepseek_adapter/",
+    "agentbench/deepseek_protocol/",
+    "agentbench/live_adapter/types.py",
+    "agentbench/live_runner/orchestrator.py",
+    "agentbench/reports/phase2b_ds0_freeze.json",
+    "agentbench/reports/phase2b_ds0_leakage_audit.json",
+    "agentbench/reports/phase2b_ds0_offline_e2e.json",
+    "agentbench/reports/phase2b_ds0_regression.json",
+    "agentbench/reports/phase2b_ds0_scope_audit.json",
+    "tests/test_phase2b_ds0.py",
+    "tests/test_phase2b_ds0_hardening.py"
+  ],
+  "forbidden_changed_paths": [],
+  "credential_leakage": false,
+  "secret_files": [],
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0,
+  "status": "PASS"
+}

@@ -83,9 +83,12 @@ class EpisodeOrchestrator:
         budget = BudgetEnforcer(self.budget_config, clock=self.clock)
         input_value = deepcopy(agent_visible_context)
         prompt = instructions if instructions is not None else self.request_builder.system_prompt
+        stateless_replay = bool(getattr(self.request_builder, "stateless_replay", False))
+        replay_history = self.request_builder.initial_history(agent_visible_context) if stateless_replay else None
         self.recorder.append({"event_type": "episode_start", "episode_id": episode_id, "replicate_id": replicate_id, "agent_visible_context_hash": _hash(agent_visible_context), "evaluator_private_metadata": deepcopy(dict(evaluator_private_metadata or {})), "execution_protocol": execution_protocol})
         previous_response_id: str | None = None
         provider_attempt_index = 0
+        turn_index = 0
 
         while True:
             if budget.check_timeout():
@@ -96,15 +99,21 @@ class EpisodeOrchestrator:
             if remaining is None:
                 return self._finish(episode_id, replicate_id, self._budget_failure(budget), budget)
 
-            if previous_response_id is None:
+            if stateless_replay:
+                if replay_history is None:
+                    raise RuntimeError("stateless replay history was not initialized")
+                request = self.request_builder.build(agent_visible_context=replay_history, replicate_id=replicate_id, remaining_output_token_budget=remaining, instructions=prompt) if turn_index == 0 else self.request_builder.build_replay(history=replay_history, replicate_id=replicate_id, remaining_output_token_budget=remaining, instructions=prompt)
+                request_kind = "initial" if turn_index == 0 else "replay"
+            elif previous_response_id is None:
                 request = self.request_builder.build(agent_visible_context=input_value, replicate_id=replicate_id, remaining_output_token_budget=remaining, instructions=prompt)
                 request_kind = "initial"
             else:
                 request = self.request_builder.build_continuation(previous_response_id=previous_response_id, function_outputs=input_value, replicate_id=replicate_id, remaining_output_token_budget=remaining, instructions=prompt)
                 request_kind = "continuation"
+            turn_index += 1
             request_time = _now()
             request_hash = _hash(request)
-            self.recorder.append({"event_type": "request", "request_kind": request_kind, "step_index": budget.executed_steps, "previous_response_id": previous_response_id, "request_metadata_hash": _hash(request["metadata"]), "request_hash": request_hash, "max_output_tokens": request["max_output_tokens"], "budget_state": self._budget_state(budget)})
+            self.recorder.append({"event_type": "request", "request_kind": request_kind, "step_index": budget.executed_steps, "previous_response_id": previous_response_id, "request_metadata_hash": _hash(request.get("metadata", {})), "request_hash": request_hash, "max_output_tokens": request["max_output_tokens"], "budget_state": self._budget_state(budget)})
 
             response: ProviderResponse | None = None
             for retry_index in range(self.retry_policy.max_retries + 1):
@@ -134,7 +143,7 @@ class EpisodeOrchestrator:
             deadline_reached = budget.check_timeout()
             usage = {"input_tokens": int(response.usage.get("input_tokens", 0)), "output_tokens": int(response.usage.get("output_tokens", 0)), "total_tokens": int(response.usage.get("total_tokens", response.usage.get("input_tokens", 0) + response.usage.get("output_tokens", 0)))}
             budget.record_usage(**usage)
-            self.recorder.append({"event_type": "provider_response", "step_index": budget.executed_steps, "previous_response_id": previous_response_id, "provider_response": {"id": response.id, "model": response.model, "created_at": response.created_at, "local_request_time_utc": request_time, "local_response_time_utc": response_time}, "usage": usage, "deadline_reached": deadline_reached, "budget_state": self._budget_state(budget), "accounting": self._accounting()})
+            self.recorder.append({"event_type": "provider_response", "step_index": budget.executed_steps, "previous_response_id": previous_response_id, "provider_response": {"id": response.id, "model": response.model, "created_at": response.created_at, "local_request_time_utc": request_time, "local_response_time_utc": response_time}, "usage": usage, "usage_details": deepcopy(response.usage_details), "provider_output_items": deepcopy(response.output), "deadline_reached": deadline_reached, "budget_state": self._budget_state(budget), "accounting": self._accounting()})
             if deadline_reached:
                 return self._finish(episode_id, replicate_id, "timeout_exhausted", budget)
             calls = response.function_calls()
@@ -177,5 +186,9 @@ class EpisodeOrchestrator:
                     return self._finish(episode_id, replicate_id, "tool_rejected", budget)
                 continuation.append({"type": "function_call_output", "call_id": call.call_id, "output": json.dumps(outcome if outcome is not None else {"admitted": True}, ensure_ascii=False, sort_keys=True)})
 
-            previous_response_id = response.id
-            input_value = continuation
+            if stateless_replay:
+                replay_history = self.request_builder.extend_history(replay_history, response.output, continuation)
+                input_value = replay_history
+            else:
+                previous_response_id = response.id
+                input_value = continuation

@@ -1,0 +1,53 @@
+{
+  "phase": "2B-DS-0",
+  "status": "FROZEN",
+  "provider": "DeepSeek",
+  "base_url": "https://api.deepseek.com",
+  "endpoint": "/responses",
+  "model": "deepseek-v4-pro",
+  "reasoning": {
+    "effort": "max"
+  },
+  "top_p": 0.95,
+  "temperature_sent": false,
+  "provider_seed_sent": false,
+  "tool_choice": "auto",
+  "conversation_mode": "stateless_full_history_replay",
+  "historical_openai_execution_protocol": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "provider_config_hash": "sha256:e294867393962897dcb65f840bc6043bdae3643938dd70cfb7d36d5d02a4027e",
+  "provider_contract_hash": "sha256:dfff59d58255cb1cebe5b69b3bc8995025778f5c2b2f77b66444ad39fdbfa226",
+  "replay_contract_hash": "sha256:e4de9ae3ef80b197f259cc6c5e5996f73322250012ede19dea4d39fa4370211e",
+  "prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
+  "tool_schema_hash": "sha256:e77bb4e27f8e69da4e9b7ce2e13926cf27a4f752b871fc88c94bd8cf7291e5f3",
+  "scenario_hash": "sha256:d62e43f35d412b2e0ee88c027fecd10e2735cec1839b4ca3ea562050ebc4e67e",
+  "environment_hash": "sha256:5c45af2185eb45a3d1f0323133777c017c78d298415945576653f1c75140ee28",
+  "runner_source_hash": "sha256:a842816373a1a7cbce1d02d6300d61374d90f336b45a5c4800346966daa85874",
+  "deepseek_adapter_source_hash": "sha256:e88279da81d1cefff51aa84f23da96a1bba5276fb790aeabd558da337830fba3",
+  "retry_error_mapping_hash": "sha256:eba0d9480d2ef26ea9a694a8b62389f8c08ab5ec4305460619774cc3e1595785",
+  "deepseek_execution_protocol_hash": "sha256:1a74ed0bb50f615f46f1d1d83e001821a16b64d4df0e16edb8a35bcaf2d35544",
+  "budgets": {
+    "max_steps": 30,
+    "max_custom_function_calls": 20,
+    "timeout_seconds": 900,
+    "cumulative_output_token_budget": 16000
+  },
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0,
+  "leakage_audit": "PASS",
+  "scope_audit": "PASS",
+  "shared_provider_types_hash": "sha256:9d1a74d99104785d52e8412a0fb12db208ec8e5f30b84312194c58e2c06ca390",
+  "execution_protocol_components": {
+    "provider_config_hash": "sha256:e294867393962897dcb65f840bc6043bdae3643938dd70cfb7d36d5d02a4027e",
+    "provider_contract_hash": "sha256:dfff59d58255cb1cebe5b69b3bc8995025778f5c2b2f77b66444ad39fdbfa226",
+    "replay_contract_hash": "sha256:e4de9ae3ef80b197f259cc6c5e5996f73322250012ede19dea4d39fa4370211e",
+    "prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
+    "tool_schema_hash": "sha256:e77bb4e27f8e69da4e9b7ce2e13926cf27a4f752b871fc88c94bd8cf7291e5f3",
+    "scenario_hash": "sha256:d62e43f35d412b2e0ee88c027fecd10e2735cec1839b4ca3ea562050ebc4e67e",
+    "environment_hash": "sha256:5c45af2185eb45a3d1f0323133777c017c78d298415945576653f1c75140ee28",
+    "runner_source_hash": "sha256:a842816373a1a7cbce1d02d6300d61374d90f336b45a5c4800346966daa85874",
+    "deepseek_adapter_source_hash": "sha256:e88279da81d1cefff51aa84f23da96a1bba5276fb790aeabd558da337830fba3",
+    "shared_provider_types_hash": "sha256:9d1a74d99104785d52e8412a0fb12db208ec8e5f30b84312194c58e2c06ca390",
+    "retry_error_mapping_hash": "sha256:eba0d9480d2ef26ea9a694a8b62389f8c08ab5ec4305460619774cc3e1595785"
+  }
+}
