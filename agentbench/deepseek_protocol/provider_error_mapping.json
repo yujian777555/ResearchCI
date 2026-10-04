@@ -1,17 +1,55 @@
 {
-  "retryable_error_types": [
-    "TransientProviderError",
-    "RateLimitError",
-    "TimeoutError",
-    "ConnectionError"
-  ],
-  "non_retryable_error_types": [
-    "AuthenticationError",
-    "InvalidRequestError",
-    "MalformedResponseError"
-  ],
-  "mapping_notes": {
-    "DeepSeekRateLimitError": "RateLimitError",
-    "DeepSeekAuthenticationError": "AuthenticationError"
-  }
+  "http_status": {
+    "400": {
+      "error_type": "InvalidRequestError",
+      "retryable": false
+    },
+    "401": {
+      "error_type": "AuthenticationError",
+      "retryable": false
+    },
+    "402": {
+      "error_type": "InsufficientBalanceError",
+      "retryable": false
+    },
+    "422": {
+      "error_type": "InvalidRequestError",
+      "retryable": false
+    },
+    "429": {
+      "error_type": "RateLimitError",
+      "retryable": true
+    },
+    "500": {
+      "error_type": "TransientProviderError",
+      "retryable": true
+    },
+    "503": {
+      "error_type": "TransientProviderError",
+      "retryable": true
+    },
+    "other_5xx": {
+      "error_type": "TransientProviderError",
+      "retryable": true
+    }
+  },
+  "exception_types": {
+    "APIConnectionError": {
+      "error_type": "ConnectionError",
+      "retryable": true
+    },
+    "APITimeoutError": {
+      "error_type": "TimeoutError",
+      "retryable": true
+    },
+    "TimeoutError": {
+      "error_type": "TimeoutError",
+      "retryable": true
+    }
+  },
+  "unknown": {
+    "error_type": "UnknownProviderError",
+    "retryable": false
+  },
+  "sanitization": "remove bearer, authorization, API key values; preserve original_exception_type separately"
 }

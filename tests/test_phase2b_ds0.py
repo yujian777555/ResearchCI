@@ -19,7 +19,7 @@ def response(response_id, output):
     return ProviderResponse(response_id,'deepseek-v4-pro','2026-10-04T00:00:00Z',tuple(output),{'input_tokens':2,'output_tokens':3,'total_tokens':5})
 
 def fc(call_id,name,args): return {'type':'function_call','call_id':call_id,'name':name,'arguments':json.dumps(args,sort_keys=True)}
-def reasoning(text='think'): return {'type':'reasoning','id':'rs_1','summary':[{'type':'summary_text','text':text}]}
+def reasoning(text='think'): return {'type':'reasoning','id':'rs_1','status':'completed','summary':[{'type':'summary_text','text':'summary'}],'content':[{'type':'reasoning_text','text':text}]}
 def msg(text): return {'type':'message','content':[{'type':'output_text','text':text}]}
 def make(adapter, mediator=lambda name,args:{'admitted':True}, **kwargs):
     return EpisodeOrchestrator(adapter=adapter,request_builder=DeepSeekRequestBuilder(ROOT),mediator=mediator,retry_policy=RetryPolicy.from_file(ROOT/'agentbench/live_protocol/retry_policy.json'),sleep=lambda _:None,**kwargs)

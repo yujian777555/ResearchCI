@@ -1,5 +1,5 @@
 {
-  "version": "deepseek-stateless-replay-0.1",
+  "version": "deepseek-stateless-replay-0.2",
   "mode": "stateless_full_history_replay",
   "initial_history": [
     "instructions",
@@ -18,5 +18,56 @@
   "call_id_policy": "exact_string_preservation",
   "response_id_role": "audit_metadata_only",
   "tool_reexecution": "never_replay_historical_function_calls",
-  "evaluator_private_metadata_in_history": false
+  "evaluator_private_metadata_in_history": false,
+  "response_to_input_projection": {
+    "reasoning": {
+      "preserve": "content.reasoning_text exact ordered text",
+      "strip": [
+        "id",
+        "status",
+        "summary",
+        "encrypted_content",
+        "response_only_metadata"
+      ]
+    },
+    "message": {
+      "preserve": "role and content text exact order",
+      "strip": [
+        "id",
+        "status",
+        "annotations",
+        "response_only_metadata"
+      ]
+    },
+    "function_call": {
+      "preserve": [
+        "call_id",
+        "name",
+        "arguments exact string"
+      ],
+      "strip": [
+        "id",
+        "status",
+        "response_only_metadata"
+      ]
+    },
+    "function_call_output": {
+      "preserve": [
+        "call_id",
+        "output"
+      ],
+      "source": "ResearchCI mediator"
+    },
+    "ordering": "provider output order then function_call_output call order",
+    "unknown_output_item": "reject with UnsupportedReplayItemError"
+  },
+  "input_validator": {
+    "allowed_types": [
+      "message",
+      "reasoning",
+      "function_call",
+      "function_call_output"
+    ],
+    "reject_response_only_fields": true
+  }
 }

@@ -1,0 +1,11 @@
+{
+  "phase": "2B-DS-0-R1",
+  "baseline_commit": "548cffa",
+  "historical_ds0_hash": "sha256:1a74ed0bb50f615f46f1d1d83e001821a16b64d4df0e16edb8a35bcaf2d35544",
+  "historical_openai_hash": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "forbidden_changed_paths": [],
+  "credential_leakage": false,
+  "secret_files": [],
+  "credential_scan_note": "Pattern literals used only for sanitization/tests; no secret values present.",
+  "status": "PASS"
+}

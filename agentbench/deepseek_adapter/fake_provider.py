@@ -7,6 +7,7 @@ from typing import Any, Iterable
 
 from agentbench.live_adapter.errors import ProviderError
 from agentbench.live_adapter.types import ProviderResponse
+from .deepseek_responses import project_provider_output_for_replay
 
 
 class FakeDeepSeekResponsesAdapter:
@@ -59,6 +60,6 @@ class FakeDeepSeekResponsesAdapter:
             raise item
         response = ProviderResponse.from_raw(deepcopy(item))
         self._last_response = response
-        self._last_output_items = [deepcopy(output) for output in response.output]
+        self._last_output_items = project_provider_output_for_replay(response.output)
         self._expected_call_ids = [str(output.get("call_id")) for output in response.output if output.get("type") == "function_call"]
         return response

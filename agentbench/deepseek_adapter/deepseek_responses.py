@@ -3,14 +3,128 @@
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Callable
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
-from agentbench.live_adapter.errors import NetworkDisabledError
+from agentbench.live_adapter.errors import NetworkDisabledError, ProviderError
 from agentbench.live_adapter.tool_schemas import validate_tool_payload
 from agentbench.live_adapter.types import ProviderResponse
+
+
+class UnsupportedReplayItemError(ValueError):
+    """Provider output item 没有冻结的 DeepSeek input projection。"""
+
+
+_ERROR_TYPES = {
+    400: ("InvalidRequestError", False),
+    401: ("AuthenticationError", False),
+    402: ("InsufficientBalanceError", False),
+    422: ("InvalidRequestError", False),
+    429: ("RateLimitError", True),
+    500: ("TransientProviderError", True),
+    503: ("TransientProviderError", True),
+}
+
+
+def _status_code(error: BaseException) -> int | None:
+    candidates = [getattr(error, "status_code", None), getattr(error, "status", None), getattr(getattr(error, "response", None), "status_code", None)]
+    for value in candidates:
+        try:
+            if value is not None: return int(value)
+        except (TypeError, ValueError):
+            pass
+    return None
+
+
+def _sanitized_message(error: BaseException) -> str:
+    text = str(error) or type(error).__name__
+    text = re.sub(r"(?i)bearer\s+[A-Za-z0-9._~+/=-]+", "Bearer [REDACTED]", text)
+    text = re.sub(r"(?i)(api[_ -]?key|authorization)\s*[:=]\s*[^ ,;]+", r"\1=[REDACTED]", text)
+    text = re.sub(r"sk-[A-Za-z0-9_-]+", "[REDACTED]", text)
+    return text[:1000]
+
+
+def normalize_deepseek_exception(error: BaseException) -> ProviderError:
+    """把 SDK/HTTP 异常归一化为 shared RetryPolicy 使用的语义。"""
+    if isinstance(error, ProviderError):
+        return error
+    status = _status_code(error)
+    exception_name = type(error).__name__
+    lowered = exception_name.lower()
+    if status in _ERROR_TYPES:
+        error_type, retryable = _ERROR_TYPES[status]
+    elif "timeout" in lowered or lowered in {"timeouterror", "apitimeouterror"}:
+        error_type, retryable = "TimeoutError", True
+    elif "connection" in lowered or "connect" in lowered:
+        error_type, retryable = "ConnectionError", True
+    elif status is not None and 500 <= status <= 599:
+        error_type, retryable = "TransientProviderError", True
+    else:
+        error_type, retryable = "UnknownProviderError", False
+    return ProviderError(_sanitized_message(error), error_type=error_type, retryable=retryable, original_exception_type=exception_name)
+
+
+def _text_parts(content: Any, *, reasoning: bool, strict: bool = False) -> list[dict[str, str]]:
+    if isinstance(content, str):
+        return [{"type": "reasoning_text" if reasoning else "output_text", "text": content}]
+    if not isinstance(content, list):
+        raise UnsupportedReplayItemError("message/reasoning content must be text or a list")
+    projected: list[dict[str, str]] = []
+    for part in content:
+        if not isinstance(part, dict) or not isinstance(part.get("text"), str) or (strict and set(part) != {"type", "text"}):
+            raise UnsupportedReplayItemError("content part lacks supported text")
+        part_type = "reasoning_text" if reasoning else "output_text"
+        projected.append({"type": part_type, "text": part["text"]})
+    if not projected:
+        raise UnsupportedReplayItemError("content must contain text")
+    return projected
+
+
+def project_provider_output_for_replay(output_items: tuple[dict[str, Any], ...] | list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """把 response.output 投影为 DeepSeek 支持的 input item，保持顺序与文本字节。"""
+    projected: list[dict[str, Any]] = []
+    for item in output_items:
+        item_type = item.get("type")
+        if item_type == "reasoning":
+            projected.append({"type": "reasoning", "content": _text_parts(item.get("content"), reasoning=True)})
+        elif item_type == "message":
+            projected.append({"type": "message", "role": item.get("role", "assistant"), "content": _text_parts(item.get("content"), reasoning=False)})
+        elif item_type == "function_call":
+            required = ("call_id", "name", "arguments")
+            if any(not isinstance(item.get(key), str) or not item[key] for key in required):
+                raise UnsupportedReplayItemError("function_call requires exact call_id/name/arguments strings")
+            projected.append({"type": "function_call", "call_id": item["call_id"], "name": item["name"], "arguments": item["arguments"]})
+        else:
+            raise UnsupportedReplayItemError(f"unsupported DeepSeek replay output type: {item_type!r}")
+    return projected
+
+
+def validate_deepseek_replay_input(history: list[dict[str, Any]]) -> None:
+    """校验 projection 后的 input history，不允许 response-only 字段漏入。"""
+    allowed_types = {"message", "reasoning", "function_call", "function_call_output"}
+    for item in history:
+        if not isinstance(item, dict) or item.get("type") not in allowed_types:
+            raise UnsupportedReplayItemError("history contains an unsupported item")
+        item_type = item["type"]
+        if item_type == "message":
+            if set(item) - {"type", "role", "content"} or item.get("role") not in {"assistant", "user", "system", "developer"}:
+                raise UnsupportedReplayItemError("message contains response-only fields")
+            _text_parts(item.get("content"), reasoning=False, strict=True)
+        elif item_type == "reasoning":
+            if set(item) != {"type", "content"}:
+                raise UnsupportedReplayItemError("reasoning contains response-only fields")
+            _text_parts(item.get("content"), reasoning=True, strict=True)
+        elif item_type == "function_call":
+            if set(item) != {"type", "call_id", "name", "arguments"}:
+                raise UnsupportedReplayItemError("function_call contains response-only fields")
+            if any(not isinstance(item.get(key), str) or not item[key] for key in ("call_id", "name", "arguments")):
+                raise UnsupportedReplayItemError("function_call fields must be non-empty strings")
+        elif item_type == "function_call_output":
+            if set(item) != {"type", "call_id", "output"} or not isinstance(item.get("call_id"), str):
+                raise UnsupportedReplayItemError("function_call_output is malformed")
 
 
 class DeepSeekRequestBuilder:
@@ -50,6 +164,7 @@ class DeepSeekRequestBuilder:
             raise ValueError("unsupported stateful/OpenAI field present in DeepSeek request")
         if any(field in request for field in ("temperature", "previous_response_id", "conversation", "store", "metadata", "parallel_tool_calls")):
             raise ValueError("forbidden DeepSeek request field present")
+        validate_deepseek_replay_input(request["input"])
 
     def _request(self, history: list[dict[str, Any]], replicate_id: int, remaining_output_token_budget: int, instructions: str | None) -> dict[str, Any]:
         request = {
@@ -73,7 +188,10 @@ class DeepSeekRequestBuilder:
 
     @staticmethod
     def extend_history(history: list[dict[str, Any]], provider_output_items: tuple[dict[str, Any], ...], function_outputs: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        return deepcopy(history) + [deepcopy(item) for item in provider_output_items] + [deepcopy(item) for item in function_outputs]
+        projected = project_provider_output_for_replay(provider_output_items)
+        result = deepcopy(history) + projected + [deepcopy(item) for item in function_outputs]
+        validate_deepseek_replay_input(result)
+        return result
 
 
 class DeepSeekResponsesAdapter:
@@ -106,6 +224,9 @@ class DeepSeekResponsesAdapter:
         self.provider_calls += 1
         self.live_api_calls += 1
         self.network_calls += 1
-        if self._transport is not None:
-            return self.parse_response(self._transport(request))
-        return self.parse_response(self._client.responses.create(**request))
+        try:
+            if self._transport is not None:
+                return self.parse_response(self._transport(request))
+            return self.parse_response(self._client.responses.create(**request))
+        except BaseException as error:
+            raise normalize_deepseek_exception(error) from error
