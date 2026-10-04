@@ -1,0 +1,29 @@
+{
+  "version": "phase2b-stats0-0.1",
+  "bootstrap_seed": 20261004,
+  "bootstrap_resamples": 10000,
+  "bootstrap_unit": "scenario_id_cluster",
+  "ci_type": "percentile",
+  "vtcr_noninferiority_margin": -0.1,
+  "vtcr_one_sided_confidence": 0.975,
+  "cier_estimability_threshold": 0.95,
+  "wilcoxon_active": false,
+  "pilot_replicate_ids": [
+    "P0",
+    "P1",
+    "P2"
+  ],
+  "formal_replicate_ids": [
+    "F0",
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "F7",
+    "F8",
+    "F9"
+  ],
+  "failure_taxonomy_version": "F1-F7-v1"
+}

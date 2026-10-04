@@ -1,0 +1,28 @@
+{
+  "version": "phase2b-stats0-analysis-0.1",
+  "episode_fields": [
+    "scenario_id",
+    "replicate_id",
+    "condition",
+    "eifr",
+    "vtcr",
+    "infra_invalid",
+    "termination_reason",
+    "failure_taxonomy",
+    "meaningful_model_behavior"
+  ],
+  "action_fields": [
+    "scenario_id",
+    "replicate_id",
+    "condition",
+    "attempted_violating_actions",
+    "escaped_violating_actions"
+  ],
+  "pairing_key": [
+    "scenario_id",
+    "replicate_id"
+  ],
+  "replicate_semantics": "matched_block_identifier_not_provider_seed",
+  "failure_taxonomy_version": "F1-F7-v1",
+  "infra_invalid_excluded_from_efficacy": true
+}

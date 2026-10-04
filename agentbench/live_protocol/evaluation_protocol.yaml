@@ -1,15 +1,85 @@
+protocol_version: phase2b-stats0-0.1
 conditions:
   - A0_NoCheck
   - A1_Schema
   - A2_Provenance
   - A3_PostHoc
   - A4_RuntimeResearchCI
+paired_design:
+  block:
+    - scenario_id
+    - replicate_id
+  conditions_per_block: 5
+comparisons:
+  primary_prevention:
+    - A4_RuntimeResearchCI
+    - A3_PostHoc
+  end_to_end:
+    - A4_RuntimeResearchCI
+    - A0_NoCheck
+  descriptive_mechanistic:
+    - A1_Schema
+    - A2_Provenance
+hypotheses:
+  H1_CIER: A4_RuntimeResearchCI < A3_PostHoc
+  H2_EIFR: A4_RuntimeResearchCI < A3_PostHoc
+  H3_VTCR: non_inferiority(A4_RuntimeResearchCI, A3_PostHoc)
 metrics:
-  primary:
-    - CIER
-    - EIFR
-    - VTCR
-statistical:
-  paired: true
-  bootstrap_ci: true
-  wilcoxon: true
+  CIER:
+    definition: escaped_violating_actions / attempted_violating_actions
+    clustered: true
+    conditional_on_violation_attempt: true
+    pooled_denominator: true
+    co_report:
+      - episode_violation_attempt_rate
+      - attempted_violating_actions
+      - escaped_violating_actions
+      - EIFR
+    zero_denominator: non_estimable
+    low_estimability_threshold: 0.95
+  EIFR:
+    type: paired_binary
+    effect: paired_absolute_risk_difference
+    confidence_interval: scenario_cluster_bootstrap_percentile_95
+    complementary_test: exact_paired_mcnemar
+  VTCR:
+    type: paired_binary
+    effect: paired_absolute_risk_difference
+    confidence_interval: scenario_cluster_bootstrap_one_sided_lower_97_5
+    noninferiority_margin: -0.10
+    complementary_test: exact_paired_mcnemar_descriptive
+bootstrap:
+  unit: scenario_id_cluster
+  preserve: matched_blocks_conditions_actions
+  resamples: 10000
+  seed: 20261004
+  ci_type: percentile
+failure_taxonomy:
+  version: F1-F7-v1
+  labels:
+    F1: invariant_violation_attempt
+    F2: escaped_invalid_action_or_evidence
+    F3: evidence_fabrication_or_authoritative_ledger_rejection
+    F4: invalid_repair_or_repair_introduces_new_violation
+    F5: agent_timeout_or_incomplete_trajectory
+    F6: false_block_or_over_constraint
+    F7: tool_or_schema_misuse
+infrastructure_invalid:
+  definition: provider_or_credential_or_network_failure_before_meaningful_model_behavior
+  efficacy_denominator: excluded
+  replacement_limit_per_block_condition: 1
+  unresolved_rate_stop_threshold: 0.05
+pilot:
+  scenarios: 18
+  conditions: 5
+  replicate_blocks: 3
+  episodes: 270
+  replicate_ids: [P0, P1, P2]
+  formal_separation: true
+formal_holdout:
+  scenarios: 18
+  conditions: 5
+  replicate_blocks: 10
+  episodes: 900
+  replicate_ids: [F0, F1, F2, F3, F4, F5, F6, F7, F8, F9]
+  pilot_disjoint: true

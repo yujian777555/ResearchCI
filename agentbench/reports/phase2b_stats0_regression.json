@@ -1,0 +1,13 @@
+{
+  "phase": "2B-STATS-0",
+  "status": "PASS",
+  "command": "D:/anaconda3/envs/PythonProject1/python.exe -m pytest -q",
+  "full_passed": 286,
+  "full_failed": 0,
+  "openai_historical_regression": 213,
+  "deepseek_ds0_r1_regression": 63,
+  "stats0_tests_passed": 10,
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0
+}

@@ -1,0 +1,26 @@
+{
+  "phase": "2B-STATS-0",
+  "status": "PASS",
+  "scenario_count": 18,
+  "pilot_blocks": 54,
+  "conditions_per_block": 5,
+  "row_counts": {
+    "0": 11,
+    "1": 11,
+    "2": 11,
+    "3": 11,
+    "4": 10
+  },
+  "position_counts": {
+    "0": 54,
+    "1": 54,
+    "2": 54,
+    "3": 54,
+    "4": 54
+  },
+  "order_reproducible": true,
+  "pilot_episodes": 270,
+  "formal_episodes": 900,
+  "pilot_formal_replicates_disjoint": true,
+  "outcome_dependent_reordering": false
+}

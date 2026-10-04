@@ -1,0 +1,42 @@
+{
+  "version": "phase2b-stats0-pilot-v1",
+  "study_wave": "pilot",
+  "scenario_ids": [
+    "episode_s1_tabular_sklearn",
+    "episode_s1_text_classification",
+    "episode_s1_vision_pytorch",
+    "episode_s2_tabular_sklearn",
+    "episode_s2_text_classification",
+    "episode_s2_vision_pytorch",
+    "episode_s3_tabular_sklearn",
+    "episode_s3_text_classification",
+    "episode_s3_vision_pytorch",
+    "episode_s4_tabular_sklearn",
+    "episode_s4_text_classification",
+    "episode_s4_vision_pytorch",
+    "episode_s5_tabular_sklearn",
+    "episode_s5_text_classification",
+    "episode_s5_vision_pytorch",
+    "episode_s6_tabular_sklearn",
+    "episode_s6_text_classification",
+    "episode_s6_vision_pytorch"
+  ],
+  "conditions": [
+    "A0_NoCheck",
+    "A1_Schema",
+    "A2_Provenance",
+    "A3_PostHoc",
+    "A4_RuntimeResearchCI"
+  ],
+  "replicate_ids": [
+    "P0",
+    "P1",
+    "P2"
+  ],
+  "block_definition": [
+    "scenario_id",
+    "replicate_id"
+  ],
+  "episodes": 270,
+  "formal_eligible": false
+}

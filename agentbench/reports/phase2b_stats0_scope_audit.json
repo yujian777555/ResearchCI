@@ -1,0 +1,13 @@
+{
+  "phase": "2B-STATS-0",
+  "baseline_commit": "d1fb0f8",
+  "forbidden_changed_paths": [],
+  "historical_openai_protocol": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "deepseek_protocol": "sha256:1a74ed0bb50f615f46f1d1d83e001821a16b64d4df0e16edb8a35bcaf2d35544",
+  "credential_leakage": false,
+  "secret_files": [],
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "benchmark_episodes": 0,
+  "status": "PASS"
+}

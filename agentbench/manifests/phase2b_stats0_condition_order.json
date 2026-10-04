@@ -1,0 +1,715 @@
+{
+  "version": "phase2b-stats0-order-v1",
+  "hash_input_prefix": "ResearchCI-Phase2-order-v1",
+  "canonical_conditions": [
+    "A0_NoCheck",
+    "A1_Schema",
+    "A2_Provenance",
+    "A3_PostHoc",
+    "A4_RuntimeResearchCI"
+  ],
+  "blocks": [
+    {
+      "scenario_id": "episode_s2_tabular_sklearn",
+      "replicate_id": "P0",
+      "block_hash": "sha256:10f76f07ced6956fb4e552563a6bdcefab9917fb44303243c5763976ffafe1a2",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s5_tabular_sklearn",
+      "replicate_id": "P1",
+      "block_hash": "sha256:1207233b5dd20be87699203ad742922c432d714772b54995bc24b788e7ddeb6a",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s4_text_classification",
+      "replicate_id": "P0",
+      "block_hash": "sha256:1ec12231d9bd3dd7d62300c8cc6dc84e08f027433a219935f357f22b7206af68",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s3_text_classification",
+      "replicate_id": "P1",
+      "block_hash": "sha256:2d64718cf05d9f25888ad39480d0e51916cb376579057ce6f373950dd89341e3",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s1_vision_pytorch",
+      "replicate_id": "P2",
+      "block_hash": "sha256:2e5524e914d8d8875722fb4397f7f4eb1c3575fa24793efde8a3d2592d811a34",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s6_tabular_sklearn",
+      "replicate_id": "P2",
+      "block_hash": "sha256:3bc93e89cf4827472e6a3fee3e2c259d0c7bf173020493685459d07759e46457",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s3_text_classification",
+      "replicate_id": "P2",
+      "block_hash": "sha256:41d01e5e27353a585c852fb4a420de762b9558297759178d9346e0d37b71e6a3",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s3_vision_pytorch",
+      "replicate_id": "P1",
+      "block_hash": "sha256:457c3e692e316c0fe4f65d4921aa52a5e03ee287b4897796cdb497f186860f44",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s1_tabular_sklearn",
+      "replicate_id": "P2",
+      "block_hash": "sha256:499bf36afd99dd3e903b4559b4e2b0b34b56c8700f459b33ac1dfd69e88ba834",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s4_text_classification",
+      "replicate_id": "P2",
+      "block_hash": "sha256:50434c22e502bb739a7c6a7b98df2acd969dda49020c56c4e4620ee3f955d10e",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s1_tabular_sklearn",
+      "replicate_id": "P1",
+      "block_hash": "sha256:5f00325be609ee92b1ff3f92a692c86a3120a6c063f6631c411b66f863f04b63",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s4_tabular_sklearn",
+      "replicate_id": "P0",
+      "block_hash": "sha256:6f24ef761265d6f990307c40bf2e5ca53cfe44296f1448d395130be2f2202e74",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s1_text_classification",
+      "replicate_id": "P1",
+      "block_hash": "sha256:71c9e875f96d80770590e7719bd7d26f925b62cb2a3a71cf1cf16d1ffdf611a5",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s6_vision_pytorch",
+      "replicate_id": "P0",
+      "block_hash": "sha256:73ea5251a4af0314f2eab1d007c558793366e5d925b16bacc9f74d41c248b1ee",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s1_tabular_sklearn",
+      "replicate_id": "P0",
+      "block_hash": "sha256:75558785e826a5da0420df830a0ab64594a78dff568929b75f011e83c06c9f79",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s1_vision_pytorch",
+      "replicate_id": "P1",
+      "block_hash": "sha256:7728291204c62c8d0bdf312b6404ca458802765a97e2c22f89da84dfb94bc851",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s3_vision_pytorch",
+      "replicate_id": "P0",
+      "block_hash": "sha256:784528e3b316fb7b1435c91be5b86a6afcc397297775d166f721d545b3051a5c",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s1_text_classification",
+      "replicate_id": "P2",
+      "block_hash": "sha256:7b72a11399269537707cb84d5a81740eed45652559308d5b0f7f259cffc9ceeb",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s2_tabular_sklearn",
+      "replicate_id": "P2",
+      "block_hash": "sha256:85fab7760b89f37805704b26e081a72454522e6e2d139e240c62d1578c6bf4f5",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s5_vision_pytorch",
+      "replicate_id": "P0",
+      "block_hash": "sha256:8bc59c958c479b00b637472998582cc19cfb540265d48cda87c60116f0589c1b",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s4_tabular_sklearn",
+      "replicate_id": "P1",
+      "block_hash": "sha256:8c6e684417682fb80464d439a3727a0218f0abad2660d4261fe7abe8a39e83b7",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s5_tabular_sklearn",
+      "replicate_id": "P2",
+      "block_hash": "sha256:8cd6f6ea3f8733d9efe935ec6ba3520ac8d349862cf4f79953ec9c4882fcf4c1",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s4_vision_pytorch",
+      "replicate_id": "P0",
+      "block_hash": "sha256:8f415ef60d3134122edd3ac390693288507c7cd1ad81ca3e526fc64411d1a6ff",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s3_tabular_sklearn",
+      "replicate_id": "P2",
+      "block_hash": "sha256:8f9c537b817d4d38ba11ab01cf8afd463d7c9ae1426f59aa4567c7ce017dfcdd",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s2_text_classification",
+      "replicate_id": "P1",
+      "block_hash": "sha256:909db2dc03cb7752e3a5bf3055b616c424254943de38a74eb24b00842dae69d8",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s6_text_classification",
+      "replicate_id": "P1",
+      "block_hash": "sha256:947f2c1313a3cc40a212c68cd95c569739342e0a31486e1ab0439e0da7a8c792",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s5_text_classification",
+      "replicate_id": "P0",
+      "block_hash": "sha256:94d5344eb2595a793704daad6fc1918f44e00d1bb01ccc9fbdd741f3d23385fb",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s1_text_classification",
+      "replicate_id": "P0",
+      "block_hash": "sha256:982ddc2b08c5586ef47c051753157f73058d24b7d93f5a2449f2bdf137991fb1",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s2_text_classification",
+      "replicate_id": "P0",
+      "block_hash": "sha256:9b02a5b312baa452a633db15be20ea1d4b3d9bc5d17ba516480084221fe2d920",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s6_tabular_sklearn",
+      "replicate_id": "P1",
+      "block_hash": "sha256:a2fce7a0b7d72a7bf219096ac625484550c9721bd0ae69f0d48d995745ee2b96",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s4_vision_pytorch",
+      "replicate_id": "P1",
+      "block_hash": "sha256:a3f5b201d0f9485e537f88ae5a049efa78e645d89b52e0d096d618d23563f5b0",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s6_vision_pytorch",
+      "replicate_id": "P1",
+      "block_hash": "sha256:a6fe7677d82816ec3011ff6ce88cb52122dacd22f59d39fc3d98c02710ccd8d9",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s5_text_classification",
+      "replicate_id": "P2",
+      "block_hash": "sha256:ad9f6e63660930635ca49fa66920be8cd2181c28886fc17a1b6b1db96eff4630",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s3_text_classification",
+      "replicate_id": "P0",
+      "block_hash": "sha256:b16918dbb2aab84110b31bfc75b5943d9f0944174cbd7725170c1a1db0698cce",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s4_text_classification",
+      "replicate_id": "P1",
+      "block_hash": "sha256:b40bd16886f3318e3092d13077f2179147a907b776579adfd848ad956e7b0154",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s5_text_classification",
+      "replicate_id": "P1",
+      "block_hash": "sha256:bc26915f0d2af00ec115b4985acd4e7360c9498011d2baea6cdfdf7f44e8ea7c",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s4_tabular_sklearn",
+      "replicate_id": "P2",
+      "block_hash": "sha256:c3ed5b2dd3d60da047bc26fc1e2f4b6a47ba080332dbb592aada1f317e2386f5",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s3_tabular_sklearn",
+      "replicate_id": "P1",
+      "block_hash": "sha256:c6047c478dbf03f77b7b010339765439d7c5e616d086a894be81a8b7b887a97b",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s5_vision_pytorch",
+      "replicate_id": "P1",
+      "block_hash": "sha256:cc00bfa08aa88ec20da73f9571eec6666a645bf966c172deea6371143d420e7f",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s2_text_classification",
+      "replicate_id": "P2",
+      "block_hash": "sha256:ce159c4f8084242459135bfb1afd29b04c549548c1085289107fb60370a1b388",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s4_vision_pytorch",
+      "replicate_id": "P2",
+      "block_hash": "sha256:cff32070f2b010efd52ec04a60d4946d988b5273548ccd7304a4a87c8679726a",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s6_text_classification",
+      "replicate_id": "P0",
+      "block_hash": "sha256:d37ad4ed6d2c3cc73ed85b1f62a7ca11da13b4f7942b5b72fcf5b738421e6832",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s6_vision_pytorch",
+      "replicate_id": "P2",
+      "block_hash": "sha256:d3af53ac5dfe6aba9a8ef0977aa1bfc795a29d4269b603becee5e6b517939928",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s3_vision_pytorch",
+      "replicate_id": "P2",
+      "block_hash": "sha256:d80a442674761f604f1c1ed6d977b0bea03e574fddb9d0bfc8c75ea7150ead71",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s5_vision_pytorch",
+      "replicate_id": "P2",
+      "block_hash": "sha256:dac9e903b38fb6d0cfa871212df731a2bcd60415b81c22d70c7cdb61530a79eb",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s6_text_classification",
+      "replicate_id": "P2",
+      "block_hash": "sha256:db0229809770250f6ea8ca07c2da5053022c5057e276790ec5ce473dbda4597f",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s1_vision_pytorch",
+      "replicate_id": "P0",
+      "block_hash": "sha256:dc3b4cda2155042bf506ec409f833e289ca7fa18481984505faacfabe2cfcc6b",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s5_tabular_sklearn",
+      "replicate_id": "P0",
+      "block_hash": "sha256:e531fa46798c4914ef44e1f38d3c79c5ed8205cb8bb85eafc4d17639fbaddf17",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s2_vision_pytorch",
+      "replicate_id": "P2",
+      "block_hash": "sha256:f0bd289d1548fcc81eb911626fc24a33d338ad396913314be02a1fd7306b84c0",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    },
+    {
+      "scenario_id": "episode_s2_vision_pytorch",
+      "replicate_id": "P0",
+      "block_hash": "sha256:f20ca1980b906478b6d5960887735941fb4393df9473591700be51f85ed76777",
+      "latin_row": 4,
+      "condition_order": [
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc"
+      ]
+    },
+    {
+      "scenario_id": "episode_s6_tabular_sklearn",
+      "replicate_id": "P0",
+      "block_hash": "sha256:f3c3093b9936748a83ecba6e4866baa4e453ca2f480988c238a8b29484e7e8ed",
+      "latin_row": 0,
+      "condition_order": [
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI"
+      ]
+    },
+    {
+      "scenario_id": "episode_s3_tabular_sklearn",
+      "replicate_id": "P0",
+      "block_hash": "sha256:f4c7b2a392958ec6af2af2e7800f455e1ed0d230ebd4319a0aa12c025406579c",
+      "latin_row": 1,
+      "condition_order": [
+        "A1_Schema",
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck"
+      ]
+    },
+    {
+      "scenario_id": "episode_s2_vision_pytorch",
+      "replicate_id": "P1",
+      "block_hash": "sha256:f79260ac0db5d85e404409afe9d01e2b92aa5dccfb2bbc2dcaf1c6632e0dceb9",
+      "latin_row": 2,
+      "condition_order": [
+        "A2_Provenance",
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema"
+      ]
+    },
+    {
+      "scenario_id": "episode_s2_tabular_sklearn",
+      "replicate_id": "P1",
+      "block_hash": "sha256:fc6016b474128b24383a433692069d96d66a183a623b266f49e1d5219efcbefe",
+      "latin_row": 3,
+      "condition_order": [
+        "A3_PostHoc",
+        "A4_RuntimeResearchCI",
+        "A0_NoCheck",
+        "A1_Schema",
+        "A2_Provenance"
+      ]
+    }
+  ]
+}
