@@ -1,0 +1,11 @@
+{
+  "phase": "2B-2B",
+  "status": "PASS",
+  "command": "D:/anaconda3/envs/PythonProject1/python.exe -m pytest -q",
+  "passed": 213,
+  "failed": 0,
+  "canary_transport_status": "FAIL",
+  "live_api_calls": 1,
+  "network_calls": 1,
+  "benchmark_episodes": 0
+}

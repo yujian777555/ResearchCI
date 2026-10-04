@@ -1,0 +1,41 @@
+{
+  "phase": "2B-2B",
+  "type": "synthetic_non_benchmark_live_canary",
+  "canary_episodes": 1,
+  "excluded_from_phase2c_metrics": true,
+  "excluded_from_paper_efficacy_claims": true,
+  "execution_protocol_hash": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "provider": "OpenAI",
+  "endpoint": "/v1/responses",
+  "model_requested": "gpt-5.6-sol",
+  "provider_calls": 1,
+  "fake_provider_calls": 0,
+  "live_api_calls": 1,
+  "network_calls": 1,
+  "termination_reason": "provider_error",
+  "mediator_invocation_count": 0,
+  "previous_response_id_match": false,
+  "call_id_match": false,
+  "final_marker_present": false,
+  "final_text_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "credential_leakage": false,
+  "status": "FAIL",
+  "initial_request_accepted": false,
+  "function_call_emitted": false,
+  "function_name": null,
+  "requested_path": null,
+  "continuation_accepted": false,
+  "provider_error_type": "AuthenticationError",
+  "live_provider_response_metadata_present": false,
+  "usage_metadata_present": false,
+  "frozen_generation_config": {
+    "temperature": 0,
+    "top_p": 1,
+    "reasoning": {
+      "effort": "medium",
+      "context": "all_turns"
+    },
+    "store": true,
+    "parallel_tool_calls": true
+  }
+}

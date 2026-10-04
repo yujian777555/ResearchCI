@@ -1,0 +1,13 @@
+{
+  "phase": "2B-2B",
+  "baseline_commit": "910b4df",
+  "frozen_protocol_hash_before": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "frozen_protocol_hash_after": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "protocol_unchanged": true,
+  "forbidden_changed_paths": [],
+  "allowed_changed_paths": [],
+  "credential_leakage": false,
+  "secret_files": [],
+  "benchmark_episodes": 0,
+  "status": "PASS"
+}

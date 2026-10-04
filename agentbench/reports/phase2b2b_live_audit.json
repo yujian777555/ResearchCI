@@ -1,0 +1,59 @@
+{
+  "phase": "2B-2B",
+  "episode_id": "phase2b2b-synthetic-canary-001",
+  "execution_protocol_hash": "sha256:8c21a5a702bdb3b494457fe54c47261df9fdc6e4629149ad84353717219a030c",
+  "model_requested": "gpt-5.6-sol",
+  "request_events": [
+    {
+      "request_kind": "initial",
+      "previous_response_id": null,
+      "max_output_tokens": 16000,
+      "request_metadata_hash": "sha256:9dc0360f0f4ca2fda4ad6e953d160a58b3d42698366babcbade03ba864d6dcd3"
+    }
+  ],
+  "responses": [],
+  "function_calls": [],
+  "mediator_invocations": [],
+  "retry_events": [
+    {
+      "event_type": "provider_error",
+      "provider_attempt_index": 1,
+      "retry_index": 0,
+      "step_index": 1,
+      "error_type": "AuthenticationError",
+      "backoff_seconds": 0.0
+    }
+  ],
+  "accounting": {
+    "episode_id": "phase2b2b-synthetic-canary-001",
+    "replicate_id": 0,
+    "termination_reason": "provider_error",
+    "events": null,
+    "provider_calls": 1,
+    "fake_provider_calls": 0,
+    "live_api_calls": 1,
+    "network_calls": 1
+  },
+  "final_text_sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "final_marker_present": false,
+  "credential_leakage": false,
+  "benchmark_episodes": 0,
+  "benchmark_scenarios_loaded": false,
+  "initial_request_accepted": false,
+  "continuation_accepted": false,
+  "provider_error_type": "AuthenticationError",
+  "provider_response_metadata_present": false,
+  "usage_metadata_present": false,
+  "previous_response_id_match": false,
+  "call_id_match": false,
+  "generation_config": {
+    "temperature": 0,
+    "top_p": 1,
+    "reasoning": {
+      "effort": "medium",
+      "context": "all_turns"
+    },
+    "store": true,
+    "parallel_tool_calls": true
+  }
+}
