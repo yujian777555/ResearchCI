@@ -1,0 +1,20 @@
+{
+  "phase": "2B-DS-1",
+  "status": "NOT_RUN",
+  "reason": "preflight_failed_artifact_serialization",
+  "canary_episodes": 0,
+  "responses_requests": 0,
+  "live_api_calls": 0,
+  "network_calls": 1,
+  "benchmark_episodes": 0,
+  "canary_harness_commit": "128758327f8f1b85bc1d73c98339702a691634d7",
+  "qualification": "FAIL",
+  "provider_calls": 0,
+  "fake_provider_calls": 0,
+  "preflight_requests": 1,
+  "excluded_from_phase2c_metrics": true,
+  "excluded_from_paper_efficacy_claims": true,
+  "benchmark_scenarios_loaded": false,
+  "automatic_canary_rerun": false,
+  "execution_code_changed_after_first_network_request": false
+}
