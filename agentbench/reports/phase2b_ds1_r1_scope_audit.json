@@ -1,0 +1,20 @@
+{
+  "phase": "2B-DS-1-R1",
+  "status": "PASS",
+  "baseline_commit": "135acc43f1f38d11688e92b5e6d2f501277e10fd",
+  "allowed_changed_paths": [
+    "agentbench/deepseek_live_canary/canary.py",
+    "agentbench/deepseek_live_canary/cli.py",
+    "agentbench/deepseek_live_canary/preflight.py",
+    "tests/test_phase2b_ds1_prelive.py"
+  ],
+  "forbidden_changed_paths": [],
+  "historical_ds1_result_unchanged": true,
+  "historical_openai_evidence_unchanged": true,
+  "deepseek_provider_protocol_unchanged": true,
+  "stats_protocol_unchanged": true,
+  "credential_leakage": false,
+  "live_api_calls": 0,
+  "runtime_network_calls": 0,
+  "benchmark_episodes": 0
+}

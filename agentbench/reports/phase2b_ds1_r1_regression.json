@@ -1,0 +1,12 @@
+{
+  "phase": "2B-DS-1-R1",
+  "status": "PASS",
+  "full_passed": 325,
+  "full_failed": 0,
+  "r1_tests_passed": 17,
+  "historical_ds1_prelive_tests": 17,
+  "preflight_replacement_requests": 0,
+  "live_api_calls": 0,
+  "runtime_network_calls": 0,
+  "benchmark_episodes": 0
+}

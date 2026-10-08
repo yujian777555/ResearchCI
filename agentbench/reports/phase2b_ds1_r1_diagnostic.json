@@ -1,0 +1,23 @@
+{
+  "phase": "2B-DS-1-R1",
+  "status": "FAIL_PREFLIGHT_ARTIFACT",
+  "classification": "INFRA_INVALID_ARTIFACT",
+  "historical_ds1_result_commit": "d92b541263edea9b749ff70f475fc4aad5b2fce0",
+  "historical_harness_commit": "128758327f8f1b85bc1d73c98339702a691634d7",
+  "original_entrypoint": "untracked one-off Python/PowerShell execution command; exact source is not recoverable from repository history",
+  "root_cause": "derived serializer accessed report['api_calls'] although canonical PreflightResult exposed requests/sdk_invocations; KeyError occurred after the single SDK invocation",
+  "provider_outcome_reconstructed": false,
+  "missing_historical_fields": [
+    "http_attempt_count",
+    "http_status",
+    "provider_request_id",
+    "request_utc",
+    "response_utc",
+    "target_present"
+  ],
+  "replacement_request_executed": false,
+  "live_api_calls": 0,
+  "runtime_network_calls": 0,
+  "canary_episodes": 0,
+  "historical_failure_files_unchanged": true
+}

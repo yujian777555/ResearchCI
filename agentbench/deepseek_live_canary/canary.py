@@ -17,7 +17,7 @@ def sha(value: Any) -> str:
 
 def run_canary(*, root: str|Path, adapter: Any) -> dict[str,Any]:
     root=Path(root); fixture=root/"agentbench/deepseek_live_canary/CANARY.txt"; mediator=SyntheticCanaryMediator(fixture)
-    result=EpisodeOrchestrator(adapter=adapter,request_builder=DeepSeekRequestBuilder(root),mediator=mediator,retry_policy=RetryPolicy.from_file(root/"agentbench/live_protocol/retry_policy.json"),budget_config=BudgetConfig(),recorder=AppendOnlyTrajectory(),sleep=lambda _:None).run(episode_id="phase2b-ds1-synthetic-canary-001",replicate_id=0,agent_visible_context=TASK,evaluator_private_metadata={"synthetic":True,"benchmark":False})
+    result=EpisodeOrchestrator(adapter=adapter,request_builder=DeepSeekRequestBuilder(root),mediator=mediator,retry_policy=RetryPolicy.from_file(root/"agentbench/live_protocol/retry_policy.json"),budget_config=BudgetConfig(),recorder=AppendOnlyTrajectory()).run(episode_id="phase2b-ds1-synthetic-canary-001",replicate_id=0,agent_visible_context=TASK,evaluator_private_metadata={"synthetic":True,"benchmark":False})
     provider_events=[e for e in result.events if e.get("event_type")=="provider_response"]
     calls=[e for e in result.events if e.get("event_type")=="function_call"]
     final_text=""
