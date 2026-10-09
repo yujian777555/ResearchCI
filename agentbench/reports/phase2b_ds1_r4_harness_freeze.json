@@ -1,0 +1,43 @@
+{
+  "phase": "2B-DS-1-R4",
+  "status": "HARNESS_FROZEN",
+  "planner_scope_commit": "2ff464d76f80158f5298b9777cc2ab531b2d5b60",
+  "executor_prompt_commit": "13f912c614d0470dafcbc66b454158deb98152de",
+  "accepted_r3_commit": "cc9ccc6458c5fe70e6650ade9f752d2a765e705a",
+  "deepseek_protocol_hash": "sha256:07cc0a68ec471f796dbc312c39f8386b6ff956d64524043adc11632c4bb448fe",
+  "stats_protocol_hash": "sha256:e6e262d95c55611f48541637a7ffbb8d75421632324030b52b0dd03477b5a083",
+  "source_bundle_hash": "sha256:5137c6d7eb2fc07dcdd33b8ef8f2184d8581b705a55f9ba58e50f54eb4488790",
+  "sdk_factory_hash": "sha256:b2107b4178fad5f152b8aa0b2a7f795c8100ef9e51f07245af3696d5c49afea8",
+  "preflight_source_hash": "sha256:3bff08df85f1e38fd6f68d09e381fe86752fce9ba206e77ba43e9445d7ba7502",
+  "canary_source_hash": "sha256:eb9956d65c92fc1b601b0412711b551b514746d7604bd6a17bafe16e5069c792",
+  "observation_source_hash": "sha256:a00e88dcee6ed97a438954540d9ed2a4ffa487badebcff51816f8cc426cd1871",
+  "serializer_schema_hash": "sha256:d7d7e953a6590e80d47abb7a4cb4818cefb8b35c8bb50005f736cde60f45c6f7",
+  "audit_contract_hash": "sha256:5fe7ecfc1d7f55a3dd9a9050fc30a155b0e88002e112e18d1039da581f5b7eba",
+  "provider_request_contract_hash": "sha256:dfff59d58255cb1cebe5b69b3bc8995025778f5c2b2f77b66444ad39fdbfa226",
+  "system_prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
+  "tool_schema_hash": "sha256:e77bb4e27f8e69da4e9b7ce2e13926cf27a4f752b871fc88c94bd8cf7291e5f3",
+  "canary_task_hash": "sha256:333d2df4c198feb48582c0a661eb97025fa8c221513664910c7bc647277bd20f",
+  "canary_marker_hash": "sha256:267f035cbe7c56d127f3adc95abf266981e5a7005d436b1ea7c46ba2382f45af",
+  "retry_policy_hash": "sha256:e8f92980bfa32002f99fa59631955887e69ea3e9f98bbb2d51d9665c238f2c01",
+  "r4_tests_hash": "sha256:e432aa8c9f248f4b2da95a813040bb557d432fda673b5b2fcbd4f812f8415b90",
+  "sdk_versions": {
+    "openai": "3.24.0",
+    "httpx2": "2.13.1"
+  },
+  "budget_contract": {
+    "max_steps": 30,
+    "max_custom_function_calls": 20,
+    "timeout_seconds": 900,
+    "cumulative_output_token_budget": 16000
+  },
+  "preflight_mode": "disabled_in_R4",
+  "canary_mode": "disabled_in_R4",
+  "counts": {
+    "external_sdk_api_calls": 0,
+    "external_network_calls": 0,
+    "credential_reads": 0,
+    "real_live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "historical_failure_preserved": true
+}

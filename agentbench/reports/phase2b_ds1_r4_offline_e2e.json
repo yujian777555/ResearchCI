@@ -1,0 +1,115 @@
+{
+  "phase": "2B-DS-1-R4",
+  "status": "PASS",
+  "test_module": "tests/test_phase2b_ds1_r4.py",
+  "new_tests": 38,
+  "preflight_sdk_matrix": {
+    "target_present_200": "PASS / one SDK call / one wire attempt",
+    "target_absent_200": "FAIL_TARGET_MODEL_ABSENT",
+    "401": "FAIL_AUTH",
+    "402": "FAIL_BALANCE",
+    "429": "FAIL_PROVIDER",
+    "500": "FAIL_PROVIDER",
+    "503": "FAIL_PROVIDER",
+    "timeout": "FAIL_NETWORK",
+    "connection": "FAIL_NETWORK",
+    "malformed": "FAIL_PROVIDER"
+  },
+  "preflight_audit": {
+    "preflight_start_before_request": true,
+    "append_fsync": true,
+    "outcome_event_before_summary": true,
+    "summary_atomic_readback": true,
+    "sdk_invocations_separate": true,
+    "wire_attempts_separate": true,
+    "hidden_sdk_retries": false,
+    "max_retries": 0
+  },
+  "responses_sdk_success": {
+    "post_responses_mock_attempts": 2,
+    "successful_sdk_responses": 2,
+    "adapter": "DeepSeekResponsesAdapter(client=AuditedSDKClient)",
+    "model": "deepseek-v4-pro",
+    "reasoning_effort": "max",
+    "top_p": 0.95,
+    "temperature_sent": false,
+    "seed_sent": false,
+    "first_max_output_tokens": 16000,
+    "second_max_output_tokens": 15989,
+    "first_task_exact": true,
+    "second_full_history": true,
+    "call_id": "exact_call_id_r4",
+    "mediator_reads": 1,
+    "marker": "RESEARCHCI_DEEPSEEK_CANARY_OK_DS1",
+    "termination": "completed",
+    "logical_live_api_calls": 2,
+    "logical_network_calls": 2,
+    "actual_external_network_calls": 0
+  },
+  "body_checks": [
+    "exact frozen request allowlist",
+    "system prompt unchanged",
+    "tool schema unchanged",
+    "reasoning/function_call projection",
+    "function_call_output call_id",
+    "no previous_response_id",
+    "no conversation",
+    "no store",
+    "no metadata",
+    "no parallel_tool_calls",
+    "no temperature",
+    "no seed"
+  ],
+  "negative_matrix": [
+    "no_tool",
+    "wrong_tool",
+    "wrong_path",
+    "duplicate_tool",
+    "invalid_arguments",
+    "missing_marker",
+    "empty_output",
+    "refusal",
+    "malformed_output",
+    "incomplete_response",
+    "wrong_model",
+    "tampered_replay"
+  ],
+  "retry": {
+    "responses_attempts": 4,
+    "errors": [
+      "429",
+      "503"
+    ],
+    "backoff_seconds": [
+      1.0,
+      2.0
+    ],
+    "sdk_hidden_retries": 0,
+    "tool_reexecution": 0,
+    "budget_reset": false,
+    "final_steps": 2,
+    "final_tool_calls": 1,
+    "final_output_tokens": 16
+  },
+  "gate": {
+    "forged_dict": "REJECT",
+    "missing_log": "REJECT",
+    "tampered_summary": "REJECT",
+    "duplicate_primary_outcome": "REJECT",
+    "restart_after_consumption": "REJECT",
+    "same_run_persisted_pass": "ADMIT_ONCE"
+  },
+  "cli": {
+    "offline_selftest": 0,
+    "corrupt_primary_nonzero": true,
+    "preflight_mode_nonzero": true,
+    "canary_mode_nonzero": true
+  },
+  "counts": {
+    "external_sdk_api_calls": 0,
+    "external_network_calls": 0,
+    "credential_reads": 0,
+    "real_live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

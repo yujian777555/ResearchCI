@@ -1,4 +1,4 @@
-"""DS-1 R3 canonical entrypoint; live modes fail closed."""
+"""DS-1 R4 canonical entrypoint; live modes fail closed."""
 from __future__ import annotations
 import argparse
 import json
@@ -54,7 +54,7 @@ def offline_selftest(*, corrupt=False) -> int:
 def main(argv=None)->int:
     parser=argparse.ArgumentParser(); parser.add_argument("mode",choices=("offline-selftest","preflight","canary")); args=parser.parse_args(argv)
     if args.mode=="offline-selftest": return offline_selftest()
-    print("DS-1 R2 live mode disabled; requires later Planner authorization")
+    print("DS-1 R4 live mode disabled; requires later Planner authorization")
     return 2
 
 if __name__=="__main__": raise SystemExit(main())

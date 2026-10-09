@@ -1,0 +1,44 @@
+{
+  "phase": "2B-DS-1-R4",
+  "status": "PASS",
+  "allowed_changes": [
+    "agentbench/deepseek_live_canary/**",
+    "tests/test_phase2b_ds1_r4.py",
+    "agentbench/reports/phase2b_ds1_r4_*.json"
+  ],
+  "changed_implementation_files": [
+    "agentbench/deepseek_live_canary/preflight.py",
+    "agentbench/deepseek_live_canary/sdk_client.py",
+    "agentbench/deepseek_live_canary/observation.py",
+    "agentbench/deepseek_live_canary/canary.py",
+    "agentbench/deepseek_live_canary/cli.py"
+  ],
+  "changed_test_files": [
+    "tests/test_phase2b_ds1_r4.py"
+  ],
+  "forbidden_changes": [],
+  "forbidden_paths_verified_unchanged": [
+    "src/researchci/**",
+    "src/researchci_agent/**",
+    "C001-C006",
+    "A0-A4",
+    "Phase1/Phase2A scenarios/workspaces/manifests",
+    "agentbench/deepseek_adapter/**",
+    "agentbench/deepseek_protocol/**",
+    "agentbench/analysis/**",
+    "agentbench/live_protocol/**",
+    "agentbench/tool_schema.json",
+    "historical OpenAI evidence",
+    "historical DS-1 failure/R1/R2/R3 reports"
+  ],
+  "credentials": "PASS: only synthetic key literal in offline tests; no environment key reads",
+  "network": "PASS: MockTransport only for SDK; no provider/external experiment network",
+  "benchmark": "PASS: no benchmark/scenario imports or episodes",
+  "counts": {
+    "external_sdk_api_calls": 0,
+    "external_network_calls": 0,
+    "credential_reads": 0,
+    "real_live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

@@ -41,6 +41,7 @@ class ObservationalResponsesAdapter:
         self.is_live_provider = bool(getattr(inner, "is_live_provider", False))
         self._request_snapshots: list[dict[str, Any]] = []
         self.request_records: list[dict[str, Any]] = []
+        self.response_statuses: list[str | None] = []
 
     @property
     def requests(self) -> list[dict[str, Any]]:
@@ -68,8 +69,15 @@ class ObservationalResponsesAdapter:
             summary.update({"outcome": "error", "error_class": type(error).__name__})
             self.request_records.append(summary)
             raise
+        inner_client = getattr(self.inner, "_client", None)
+        transport_audit = getattr(inner_client, "_ds1_transport_audit", None)
+        provider_status = None
+        if transport_audit is not None and getattr(transport_audit, "sdk_observations", None):
+            provider_status = transport_audit.sdk_observations[-1].get("status")
+        self.response_statuses.append(provider_status)
         summary.update({
             "outcome": "response",
+            "provider_status": provider_status,
             "response_id": getattr(response, "id", None),
             "response_hash": _hash(response.output if hasattr(response, "output") else response),
         })
@@ -84,6 +92,9 @@ def classify_adapter_mode(adapter: Any) -> str:
     """区分 fake、注入离线 transport 的 simulated-live 和真正 live。"""
     inner = getattr(adapter, "inner", adapter)
     if getattr(inner, "is_live_provider", False):
+        client = getattr(inner, "_client", None)
+        if getattr(client, "_ds1_execution_mode", None) == "SDK_MOCK_TRANSPORT_OFFLINE":
+            return "SIMULATED_LIVE_ADAPTER_OFFLINE"
         if getattr(inner, "_transport", None) is not None:
             return "SIMULATED_LIVE_ADAPTER_OFFLINE"
         return "LIVE_ADAPTER"

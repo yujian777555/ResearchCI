@@ -1,0 +1,45 @@
+{
+  "phase": "2B-DS-1-R4",
+  "status": "OFFLINE_SDK_ACTIVATION_COMPLETE",
+  "issue": "#16",
+  "planner_scope_commit": "2ff464d76f80158f5298b9777cc2ab531b2d5b60",
+  "executor_prompt_commit": "13f912c614d0470dafcbc66b454158deb98152de",
+  "accepted_r3_commit": "cc9ccc6458c5fe70e6650ade9f752d2a765e705a",
+  "objective": "真实 OpenAI-compatible SDK models.list/responses.create 构造链与冻结 DeepSeek adapter 的严格离线验证",
+  "implementation": {
+    "single_factory": "agentbench/deepseek_live_canary/sdk_client.py",
+    "sdk": "openai 3.24.0",
+    "http_transport": "httpx2 2.13.1",
+    "transport": "httpx2.MockTransport",
+    "base_url": "https://api.deepseek.com",
+    "sdk_max_retries": 0,
+    "timeout_seconds": 900,
+    "trust_env": false,
+    "logical_provider_counters_separate_from_external_wire": true
+  },
+  "verified_gaps": {
+    "preflight": "PASS: actual SDK models.list audited at transport boundary",
+    "responses": "PASS: actual SDK responses.create twice through frozen adapter/orchestrator/mediator/replay",
+    "request_body": "PASS: model/reasoning/top_p/tools/task/full-history/forbidden fields inspected",
+    "errors": "PASS: 401/402/429/500/503/timeout/connection/malformed and retry mappings",
+    "gate": "PASS: durable same-run evidence, crash retention, restart/tamper/duplicate rejection"
+  },
+  "historical_failure": {
+    "classification": "FAIL_PREFLIGHT_ARTIFACT",
+    "provider_outcome": "UNKNOWN",
+    "target_presence": "UNKNOWN",
+    "wire_attempt_count": "UNKNOWN",
+    "preserved": true
+  },
+  "counts": {
+    "mock_models_list_attempts": 10,
+    "successful_mock_responses_attempts": 2,
+    "mock_retry_response_attempts": 4,
+    "external_sdk_api_calls": 0,
+    "external_network_calls": 0,
+    "credential_reads": 0,
+    "real_live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "note": "Git fetch/push are repository synchronization operations required by the task; no provider or experiment network was used."
+}

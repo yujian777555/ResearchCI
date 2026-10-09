@@ -28,6 +28,7 @@ _ALLOWED_EVENT_KEYS = {
     "attempt_index", "max_retries", "wire_outcome", "retryable",
     "run_id", "attempt_id", "event_seq", "previous_event_hash", "event_hash",
     "consumed",
+    "endpoint", "response_id", "primary_event_hash",
 }
 
 
@@ -132,28 +133,9 @@ class AuditedHTTPTransport:
 
 
 def build_audited_models_client(*, api_key: str | None, audit_log: PreflightAuditLog, transport: Any | None = None, base_url: str = "https://api.deepseek.com") -> tuple[Any, TransportAudit]:
-    """构造真实 SDK models.list 链路；无显式注入 transport 时直接禁用。
-
-    R3 不读取环境变量。未来获批 live 入口必须显式传入 key 和 transport/client
-    配置；当前 CLI 永不调用此函数。
-    """
-    if transport is None:
-        raise RuntimeError("DS-1 audited SDK client is disabled without an injected transport")
-    if not api_key:
-        raise ValueError("an explicit credential is required by the separately authorized entrypoint")
-    try:
-        import httpx2
-        from openai import OpenAI
-    except ImportError as error:
-        raise RuntimeError("OpenAI SDK/httpx2 dependencies are unavailable") from error
-    audit = TransportAudit(max_retries=0)
-    audit.bind(audit_log)
-    wrapped = AuditedHTTPTransport(transport, audit)
-    http_client = httpx2.Client(transport=wrapped, trust_env=False)
-    client = OpenAI(api_key=api_key, base_url=base_url, max_retries=0, http_client=http_client)
-    setattr(client, "_ds1_transport_audit", audit)
-    setattr(client, "_ds1_sdk_max_retries", 0)
-    return client, audit
+    """兼容旧入口，委托给 models/responses 共用的唯一 SDK 工厂。"""
+    from .sdk_client import build_sdk_client
+    return build_sdk_client(api_key=api_key, audit_log=audit_log, transport=transport, base_url=base_url)
 
 
 @dataclass(frozen=True)
@@ -357,7 +339,7 @@ def classify_preflight_error(error: BaseException) -> str:
         return "FAIL_BALANCE"
     if status is not None and status >= 500:
         return "FAIL_PROVIDER"
-    if isinstance(error, (TimeoutError, ConnectionError)) or "timeout" in type(error).__name__.lower():
+    if isinstance(error, (TimeoutError, ConnectionError)) or "timeout" in type(error).__name__.lower() or "connection" in type(error).__name__.lower():
         return "FAIL_NETWORK"
     return "FAIL_PROVIDER"
 
@@ -373,6 +355,8 @@ def _error_status(error: BaseException) -> int | None:
 def run_preflight(*, client_factory: Callable[[str], Any], credential_present: bool, audit_log: PreflightAuditLog | None = None) -> PreflightResult:
     """执行一次受控模型列表调用；没有 wire audit 就明确拒绝 PASS。"""
     started = _utc()
+    if audit_log is not None and audit_log.path.exists() and audit_log.events():
+        raise RuntimeError("preflight run already has primary evidence; automatic retry is disabled")
     run_id = audit_log.run_id if audit_log is not None else uuid4().hex
     attempt_id = f"{run_id}:preflight"
     if audit_log is not None:
@@ -410,7 +394,7 @@ def run_preflight(*, client_factory: Callable[[str], Any], credential_present: b
         verified = bool(getattr(transport, "verified", False) and transport_evidence) if transport is not None else False
         status = "PASS" if found is not None and verified and attempts == 1 and response_attempts == 1 else ("FAIL_TRANSPORT_UNVERIFIED" if found is not None else "FAIL_TARGET_MODEL_ABSENT")
         result = PreflightResult(status, True, target_present=(True if found is not None else False), sdk_invocations=sdk_invocations, http_attempts_observed=attempts, http_attempt_count_verified=verified, responses_http_attempts_observed=response_attempts, provider_outcome_observed=True, preflight_start_utc=started, request_utc=request_utc, response_utc=response_utc, request_id=getattr(response, "_request_id", None), target_metadata=found, run_id=run_id, attempt_id=attempt_id)
-    except BaseException as error:
+    except Exception as error:
         transport = getattr(client, "_ds1_transport_audit", None) if client is not None else None
         result = PreflightResult(classify_preflight_error(error), True, target_present=UNKNOWN, sdk_invocations=sdk_invocations, http_attempts_observed=getattr(transport, "http_attempts", UNKNOWN), http_attempt_count_verified=False, responses_http_attempts_observed=getattr(transport, "responses_http_attempts", UNKNOWN), provider_outcome_observed=False, preflight_start_utc=started, request_utc=request_utc, response_utc=_utc(), http_status=_error_status(error), error_class=classify_preflight_error(error), run_id=run_id, attempt_id=attempt_id)
     if audit_log is not None:
