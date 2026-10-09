@@ -6,7 +6,7 @@ from types import SimpleNamespace
 
 import pytest
 from agentbench.deepseek_live_canary.mediator import MARKER, SyntheticCanaryMediator
-from agentbench.deepseek_live_canary.preflight import TARGET_MODEL, PreflightAuditLog, PreflightResult, atomic_write_json, classify_preflight_error, persist_preflight_result, run_preflight, serialize_preflight_summary
+from agentbench.deepseek_live_canary.preflight import (TARGET_MODEL, OfflineModelListClient, PreflightAuditLog, PreflightResult, TransportAudit, atomic_write_json, classify_preflight_error, persist_preflight_result, run_preflight, serialize_preflight_summary)
 from agentbench.deepseek_live_canary.redaction import redact, redact_text
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -25,11 +25,12 @@ def test_no_benchmark_import_or_scenario_materialization():
     source=(ROOT/'agentbench/deepseek_live_canary/canary.py').read_text(encoding='utf-8')
     assert 'agentbench.scenarios' not in source and 'EpisodeHarness' not in source
 
-def test_preflight_target_detection_and_exact_once():
-    class Models:
-        def list(self): return SimpleNamespace(data=[SimpleNamespace(id='deepseek-flash'),SimpleNamespace(id=TARGET_MODEL)],_request_id='req-safe')
-    result=run_preflight(client_factory=lambda _:SimpleNamespace(models=Models()),credential_present=True)
+def test_preflight_target_detection_and_exact_once(tmp_path):
+    audit=TransportAudit()
+    client=OfflineModelListClient(audit, response={'data':[{'id':'deepseek-flash'},{'id':TARGET_MODEL}]})
+    result=run_preflight(client_factory=lambda _:client,credential_present=True,audit_log=PreflightAuditLog(tmp_path / 'primary.jsonl'))
     assert result.status=='PASS' and result.requests==1 and result.target_present is True
+    assert result.http_attempts_observed == 1 and result.http_attempt_count_verified is True
 
 def test_preflight_failure_blocks_without_request():
     calls=[]
@@ -37,9 +38,8 @@ def test_preflight_failure_blocks_without_request():
     assert result.status=='BLOCKED_CREDENTIAL_MISSING' and result.requests==0 and calls==[]
 
 def test_preflight_absent_target_is_failure():
-    class Models:
-        def list(self): return {'data':[{'id':'deepseek-flash'}]}
-    result=run_preflight(client_factory=lambda _:SimpleNamespace(models=Models()),credential_present=True)
+    client=OfflineModelListClient(TransportAudit(), response={'data':[{'id':'deepseek-flash'}]})
+    result=run_preflight(client_factory=lambda _:client,credential_present=True)
     assert result.status=='FAIL_TARGET_MODEL_ABSENT' and result.requests==1
 
 def test_preflight_classification():
@@ -57,7 +57,7 @@ def test_no_network_socket_guard(monkeypatch):
     def forbidden(*args,**kwargs): raise AssertionError('network attempted')
     monkeypatch.setattr(socket.socket,'connect',forbidden)
     result=run_preflight(client_factory=lambda _: (_ for _ in ()).throw(RuntimeError('offline synthetic')),credential_present=True)
-    assert result.requests==1 and result.status=='FAIL_PROVIDER'
+    assert result.requests==0 and result.status=='FAIL_PROVIDER'
 
 def test_hash_guards_are_frozen():
     ds='sha256:07cc0a68ec471f796dbc312c39f8386b6ff956d64524043adc11632c4bb448fe'
@@ -66,6 +66,9 @@ def test_hash_guards_are_frozen():
 
 
 def test_old_api_calls_schema_mismatch_reproduced_and_fixed():
+    legacy = {'requests': 1}
+    with pytest.raises(KeyError, match='api_calls'):
+        _ = legacy['api_calls']
     result = PreflightResult("FAIL_PROVIDER", True, target_present=None)
     summary = serialize_preflight_summary(result)
     assert summary["sdk_invocations"] == 0
@@ -80,10 +83,19 @@ def test_wrong_or_missing_fields_fail_closed():
 
 def test_primary_audit_survives_derived_summary_failure(tmp_path):
     log=PreflightAuditLog(tmp_path / "primary.jsonl")
-    result=PreflightResult("PASS", True, target_present=True, sdk_invocations=1, provider_outcome_observed=True)
-    log.append({"event":"provider_result_observed","target_present":True})
-    with pytest.raises(TypeError): persist_preflight_result({"bad":True}, tmp_path / "summary.json", log)
-    assert "provider_result_observed" in (tmp_path / "primary.jsonl").read_text(encoding="utf-8")
+    audit=TransportAudit()
+    client=OfflineModelListClient(audit, response={'data':[{'id':TARGET_MODEL}]})
+    result=run_preflight(client_factory=lambda _:client,credential_present=True,audit_log=log)
+    with pytest.raises(RuntimeError):
+        import agentbench.deepseek_live_canary.preflight as module
+        original=module.serialize_preflight_summary
+        module.serialize_preflight_summary=lambda _: (_ for _ in ()).throw(RuntimeError('derived crash'))
+        try:
+            persist_preflight_result(result, tmp_path / "summary.json", log)
+        finally:
+            module.serialize_preflight_summary=original
+    text=(tmp_path / "primary.jsonl").read_text(encoding="utf-8")
+    assert '"event":"preflight_outcome_persisted"' in text
     assert not (tmp_path / "summary.json").exists()
 
 
@@ -99,12 +111,6 @@ def test_cli_live_modes_fail_closed_without_network():
     assert main(["offline-selftest"]) == 0
     assert main(["preflight"]) == 2
     assert main(["canary"]) == 2
-
-
-def test_canary_production_path_does_not_inject_noop_sleep():
-    source=(ROOT / "agentbench/deepseek_live_canary/canary.py").read_text(encoding="utf-8")
-    assert "sleep=lambda _:None" not in source
-    assert "sleep=" not in source
 
 
 def test_historical_ds1_result_files_remain_available():

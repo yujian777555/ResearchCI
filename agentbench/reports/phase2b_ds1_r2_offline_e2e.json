@@ -1,0 +1,63 @@
+{
+  "phase": "2B-DS-1-R2",
+  "status": "PASS",
+  "execution": "offline_only",
+  "test_module": "tests/test_phase2b_ds1_r2.py",
+  "behavioral_tests": 14,
+  "matrix": {
+    "legacy_KeyError_and_typed_serializer": "PASS",
+    "sdk_invocations_vs_wire_attempts": "PASS",
+    "max_retries_zero_no_hidden_retry": "PASS",
+    "preflight_start_before_wire": "PASS",
+    "transport_response_or_error_primary_events": "PASS",
+    "derived_summary_crash_preserves_primary_outcome": "PASS",
+    "audit_allowlist_and_secret_redaction": "PASS",
+    "missing_or_unpersisted_preflight_blocks_canary": "PASS",
+    "single_use_same_evidence_gate": "PASS",
+    "typed_output_text_extraction": "PASS",
+    "valid_two_turn_tool_replay": "PASS",
+    "illegal_tool_path_duplicate_zero_call_marker_malformed_branches": "PASS",
+    "retry_backoff_injected_sleeper": "PASS",
+    "cli_positive_and_corrupted_negative_selftest": "PASS"
+  },
+  "transport_evidence": {
+    "sdk_invocations": 1,
+    "http_attempts_observed": 1,
+    "responses_http_attempts_observed": 1,
+    "max_retries": 0,
+    "hidden_retry_observed": false
+  },
+  "canary_pass_evidence": {
+    "exact_task_hash": "sha256:333d2df4c198feb48582c0a661eb97025fa8c221513664910c7bc647277bd20f",
+    "function_name": "read_file",
+    "path": "CANARY.txt",
+    "mediator_invocations": 1,
+    "call_id_preserved": true,
+    "replay_valid": true,
+    "termination_reason": "completed",
+    "marker_exact": true,
+    "fake_provider_calls": 2,
+    "live_api_calls": 0,
+    "network_calls": 0
+  },
+  "retry_evidence": {
+    "retryable_error": "RateLimitError",
+    "sleep_seconds": [
+      1.0
+    ],
+    "tool_invocations": 1,
+    "fake_provider_calls": 3,
+    "budget_reset": false
+  },
+  "negative_paths": [
+    "wrong_path",
+    "duplicate_read",
+    "zero_tool",
+    "marker_missing",
+    "malformed_output",
+    "unpersisted_pass",
+    "second_canary_attempt"
+  ],
+  "corruption_exit_code": 1,
+  "live_modes_exit_code": 2
+}

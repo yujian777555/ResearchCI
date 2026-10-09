@@ -1,0 +1,25 @@
+{
+  "phase": "2B-DS-1-R2",
+  "status": "OFFLINE_REPAIR_COMPLETE",
+  "historical_failure_classification": "FAIL_PREFLIGHT_ARTIFACT",
+  "historical_result_preserved": true,
+  "historical_root_cause": "旧序列化入口访问不存在的 api_calls 字段，导致已发生的 models.list 观察未持久化；旧 wire count/provider outcome/target presence 保持 UNKNOWN。",
+  "r2_scope": "仅 deepseek_live_canary、DS-1 prelive/R2 tests 与本 R2 reports；未改科研核心或冻结协议。",
+  "blockers_closed": {
+    "B1": "PASS: typed TransportAudit + append/fsync primary events + atomic derived summary + fail-closed eligibility",
+    "B2": "PASS: offline-selftest executes fake preflight and canary; live modes exit 2; single-use same-evidence gate",
+    "B3": "PASS: typed output_text extraction, exact tool/path/call_id/replay/marker/completed/accounting gate",
+    "B4": "PASS: behavior-level fake transport/canary/retry/CLI/secret/crash tests"
+  },
+  "keyerror_reproducer": {
+    "legacy_access": "legacy[\"api_calls\"]",
+    "exception": "KeyError(\"api_calls\")",
+    "fixed_boundary": "serialize_preflight_summary(PreflightResult)"
+  },
+  "live_api_calls": 0,
+  "network_calls": 0,
+  "credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "deviation": "None; no replacement /models or /responses request authorized or attempted."
+}

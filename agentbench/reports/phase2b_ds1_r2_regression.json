@@ -1,0 +1,15 @@
+{
+  "phase": "2B-DS-1-R2",
+  "status": "PASS",
+  "command": "python -m pytest -q --junitxml <temp>/researchci_ds1_r2_junit_final.xml",
+  "total": 338,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "r2_behavioral_tests": 14,
+  "historical_ds1_prelive_and_ds0_regression": "PASS",
+  "phase1_phase2a_regression": "PASS",
+  "junit_artifact": "temporary local artifact; not committed",
+  "live_api_calls": 0,
+  "network_calls": 0
+}
