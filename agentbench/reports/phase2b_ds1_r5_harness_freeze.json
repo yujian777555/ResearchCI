@@ -1,0 +1,48 @@
+{
+  "phase": "2B-DS-1-R5",
+  "status": "HARNESS_FROZEN",
+  "planner_scope_commit": "51e827f05ea82a201347dfff0f447b67fc549f0c",
+  "executor_prompt_commit": "d5239596c814a081a359f24ef40d23c89fa0324f",
+  "accepted_r4_commit": "01fe25f10bb6f5001054652a975161abf9eebfc5",
+  "deepseek_protocol_hash": "sha256:07cc0a68ec471f796dbc312c39f8386b6ff956d64524043adc11632c4bb448fe",
+  "stats_protocol_hash": "sha256:e6e262d95c55611f48541637a7ffbb8d75421632324030b52b0dd03477b5a083",
+  "source_bundle_hash": "sha256:508f55f6fbe141d3037adb7ec6632cba30a12d80c79eb03b1e0cc7ba55e894eb",
+  "sdk_factory_hash": "sha256:48b5917e89df4fe047bcfb356c678cce1c5d2b8b807a499af67e4f8a1e228585",
+  "authorization_source_hash": "sha256:072663879cad7190065727b5832a256796002debcc4e3775762bdee746ef7f96",
+  "cutover_source_hash": "sha256:bce19154a2a9721668bfc6d2a400a4b14a35f964939f6aaf0cc0f27fc15f4d55",
+  "preflight_source_hash": "sha256:66fd1a76f2703f936ff3cf6bda5ab357895bd6c292fbe5d21af10282a2b3ea73",
+  "authorization_intent_schema_hash": "sha256:f30ab98e1c716f77c61cfdd744e4a71c421b4afc18a0a2d202d257318deeb18a",
+  "ledger_schema_hash": "sha256:808c2d5d87257666f8772c38646c0067b9cce381337e8034f4fcc80193604729",
+  "provider_request_contract_hash": "sha256:dfff59d58255cb1cebe5b69b3bc8995025778f5c2b2f77b66444ad39fdbfa226",
+  "system_prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
+  "tool_schema_hash": "sha256:e77bb4e27f8e69da4e9b7ce2e13926cf27a4f752b871fc88c94bd8cf7291e5f3",
+  "canary_task_hash": "sha256:333d2df4c198feb48582c0a661eb97025fa8c221513664910c7bc647277bd20f",
+  "canary_marker_hash": "sha256:267f035cbe7c56d127f3adc95abf266981e5a7005d436b1ea7c46ba2382f45af",
+  "retry_policy_hash": "sha256:e8f92980bfa32002f99fa59631955887e69ea3e9f98bbb2d51d9665c238f2c01",
+  "r5_tests_hash": "sha256:865e56ac7d5b9345d44220c9dc17dcde082e6b6acd848f998259c103771fbb81",
+  "sdk_versions": {
+    "openai": "3.24.0",
+    "httpx2": "2.13.1"
+  },
+  "transport_contract": {
+    "base_url": "https://api.deepseek.com",
+    "tls_verify": true,
+    "trust_env": false,
+    "follow_redirects": false,
+    "max_retries": 0,
+    "transport_retries": 0,
+    "timeout_seconds": 900
+  },
+  "ledger_backend": "sqlite3 FULL synchronous transaction",
+  "ledger_schema_version": "researchci.ds1.precheck-ledger.v1",
+  "preflight_stage": "PRECHECK_ONLY",
+  "canary_authorized": false,
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "real_live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "historical_failure_preserved": true
+}

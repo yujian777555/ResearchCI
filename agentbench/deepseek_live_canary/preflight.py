@@ -29,6 +29,7 @@ _ALLOWED_EVENT_KEYS = {
     "run_id", "attempt_id", "event_seq", "previous_event_hash", "event_hash",
     "consumed",
     "endpoint", "response_id", "primary_event_hash",
+    "authorization_stage", "canary_authorized",
 }
 
 
@@ -161,6 +162,8 @@ class PreflightResult:
     attempt_id: str | None = None
     primary_event_hash: str | None = None
     primary_audit_path: str | None = None
+    authorization_stage: str | None = None
+    canary_authorized: bool | None = None
 
     @property
     def requests(self) -> int:
@@ -226,7 +229,10 @@ def atomic_write_json(path: str | Path, value: dict[str, Any]) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(redact(value), ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+    with temporary.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(redact(value), ensure_ascii=False, indent=2) + "\n")
+        handle.flush()
+        os.fsync(handle.fileno())
     temporary.replace(path)
 
 
@@ -286,6 +292,8 @@ class QualificationGate:
 
     def admit_canary(self, evidence: PreflightResult | dict[str, Any]) -> bool:
         candidate = evidence if isinstance(evidence, dict) else None
+        if candidate is not None and (candidate.get("authorization_stage") == "PRECHECK_ONLY" or candidate.get("canary_authorized") is False):
+            return False
         if not self.preflight_consumed or self.canary_consumed or candidate is None or candidate != self._preflight_evidence or not canary_eligibility(candidate) or not self._persisted_evidence_valid(candidate):
             return False
         try:

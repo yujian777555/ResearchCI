@@ -1,0 +1,46 @@
+{
+  "phase": "2B-DS-1-R5",
+  "status": "OFFLINE_CUTOVER_COMPLETE",
+  "issue": "#17",
+  "planner_scope_commit": "51e827f05ea82a201347dfff0f447b67fc549f0c",
+  "executor_prompt_commit": "d5239596c814a081a359f24ef40d23c89fa0324f",
+  "accepted_r4_commit": "01fe25f10bb6f5001054652a975161abf9eebfc5",
+  "objective": "为未来 replacement GET /models 建立受控真实 HTTPTransport 和一次性授权账本；本轮不授权真实请求",
+  "production_transport": {
+    "sdk_client_factory": "same R4 AuditedSDKClient",
+    "transport": "httpx2.HTTPTransport",
+    "tls_verify": true,
+    "trust_env": false,
+    "follow_redirects": false,
+    "transport_retries": 0,
+    "sdk_max_retries": 0,
+    "timeout_seconds": 900,
+    "default_enabled": false,
+    "requires_verified_reservation": true
+  },
+  "ledger": {
+    "backend": "SQLite FULL synchronous transaction",
+    "schema": "researchci.ds1.precheck-ledger.v1",
+    "authorization": "HMAC verified explicit intent; no signer/environment fallback",
+    "reservation_before_http": true,
+    "single_use": true,
+    "unknown_after_crash": true,
+    "canary_approval": false
+  },
+  "historical_failure": {
+    "classification": "FAIL_PREFLIGHT_ARTIFACT",
+    "provider_outcome": "UNKNOWN",
+    "target_presence": "UNKNOWN",
+    "wire_attempt_count": "UNKNOWN",
+    "preserved": true
+  },
+  "counts": {
+    "mock_get_models_attempts": 10,
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "real_live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "deviation": "None; no replacement GET /models, POST /responses, live canary, or pilot was authorized."
+}

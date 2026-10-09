@@ -1,4 +1,4 @@
-"""DS-1 的统一 SDK 构造与传输审计；R4 只接受内存 MockTransport。"""
+"""DS-1 统一 SDK 路径；生产 HTTPTransport 需要独立的持久化单次授权。"""
 from __future__ import annotations
 
 from copy import deepcopy
@@ -28,27 +28,40 @@ class SDKTransportAudit(TransportAudit):
     last_http_status: int | None = None
     transport_retries: int = 0
     actual_external_network_calls: int = 0
+    reservation: Any = field(default=None, repr=False)
+    repository_check: Any = field(default=None, repr=False)
+    is_mock_transport: bool = True
 
 
 class AuditedSDKTransport(httpx2.BaseTransport):
     """在安装的 HTTPX2 传输边界 append/fsync，不保存请求或响应原文。"""
 
-    def __init__(self, inner: httpx2.MockTransport, audit: SDKTransportAudit):
+    def __init__(self, inner: httpx2.BaseTransport, audit: SDKTransportAudit):
         self.inner, self.audit = inner, audit
 
     def handle_request(self, request: httpx2.Request) -> httpx2.Response:
         expected = {("GET", "/models"): "models", ("POST", "/responses"): "responses"}
         endpoint = expected.get((request.method, request.url.path))
-        if endpoint is None or request.url.host != "api.deepseek.com" or request.url.scheme != "https":
+        if endpoint is None or request.url.host != "api.deepseek.com" or request.url.scheme != "https" or request.url.port not in {None, 443} or request.url.query or request.url.userinfo:
             raise ValueError("DS-1 SDK transport endpoint mismatch")
         audit = self.audit
+        if audit.reservation is not None:
+            if endpoint != "models":
+                audit.reservation.deny_canary()
+            audit.repository_check()
+            audit.reservation.validate("RESERVED")
         audit.attempts_by_endpoint[endpoint] += 1
         # 原文只留在内存中，供最终 wire JSON 与 replay 一致性验证。
         import json
         body = json.loads(request.content) if request.content else None
         audit.wire_requests.append({"endpoint": endpoint, "body": deepcopy(body)})
         try:
+            if audit.reservation is not None:
+                # 先把一次性 reservation 原子转为 HTTP_STARTED，再进入 wire。
+                audit.reservation.begin_http()
             audit.before_attempt()
+            if not audit.is_mock_transport:
+                audit.actual_external_network_calls += 1
             response = self.inner.handle_request(request)
             audit.completions_by_endpoint[endpoint] += 1
             audit.last_http_status = response.status_code
@@ -75,6 +88,11 @@ class _AuditedResource:
 
     def _invoke(self, *args: Any, **kwargs: Any) -> Any:
         audit, endpoint = self._audit, self._endpoint
+        if audit.reservation is not None:
+            if endpoint != "models":
+                audit.reservation.deny_canary()
+            audit.repository_check()
+            audit.reservation.validate("RESERVED")
         audit.sdk_invocations_by_endpoint[endpoint] += 1
         index = audit.sdk_invocations_by_endpoint[endpoint]
         attempt_id = f"{audit._log.run_id}:{endpoint}:{index}"
@@ -117,7 +135,7 @@ class AuditedSDKClient:
         self._inner = inner
         self._ds1_transport_audit = audit
         self._ds1_sdk_max_retries = inner.max_retries
-        self._ds1_execution_mode = "SDK_MOCK_TRANSPORT_OFFLINE"
+        self._ds1_execution_mode = "SDK_MOCK_TRANSPORT_OFFLINE" if audit.is_mock_transport else "SDK_CONTROLLED_LIVE_HTTP"
         self.models = _AuditedResource(inner.models, "list", "models", audit)
         self.responses = _AuditedResource(inner.responses, "create", "responses", audit)
 
@@ -129,16 +147,29 @@ class AuditedSDKClient:
 
 
 def build_sdk_client(*, api_key: str | None, audit_log: PreflightAuditLog,
-                     transport: Any = None, base_url: str = BASE_URL) -> tuple[AuditedSDKClient, SDKTransportAudit]:
-    """无需凭据读取；未注入 MockTransport 或 URL 漂移均在请求前拒绝。"""
-    if not isinstance(transport, httpx2.MockTransport):
-        raise RuntimeError("R4 SDK construction requires an in-memory MockTransport")
+                     transport: Any = None, base_url: str = BASE_URL,
+                     reservation: Any = None, repository_check: Any = None) -> tuple[AuditedSDKClient, SDKTransportAudit]:
+    """无环境变量读取；真实传输只能由已消费的独立授权在本函数构造。"""
+    is_mock = isinstance(transport, httpx2.MockTransport)
+    if reservation is not None:
+        from .authorization import Reservation
+        if not isinstance(reservation, Reservation) or not callable(repository_check):
+            raise RuntimeError("verified reservation and repository check required")
+        reservation.validate("RESERVED")
+        repository_check()
+        if reservation.intent["transport_mode"] != ("MOCK_HTTP" if is_mock else "LIVE_HTTP") or audit_log.run_id != reservation.intent["run_id"]:
+            raise RuntimeError("transport/run authorization mismatch")
+    if not is_mock and reservation is None:
+        raise RuntimeError("production transport is disabled without a reserved authorization")
     if base_url != BASE_URL:
         raise ValueError("frozen DeepSeek base URL cannot be changed")
     if not isinstance(api_key, str) or not api_key:
         raise ValueError("explicit credential required; environment lookup is disabled")
     audit = SDKTransportAudit(max_retries=0)
+    audit.reservation, audit.repository_check, audit.is_mock_transport = reservation, repository_check, is_mock
     audit.bind(audit_log)
+    if not is_mock:
+        transport = httpx2.HTTPTransport(verify=True, trust_env=False, retries=0)
     timeout = httpx2.Timeout(float(BudgetConfig().timeout_seconds))
     http_client = httpx2.Client(transport=AuditedSDKTransport(transport, audit), trust_env=False,
                                follow_redirects=False, timeout=timeout)

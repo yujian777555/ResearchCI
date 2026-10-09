@@ -1,0 +1,69 @@
+{
+  "phase": "2B-DS-1-R5",
+  "status": "PASS",
+  "test_module": "tests/test_phase2b_ds1_r5.py",
+  "new_tests": 23,
+  "authorization_matrix": {
+    "valid_signed_precheck": "PASS and single reservation",
+    "bad_signature": "REJECT",
+    "wrong_stage": "REJECT",
+    "wrong_harness_sha": "REJECT",
+    "wrong_run_id": "REJECT",
+    "wrong_kind": "REJECT",
+    "missing_approval": "REJECT",
+    "forged_object": "REJECT"
+  },
+  "repository_gate": {
+    "wrong_HEAD": "REJECT",
+    "wrong_origin_main": "REJECT",
+    "wrong_branch": "REJECT",
+    "dirty_worktree": "REJECT"
+  },
+  "ledger_matrix": {
+    "concurrent_reservation": "exactly 1 of 16 wins",
+    "duplicate_token": "REJECT",
+    "already_consumed": "REJECT",
+    "cross_run_identity": "REJECT",
+    "tampered_integrity": "REJECT",
+    "crash_restart": "REJECT",
+    "timeout_unknown_restart": "REJECT"
+  },
+  "mock_preflight_matrix": {
+    "target_200": "PASS",
+    "target_absent_200": "FAIL_TARGET_MODEL_ABSENT",
+    "401": "FAIL_AUTH",
+    "402": "FAIL_BALANCE",
+    "429": "FAIL_PROVIDER",
+    "500": "FAIL_PROVIDER",
+    "503": "FAIL_PROVIDER",
+    "malformed": "FAIL_PROVIDER",
+    "timeout": "UNKNOWN / no retry",
+    "connection": "UNKNOWN / no retry"
+  },
+  "request_and_accounting": {
+    "mock_get_models_attempts": 10,
+    "sdk_invocations_equals_wire_attempts": true,
+    "max_retries": 0,
+    "transport_retries": 0,
+    "post_responses_attempts": 0,
+    "canary_authorized": false,
+    "actual_external_network": 0
+  },
+  "crash_safety": {
+    "reservation_state_before_wire": "RESERVED",
+    "state_before_transport": "HTTP_STARTED",
+    "derived_serializer_crash_preserves_primary": true,
+    "automatic_rerun": false
+  },
+  "cli_modes": {
+    "preflight_nonzero": true,
+    "canary_nonzero": true
+  },
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "real_live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "phase": "2B-DS-1-R5",
+  "status": "PASS",
+  "allowed_changes": [
+    "agentbench/deepseek_live_canary/**",
+    "tests/test_phase2b_ds1_r5.py",
+    "agentbench/reports/phase2b_ds1_r5_*.json"
+  ],
+  "changed_implementation_files": [
+    "agentbench/deepseek_live_canary/authorization.py",
+    "agentbench/deepseek_live_canary/cutover.py",
+    "agentbench/deepseek_live_canary/sdk_client.py",
+    "agentbench/deepseek_live_canary/preflight.py"
+  ],
+  "changed_test_files": [
+    "tests/test_phase2b_ds1_r5.py"
+  ],
+  "forbidden_changes": [],
+  "forbidden_paths_verified_unchanged": [
+    "src/researchci/**",
+    "src/researchci_agent/**",
+    "C001-C006",
+    "A0-A4",
+    "Phase1/Phase2A scenarios/workspaces/manifests",
+    "agentbench/deepseek_adapter/**",
+    "agentbench/deepseek_protocol/**",
+    "agentbench/analysis/**",
+    "agentbench/live_protocol/**",
+    "agentbench/tool_schema.json",
+    "historical OpenAI evidence",
+    "historical DS-1 failure/R1/R2/R3/R4 reports"
+  ],
+  "credential_audit": "PASS: no environment key reads; synthetic key only in tests and never persisted",
+  "network_audit": "PASS: MockTransport only; production HTTPTransport constructed without request; no provider network",
+  "canary_audit": "PASS: preflight-only stage cannot authorize POST /responses",
+  "benchmark_audit": "PASS: zero scenario/benchmark episodes",
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "real_live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}
