@@ -1,0 +1,27 @@
+{
+  "phase": "2B-DS-1-R5.1-R1",
+  "status": "HARNESS_FROZEN",
+  "baseline_r5_1_report_hashes": {
+    "authorization": "sha256:0629b78d80f5efffa6ae7460b1bb7a7a713f32bc9ed99ac707f8efb43717f43f",
+    "cutover": "sha256:487e45ee6c161bd1e16e76185577e2a52bf7c778d38c3088a579be61b826bf9e",
+    "ledger_schema": "sha256:b19ff6442d8f3946d105601d70319e1ef1563457fb17f3bee5b5dcf94e4b2416"
+  },
+  "r1_source_bundle_hash": "sha256:077b13c9873cb8281949eab24da28a6957ffb1a6ab4d18110f68a1fede3f502e",
+  "authorization_hash": "sha256:de2de7ab593f7412cc2b8494f1a0c4e50755efda1c45874a42f88ae74d6d8313",
+  "preflight_hash": "sha256:ab02d778d1011a98081ae6af73ea43cbcc5bed7407459714bc36662626ab2622",
+  "secure_io_hash": "sha256:69adc46b32826b65de0c1d3c61c5dba0857bdd57c08687c190143dd8ab321b4e",
+  "native_evidence_hash": "sha256:637de3b53286e619bccbaaee2e788968b3ee09a2e688ff2edf70236ebec4827f",
+  "sdk_factory_hash": "sha256:680322c20f59e7448e77dabc9a17e0a9c83a0a2eb8a3fca7fc184e40a7deeb91",
+  "r1_tests_hash": "sha256:35a598837c3f17283d82469614f142fdeaea5bd2cb8e21dd101762a3a864f3a8",
+  "deepseek_protocol_hash": "sha256:07cc0a68ec471f796dbc312c39f8386b6ff956d64524043adc11632c4bb448fe",
+  "stats_protocol_hash": "sha256:e6e262d95c55611f48541637a7ffbb8d75421632324030b52b0dd03477b5a083",
+  "stage": "PRECHECK_ONLY",
+  "live_authorized": false,
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

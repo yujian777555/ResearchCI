@@ -1,0 +1,35 @@
+{
+  "phase": "2B-DS-1-R5.1-R1",
+  "status": "PASS",
+  "new_tests_collected": 16,
+  "new_tests_passed": 14,
+  "new_tests_skipped": 2,
+  "b1": {
+    "audit_symlink_or_parent": "SKIP_WINERROR_1314; code fail-closed",
+    "preexisting_tmp": "REJECT",
+    "summary_identity_replacement": "REJECT",
+    "fsync_write_fault": "REJECT",
+    "concurrent_append_hash_chain": "PASS",
+    "secret_request_id_catalog": "REJECTED_FROM_PERSISTENCE"
+  },
+  "b2": {
+    "legacy_v1_live_before_credential": "REJECT",
+    "invalid_v2_before_credential": "REJECT",
+    "production_transport_without_v2": "REJECT",
+    "v2_expiry_key_token_binding": "PASS"
+  },
+  "crash_and_ledger": {
+    "cross_process_winner": "1/16",
+    "reserved_crash": "REJECT_REUSE",
+    "http_started_crash": "REJECT_REUSE",
+    "unknown_restart": "REJECT",
+    "tamper_locked_corrupt_unavailable": "REJECT"
+  },
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

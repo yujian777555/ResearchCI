@@ -1,0 +1,21 @@
+{
+  "phase": "2B-DS-1-R5.1-R1",
+  "status": "READY_FOR_PLANNER_REVIEW",
+  "issue": "#18",
+  "baseline_r5_1_commit": "a53ccafdf50df1978cfcd8da965f78afe4549270",
+  "implementation_commit": "eb333420cf22b6e7f83b03fa9d28dab2efde0dbe",
+  "report_correction_commit": "cb734eee419c218f32df50aeeb3ef397e24f67f6",
+  "blockers_fixed": {
+    "B1": "PASS: native handle evidence IO, exclusive randomized temp, parent/file identity, fsync and fail-closed audit",
+    "B2": "PASS: LIVE_HTTP v2 public-key/expiry/revocation/run/SHA/mode/stage/ledger gate before credential callback and production transport"
+  },
+  "historical_evidence_preserved": true,
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "unresolved": "Windows symlink samples unavailable under current token; two tests skipped and documented."
+}

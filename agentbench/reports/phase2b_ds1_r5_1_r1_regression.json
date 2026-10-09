@@ -1,0 +1,20 @@
+{
+  "phase": "2B-DS-1-R5.1-R1",
+  "status": "PASS",
+  "command": "python -m pytest -q --junitxml <temp>/researchci_ds1_r5_1_r1_junit.xml",
+  "total": 428,
+  "passed": 426,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 2,
+  "r5_1_r1_tests": 16,
+  "historical_regression": "PASS",
+  "skip_reason": "Windows symlink creation denied (WinError 1314); no false PASS claim",
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}
