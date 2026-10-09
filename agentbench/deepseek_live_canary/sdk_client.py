@@ -50,6 +50,8 @@ class AuditedSDKTransport(httpx2.BaseTransport):
                 audit.reservation.deny_canary()
             audit.repository_check()
             audit.reservation.validate("RESERVED")
+            if not audit.is_mock_transport:
+                audit.reservation.validate_live_execution()
         audit.attempts_by_endpoint[endpoint] += 1
         # 原文只留在内存中，供最终 wire JSON 与 replay 一致性验证。
         import json

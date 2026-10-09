@@ -38,7 +38,7 @@ def execute_replacement_preflight(*, authorization: Any, verifier: Authorization
         validate_repository(state_reader(root), expected_harness_sha)
     repository_check()
     ledger = OneUseLedger(ledger_path)
-    reservation = ledger.reserve(approval)
+    reservation = ledger.reserve(approval, repo_root=root)
     log = PreflightAuditLog(Path(output_dir) / f"{run_id}.jsonl", run_id=run_id)
     summary_path = Path(output_dir) / f"{run_id}.summary.json"
     client = None

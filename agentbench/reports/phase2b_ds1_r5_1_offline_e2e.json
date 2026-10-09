@@ -1,0 +1,71 @@
+{
+  "phase": "2B-DS-1-R5.1",
+  "status": "PASS",
+  "new_tests": 12,
+  "cross_process": {
+    "workers": 16,
+    "reservation_winners": 1,
+    "losers": 15,
+    "post_reservation_process_exit_reuse": "REJECT"
+  },
+  "remote_gate": {
+    "wrong_head": "REJECT",
+    "wrong_remote_sha": "REJECT",
+    "wrong_branch": "REJECT",
+    "dirty_worktree": "REJECT",
+    "stale_checked_remote": "REJECT",
+    "second_repository_check_change": "REJECT"
+  },
+  "authorization": {
+    "payload_replacement": "REJECT",
+    "invalid_signature": "REJECT",
+    "expired_or_revoked_v2": "REJECT",
+    "wrong_stage_run_token_harness_mode": "REJECT",
+    "no_signer_or_environment_fallback": true
+  },
+  "ledger": {
+    "terminal_backward_transition": "REJECT",
+    "tampered_result": "REJECT",
+    "database_locked": "REJECT",
+    "corrupt_file": "REJECT",
+    "unavailable_directory": "REJECT",
+    "symlink_or_traversal": "REJECT",
+    "schema_integrity": "PASS"
+  },
+  "fault_injection": {
+    "audit_append_or_fsync": "UNKNOWN and no retry",
+    "summary_atomic_or_readback": "UNKNOWN and no retry",
+    "HTTP_STARTED_or_process_crash": "UNKNOWN and no retry",
+    "transport_timeout_or_connection": "UNKNOWN and no retry",
+    "post_canary": "REJECT"
+  },
+  "transport": {
+    "same_r4_sdk_factory": true,
+    "httpx2_HTTPTransport_constructible_only_with_v2_reservation": true,
+    "max_retries": 0,
+    "transport_retries": 0,
+    "tls_verify": true,
+    "trust_env": false,
+    "follow_redirects": false,
+    "timeout_seconds": 900,
+    "mock_get_models_attempts": 10,
+    "mock_post_responses_attempts": 0
+  },
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "path_security": {
+    "symlink_creation_test": "SKIPPED_OS_PERMISSION_WINERROR_1314",
+    "runtime_symlink_reparse_detection": "implemented_fail_closed_not_sampled_on_this_host",
+    "traversal": "REJECT"
+  },
+  "secret_leakage": {
+    "synthetic_header_request_id": "REJECTED_FROM_PERSISTENCE",
+    "model_catalog": "REJECTED_FROM_PERSISTENCE",
+    "api_key": "not_read"
+  }
+}

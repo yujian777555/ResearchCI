@@ -1,0 +1,31 @@
+{
+  "phase": "2B-DS-1-R5.1",
+  "status": "READY_FOR_PLANNER_REVIEW",
+  "baseline_r5_commit": "a632bdfa2736824ede804b110d71edf7f5449cbf",
+  "planner_spec_commit": "51e827f05ea82a201347dfff0f447b67fc549f0c",
+  "objectives": {
+    "remote_freshness": "PASS: git ls-remote refs/heads/main + HEAD/origin/clean/branch checks; second check before transport",
+    "authorization": "PASS: v2 public-key verification, expiry, revocation, key/run/token/stage/mode/SHA binding; legacy HMAC accepted only offline mock",
+    "ledger": "PASS: SQLite FULL transaction + claim tombstone + hash chain + terminal transitions",
+    "faults": "PASS: audit failure, summary failure, HTTP uncertainty and repository change abort without automatic retry",
+    "security_paths": "PASS: path identity, no symlink/traversal, owner-only evidence/ledger paths"
+  },
+  "historical_failure": {
+    "classification": "FAIL_PREFLIGHT_ARTIFACT",
+    "provider_outcome": "UNKNOWN",
+    "wire_count": "UNKNOWN",
+    "preserved": true
+  },
+  "threat_model_limits": [
+    "A privileged local attacker controlling both SQLite and claim tombstone directories can roll back both; no claim of malicious-host security",
+    "Git remote freshness relies on Git transport/server authentication; R5.1 does not independently attest GitHub identity",
+    "No real provider compatibility or credential validity was tested; Planner/human approval remains required"
+  ],
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

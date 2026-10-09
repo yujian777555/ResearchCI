@@ -11,6 +11,7 @@ from copy import deepcopy
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 from typing import Any, Callable
 from uuid import uuid4
@@ -37,6 +38,17 @@ def _utc() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _safe_request_id(value: Any) -> str | None:
+    if not isinstance(value, str) or len(value) > 128:
+        return None
+    lowered = value.lower()
+    if any(term in lowered for term in ("key", "secret", "token", "credential", "authorization", "bearer")):
+        return None
+    if re.fullmatch(r"(?:req|resp|request)[-_][A-Za-z0-9-]{1,100}", value) or re.fullmatch(r"[0-9a-f]{8}-[0-9a-f-]{27,}", value):
+        return value
+    return None
+
+
 @dataclass
 class TransportAudit:
     """安装在 fake wire path 上的单次请求计数器。"""
@@ -45,15 +57,26 @@ class TransportAudit:
     http_attempts: int = 0
     responses_http_attempts: int = 0
     verified: bool = False
+    audit_failed: bool = False
     _log: "PreflightAuditLog | None" = None
 
     def bind(self, audit_log: "PreflightAuditLog | None") -> None:
         self._log = audit_log
 
+    def _append(self, event: dict[str, Any]) -> None:
+        if self._log is None:
+            self.audit_failed = True
+            raise RuntimeError("primary audit log is required")
+        try:
+            self._log.append(event)
+        except BaseException:
+            self.audit_failed = True
+            raise
+
     def before_attempt(self, *, request_utc: str | None = None) -> None:
         self.http_attempts += 1
         if self._log is not None:
-            self._log.append({
+            self._append({
                 "event": "transport_attempt", "attempt_index": self.http_attempts,
                 "request_utc": request_utc or _utc(), "max_retries": self.max_retries,
                 "http_attempts_observed": self.http_attempts,
@@ -63,9 +86,9 @@ class TransportAudit:
         self.responses_http_attempts += 1
         self.verified = self.max_retries == 0 and self.http_attempts == self.responses_http_attempts
         if self._log is not None:
-            self._log.append({
+            self._append({
                 "event": "transport_response", "attempt_index": self.http_attempts,
-                "response_utc": _utc(), "http_status": status, "request_id": request_id,
+                "response_utc": _utc(), "http_status": status, "request_id": _safe_request_id(request_id),
                 "wire_outcome": "response", "max_retries": self.max_retries,
                 "responses_http_attempts_observed": self.responses_http_attempts,
             })
@@ -73,7 +96,7 @@ class TransportAudit:
     def record_error(self, error: BaseException) -> None:
         self.verified = self.max_retries == 0 and self.http_attempts == 1
         if self._log is not None:
-            self._log.append({
+            self._append({
                 "event": "transport_error", "attempt_index": self.http_attempts,
                 "response_utc": _utc(), "error_class": type(error).__name__,
                 "wire_outcome": "error", "max_retries": self.max_retries,
@@ -401,10 +424,12 @@ def run_preflight(*, client_factory: Callable[[str], Any], credential_present: b
         transport_evidence = any(event.get("event") == "transport_attempt" for event in audit_events) and any(event.get("event") == "transport_response" for event in audit_events)
         verified = bool(getattr(transport, "verified", False) and transport_evidence) if transport is not None else False
         status = "PASS" if found is not None and verified and attempts == 1 and response_attempts == 1 else ("FAIL_TRANSPORT_UNVERIFIED" if found is not None else "FAIL_TARGET_MODEL_ABSENT")
-        result = PreflightResult(status, True, target_present=(True if found is not None else False), sdk_invocations=sdk_invocations, http_attempts_observed=attempts, http_attempt_count_verified=verified, responses_http_attempts_observed=response_attempts, provider_outcome_observed=True, preflight_start_utc=started, request_utc=request_utc, response_utc=response_utc, request_id=getattr(response, "_request_id", None), target_metadata=found, run_id=run_id, attempt_id=attempt_id)
+        result = PreflightResult(status, True, target_present=(True if found is not None else False), sdk_invocations=sdk_invocations, http_attempts_observed=attempts, http_attempt_count_verified=verified, responses_http_attempts_observed=response_attempts, provider_outcome_observed=True, preflight_start_utc=started, request_utc=request_utc, response_utc=response_utc, request_id=_safe_request_id(getattr(response, "_request_id", None)), target_metadata=found, run_id=run_id, attempt_id=attempt_id)
     except Exception as error:
         transport = getattr(client, "_ds1_transport_audit", None) if client is not None else None
         result = PreflightResult(classify_preflight_error(error), True, target_present=UNKNOWN, sdk_invocations=sdk_invocations, http_attempts_observed=getattr(transport, "http_attempts", UNKNOWN), http_attempt_count_verified=False, responses_http_attempts_observed=getattr(transport, "responses_http_attempts", UNKNOWN), provider_outcome_observed=False, preflight_start_utc=started, request_utc=request_utc, response_utc=_utc(), http_status=_error_status(error), error_class=classify_preflight_error(error), run_id=run_id, attempt_id=attempt_id)
+    if transport is not None and (getattr(transport, "audit_failed", False) or getattr(transport, "compromised", False)):
+        raise RuntimeError("primary audit persistence failed; preflight outcome is UNKNOWN")
     if audit_log is not None:
         audit_log.append({"event": "preflight_result_observed", "status": result.status, "credential_present": True, "target_model": TARGET_MODEL, "target_present": result.target_present, "provider_outcome_observed": result.provider_outcome_observed, "request_utc": result.request_utc, "response_utc": result.response_utc, "http_status": result.http_status, "error_class": result.error_class, "sdk_invocations": result.sdk_invocations, "http_attempts_observed": result.http_attempts_observed, "http_attempt_count_verified": result.http_attempt_count_verified})
     return result
