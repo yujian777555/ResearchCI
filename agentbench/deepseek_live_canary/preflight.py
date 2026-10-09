@@ -8,10 +8,12 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timezone
 from copy import deepcopy
+import hashlib
 import json
 import os
 from pathlib import Path
 from typing import Any, Callable
+from uuid import uuid4
 
 from .redaction import redact
 
@@ -24,6 +26,8 @@ _ALLOWED_EVENT_KEYS = {
     "request_id", "error_class", "sdk_invocations", "http_attempts_observed",
     "http_attempt_count_verified", "responses_http_attempts_observed",
     "attempt_index", "max_retries", "wire_outcome", "retryable",
+    "run_id", "attempt_id", "event_seq", "previous_event_hash", "event_hash",
+    "consumed",
 }
 
 
@@ -99,6 +103,59 @@ class OfflineModelListClient:
                 raise
 
 
+class AuditedHTTPTransport:
+    """HTTPX transport wrapper used by the real OpenAI-compatible SDK path."""
+
+    def __init__(self, inner: Any, audit: TransportAudit):
+        self.inner = inner
+        self.audit = audit
+
+    def handle_request(self, request: Any) -> Any:
+        self.audit.before_attempt()
+        try:
+            response = self.inner.handle_request(request)
+            request_id = None
+            try:
+                request_id = response.headers.get("x-request-id")
+            except AttributeError:
+                pass
+            self.audit.record_response(status=getattr(response, "status_code", None), request_id=request_id)
+            return response
+        except BaseException as error:
+            self.audit.record_error(error)
+            raise
+
+    def close(self) -> None:
+        close = getattr(self.inner, "close", None)
+        if close is not None:
+            close()
+
+
+def build_audited_models_client(*, api_key: str | None, audit_log: PreflightAuditLog, transport: Any | None = None, base_url: str = "https://api.deepseek.com") -> tuple[Any, TransportAudit]:
+    """构造真实 SDK models.list 链路；无显式注入 transport 时直接禁用。
+
+    R3 不读取环境变量。未来获批 live 入口必须显式传入 key 和 transport/client
+    配置；当前 CLI 永不调用此函数。
+    """
+    if transport is None:
+        raise RuntimeError("DS-1 audited SDK client is disabled without an injected transport")
+    if not api_key:
+        raise ValueError("an explicit credential is required by the separately authorized entrypoint")
+    try:
+        import httpx2
+        from openai import OpenAI
+    except ImportError as error:
+        raise RuntimeError("OpenAI SDK/httpx2 dependencies are unavailable") from error
+    audit = TransportAudit(max_retries=0)
+    audit.bind(audit_log)
+    wrapped = AuditedHTTPTransport(transport, audit)
+    http_client = httpx2.Client(transport=wrapped, trust_env=False)
+    client = OpenAI(api_key=api_key, base_url=base_url, max_retries=0, http_client=http_client)
+    setattr(client, "_ds1_transport_audit", audit)
+    setattr(client, "_ds1_sdk_max_retries", 0)
+    return client, audit
+
+
 @dataclass(frozen=True)
 class PreflightResult:
     status: str
@@ -118,6 +175,10 @@ class PreflightResult:
     http_status: int | None = None
     error_class: str | None = None
     target_metadata: dict[str, Any] | None = None
+    run_id: str | None = None
+    attempt_id: str | None = None
+    primary_event_hash: str | None = None
+    primary_audit_path: str | None = None
 
     @property
     def requests(self) -> int:
@@ -134,21 +195,49 @@ class PreflightResult:
 class PreflightAuditLog:
     """append + flush + fsync 的 primary evidence log。"""
 
-    def __init__(self, path: str | Path):
+    def __init__(self, path: str | Path, *, run_id: str | None = None):
         self.path = Path(path)
+        self.run_id = run_id or uuid4().hex
 
-    def append(self, event: dict[str, Any]) -> None:
+    @staticmethod
+    def _event_hash(event: dict[str, Any]) -> str:
+        payload = json.dumps(event, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        return "sha256:" + hashlib.sha256(payload).hexdigest()
+
+    def append(self, event: dict[str, Any]) -> dict[str, Any]:
         safe = {key: redact(value) for key, value in event.items() if key in _ALLOWED_EVENT_KEYS}
+        existing = self.events() if self.path.exists() else []
+        record = dict(safe)
+        record["run_id"] = self.run_id
+        record["event_seq"] = len(existing) + 1
+        record["previous_event_hash"] = existing[-1].get("event_hash") if existing else None
+        record["event_hash"] = self._event_hash(record)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.path.open("a", encoding="utf-8", newline="\n") as handle:
-            handle.write(json.dumps(safe, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n")
+            handle.write(json.dumps(record, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n")
             handle.flush()
             os.fsync(handle.fileno())
+        return record
 
     def events(self) -> list[dict[str, Any]]:
         if not self.path.exists():
             return []
-        return [json.loads(line) for line in self.path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        events = [json.loads(line) for line in self.path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        previous = None
+        for index, event in enumerate(events, start=1):
+            if event.get("run_id") != self.run_id or event.get("event_seq") != index or event.get("previous_event_hash") != previous:
+                raise ValueError("primary audit ordering or run identity mismatch")
+            claimed = event.get("event_hash")
+            unsigned = {key: value for key, value in event.items() if key != "event_hash"}
+            if claimed != self._event_hash(unsigned):
+                raise ValueError("primary audit integrity mismatch")
+            previous = claimed
+        return events
+
+    @property
+    def integrity_hash(self) -> str | None:
+        events = self.events()
+        return events[-1].get("event_hash") if events else None
 
 
 def atomic_write_json(path: str | Path, value: dict[str, Any]) -> None:
@@ -172,26 +261,58 @@ def canary_eligibility(result: PreflightResult | dict[str, Any]) -> bool:
 
 
 class QualificationGate:
-    """一次 preflight / 一次 canary 的不可重入状态门。"""
+    """一次 preflight / 一次 canary 的不可重入、可回读状态门。"""
 
-    def __init__(self) -> None:
+    def __init__(self, *, audit_log: PreflightAuditLog | None = None, summary_path: str | Path | None = None) -> None:
         self.preflight_consumed = False
         self.canary_consumed = False
-        self._preflight_evidence: PreflightResult | dict[str, Any] | None = None
+        self.audit_log = audit_log
+        self.summary_path = Path(summary_path) if summary_path is not None else None
+        self._preflight_evidence: dict[str, Any] | None = None
+
+    def _persisted_evidence_valid(self, evidence: Any) -> bool:
+        if not isinstance(evidence, dict) or self.audit_log is None or self.summary_path is None or not self.summary_path.exists():
+            return False
+        try:
+            events = self.audit_log.events()
+            readback = json.loads(self.summary_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError, json.JSONDecodeError):
+            return False
+        if readback != evidence or evidence.get("run_id") != self.audit_log.run_id:
+            return False
+        outcomes = [event for event in events if event.get("event") == "preflight_outcome_persisted"]
+        if len(outcomes) != 1 or any(event.get("event") == "canary_admission_consumed" for event in events):
+            return False
+        outcome = outcomes[0]
+        if outcome.get("event_hash") != evidence.get("primary_event_hash"):
+            return False
+        for key in ("status", "target_present", "http_attempts_observed", "http_attempt_count_verified", "provider_outcome_observed"):
+            if outcome.get(key) != evidence.get(key):
+                return False
+        return evidence.get("provider_outcome_persisted") is True
 
     def admit_preflight(self, evidence: PreflightResult | dict[str, Any]) -> bool:
-        """记录一次预检终态；失败、未知或成功都不可自动重试。"""
+        """只接受同一 run 的已落盘 summary + primary outcome；任何尝试均不可重试。"""
         if self.preflight_consumed:
             return False
         self.preflight_consumed = True
-        self._preflight_evidence = deepcopy(evidence)
-        return isinstance(evidence, (PreflightResult, dict))
+        candidate = evidence if isinstance(evidence, dict) else None
+        if candidate is not None and self._persisted_evidence_valid(candidate):
+            self._preflight_evidence = deepcopy(candidate)
+            return True
+        return False
 
     def admit_canary(self, evidence: PreflightResult | dict[str, Any]) -> bool:
-        if not self.preflight_consumed or self.canary_consumed or evidence != self._preflight_evidence or not canary_eligibility(evidence):
+        candidate = evidence if isinstance(evidence, dict) else None
+        if not self.preflight_consumed or self.canary_consumed or candidate is None or candidate != self._preflight_evidence or not canary_eligibility(candidate) or not self._persisted_evidence_valid(candidate):
+            return False
+        try:
+            record = self.audit_log.append({"event": "canary_admission_consumed", "attempt_id": candidate.get("attempt_id"), "consumed": True, "primary_event_hash": candidate.get("primary_event_hash")})
+            self.audit_log.events()
+        except (OSError, ValueError):
             return False
         self.canary_consumed = True
-        return True
+        return bool(record.get("event_hash"))
 
 
 def persist_preflight_result(result: PreflightResult, summary_path: str | Path, audit_log: PreflightAuditLog | None = None) -> dict[str, Any]:
@@ -201,8 +322,11 @@ def persist_preflight_result(result: PreflightResult, summary_path: str | Path, 
         raise TypeError("preflight summary requires PreflightResult")
     if audit_log is None:
         raise ValueError("primary audit log is required")
-    audit_log.append({
-        "event": "preflight_outcome_persisted", "status": result.status,
+    if result.run_id is None or result.run_id != audit_log.run_id:
+        raise ValueError("preflight result run identity does not match primary audit")
+    audit_log.events()
+    outcome = audit_log.append({
+        "event": "preflight_outcome_persisted", "attempt_id": result.attempt_id, "status": result.status,
         "credential_present": result.credential_present, "target_model": result.target_model,
         "target_present": result.target_present, "provider_outcome_observed": result.provider_outcome_observed,
         "provider_outcome_persisted": True, "request_utc": result.request_utc,
@@ -211,9 +335,13 @@ def persist_preflight_result(result: PreflightResult, summary_path: str | Path, 
         "http_attempts_observed": result.http_attempts_observed,
         "http_attempt_count_verified": result.http_attempt_count_verified,
     })
-    persisted = replace(result, provider_outcome_persisted=True)
+    persisted = replace(result, provider_outcome_persisted=True, primary_event_hash=outcome["event_hash"], primary_audit_path=str(audit_log.path.resolve()))
     summary = serialize_preflight_summary(persisted)
+    summary_path = Path(summary_path)
     atomic_write_json(summary_path, summary)
+    readback = json.loads(summary_path.read_text(encoding="utf-8"))
+    if readback != summary:
+        raise ValueError("preflight summary read-back mismatch")
     return summary
 
 
@@ -245,12 +373,14 @@ def _error_status(error: BaseException) -> int | None:
 def run_preflight(*, client_factory: Callable[[str], Any], credential_present: bool, audit_log: PreflightAuditLog | None = None) -> PreflightResult:
     """执行一次受控模型列表调用；没有 wire audit 就明确拒绝 PASS。"""
     started = _utc()
+    run_id = audit_log.run_id if audit_log is not None else uuid4().hex
+    attempt_id = f"{run_id}:preflight"
     if audit_log is not None:
-        audit_log.append({"event": "preflight_start", "preflight_start_utc": started, "credential_present": credential_present, "target_model": TARGET_MODEL})
+        audit_log.append({"event": "preflight_start", "attempt_id": attempt_id, "preflight_start_utc": started, "credential_present": credential_present, "target_model": TARGET_MODEL})
     if not credential_present:
-        result = PreflightResult("BLOCKED_CREDENTIAL_MISSING", False, preflight_start_utc=started)
+        result = PreflightResult("BLOCKED_CREDENTIAL_MISSING", False, preflight_start_utc=started, run_id=run_id, attempt_id=attempt_id)
         if audit_log is not None:
-            audit_log.append({"event": "preflight_blocked_credential_missing", "preflight_start_utc": started})
+            audit_log.append({"event": "preflight_blocked_credential_missing", "attempt_id": attempt_id, "preflight_start_utc": started})
         return result
 
     request_utc = _utc()
@@ -263,7 +393,7 @@ def run_preflight(*, client_factory: Callable[[str], Any], credential_present: b
         if transport is not None and hasattr(transport, "bind"):
             transport.bind(audit_log)
         if audit_log is not None:
-            audit_log.append({"event": "sdk_invocation", "sdk_invocations": sdk_invocations, "request_utc": request_utc, "target_model": TARGET_MODEL})
+            audit_log.append({"event": "sdk_invocation", "attempt_id": attempt_id, "sdk_invocations": sdk_invocations, "request_utc": request_utc, "target_model": TARGET_MODEL})
         response = client.models.list()
         response_utc = _utc()
         items = response.get("data", []) if isinstance(response, dict) else getattr(response, "data", [])
@@ -279,10 +409,10 @@ def run_preflight(*, client_factory: Callable[[str], Any], credential_present: b
         transport_evidence = any(event.get("event") == "transport_attempt" for event in audit_events) and any(event.get("event") == "transport_response" for event in audit_events)
         verified = bool(getattr(transport, "verified", False) and transport_evidence) if transport is not None else False
         status = "PASS" if found is not None and verified and attempts == 1 and response_attempts == 1 else ("FAIL_TRANSPORT_UNVERIFIED" if found is not None else "FAIL_TARGET_MODEL_ABSENT")
-        result = PreflightResult(status, True, target_present=(True if found is not None else False), sdk_invocations=sdk_invocations, http_attempts_observed=attempts, http_attempt_count_verified=verified, responses_http_attempts_observed=response_attempts, provider_outcome_observed=True, preflight_start_utc=started, request_utc=request_utc, response_utc=response_utc, request_id=getattr(response, "_request_id", None), target_metadata=found)
+        result = PreflightResult(status, True, target_present=(True if found is not None else False), sdk_invocations=sdk_invocations, http_attempts_observed=attempts, http_attempt_count_verified=verified, responses_http_attempts_observed=response_attempts, provider_outcome_observed=True, preflight_start_utc=started, request_utc=request_utc, response_utc=response_utc, request_id=getattr(response, "_request_id", None), target_metadata=found, run_id=run_id, attempt_id=attempt_id)
     except BaseException as error:
         transport = getattr(client, "_ds1_transport_audit", None) if client is not None else None
-        result = PreflightResult(classify_preflight_error(error), True, target_present=UNKNOWN, sdk_invocations=sdk_invocations, http_attempts_observed=getattr(transport, "http_attempts", UNKNOWN), http_attempt_count_verified=False, responses_http_attempts_observed=getattr(transport, "responses_http_attempts", UNKNOWN), provider_outcome_observed=False, preflight_start_utc=started, request_utc=request_utc, response_utc=_utc(), http_status=_error_status(error), error_class=classify_preflight_error(error))
+        result = PreflightResult(classify_preflight_error(error), True, target_present=UNKNOWN, sdk_invocations=sdk_invocations, http_attempts_observed=getattr(transport, "http_attempts", UNKNOWN), http_attempt_count_verified=False, responses_http_attempts_observed=getattr(transport, "responses_http_attempts", UNKNOWN), provider_outcome_observed=False, preflight_start_utc=started, request_utc=request_utc, response_utc=_utc(), http_status=_error_status(error), error_class=classify_preflight_error(error), run_id=run_id, attempt_id=attempt_id)
     if audit_log is not None:
         audit_log.append({"event": "preflight_result_observed", "status": result.status, "credential_present": True, "target_model": TARGET_MODEL, "target_present": result.target_present, "provider_outcome_observed": result.provider_outcome_observed, "request_utc": result.request_utc, "response_utc": result.response_utc, "http_status": result.http_status, "error_class": result.error_class, "sdk_invocations": result.sdk_invocations, "http_attempts_observed": result.http_attempts_observed, "http_attempt_count_verified": result.http_attempt_count_verified})
     return result

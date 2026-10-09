@@ -1,0 +1,46 @@
+{
+  "phase": "2B-DS-1-R3",
+  "status": "PASS",
+  "allowed_changes": [
+    "agentbench/deepseek_live_canary/**",
+    "tests/test_phase2b_ds1_r2.py",
+    "tests/test_phase2b_ds1_r3.py",
+    "agentbench/reports/phase2b_ds1_r3_*.json"
+  ],
+  "changed_implementation_files": [
+    "agentbench/deepseek_live_canary/preflight.py",
+    "agentbench/deepseek_live_canary/canary.py",
+    "agentbench/deepseek_live_canary/cli.py",
+    "agentbench/deepseek_live_canary/observation.py"
+  ],
+  "changed_test_files": [
+    "tests/test_phase2b_ds1_r2.py",
+    "tests/test_phase2b_ds1_r3.py"
+  ],
+  "forbidden_changes": [],
+  "forbidden_paths_verified_unchanged": [
+    "src/researchci/**",
+    "src/researchci_agent/**",
+    "benchmarks/**",
+    "agentbench/scenarios/**",
+    "agentbench/workspaces/**",
+    "agentbench/live_protocol/**",
+    "agentbench/deepseek_adapter/**",
+    "agentbench/deepseek_protocol/**",
+    "agentbench/analysis/**",
+    "agentbench/tool_schema.json",
+    "historical phase2b_ds1_*.json",
+    "phase2b_ds1_r1_*.json",
+    "phase2b_ds1_r2_*.json"
+  ],
+  "secret_scan": "PASS: no user credential read or persisted; offline test key is synthetic only",
+  "benchmark_import_scan": "PASS",
+  "network_scan": "PASS: all SDK requests used MockTransport; socket/network calls zero",
+  "counts": {
+    "external_api_calls": 0,
+    "external_network_calls": 0,
+    "credential_reads": 0,
+    "real_live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

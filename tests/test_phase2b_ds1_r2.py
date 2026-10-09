@@ -84,20 +84,18 @@ def test_primary_audit_allowlist_and_redaction(tmp_path):
     assert "sk-secret" not in text and "Authorization" not in text and "headers" not in text
 
 
-def test_canary_gate_requires_durable_verified_pass_and_is_single_use():
-    gate = QualificationGate()
-    evidence = {"status": "PASS", "target_present": True, "http_attempts_observed": 1, "http_attempt_count_verified": True, "provider_outcome_persisted": True}
-    assert gate.admit_preflight(evidence)
-    assert gate.admit_canary(evidence)
-    assert not gate.admit_canary(evidence)
+def test_canary_gate_requires_durable_verified_pass_and_is_single_use(tmp_path):
+    log = PreflightAuditLog(tmp_path / "primary.jsonl")
+    client = OfflineModelListClient(TransportAudit(), response={"data": [{"id": "deepseek-v4-pro"}]})
+    result = run_preflight(client_factory=lambda _: client, credential_present=True, audit_log=log)
+    summary = persist_preflight_result(result, tmp_path / "summary.json", log)
+    gate = QualificationGate(audit_log=log, summary_path=tmp_path / "summary.json")
+    assert gate.admit_preflight(summary)
+    assert gate.admit_canary(summary)
+    assert not gate.admit_canary(summary)
     unpersisted_gate = QualificationGate()
-    unpersisted = dict(evidence, provider_outcome_persisted=False)
-    assert unpersisted_gate.admit_preflight(unpersisted)
-    assert not unpersisted_gate.admit_canary(unpersisted)
-    failed_gate = QualificationGate()
-    assert failed_gate.admit_preflight({"status": "FAIL_PROVIDER"})
-    assert not failed_gate.admit_preflight({"status": "PASS"})
-    assert not failed_gate.admit_canary(evidence)
+    unpersisted = {"status": "PASS", "target_present": True, "http_attempts_observed": 1, "http_attempt_count_verified": True, "provider_outcome_persisted": True}
+    assert not unpersisted_gate.admit_preflight(unpersisted)
     assert not canary_eligibility({"status": "PASS", "target_present": None, "http_attempts_observed": 1, "http_attempt_count_verified": True, "provider_outcome_persisted": True})
 
 
