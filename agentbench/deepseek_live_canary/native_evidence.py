@@ -14,7 +14,10 @@ import stat
 import json
 import secrets
 from .redaction import redact
-from .secure_io import checked_path, private_directory as legacy_private_directory, _owner_sid, secure_file_lock
+from .secure_io import checked_path, owner_only
+import threading
+
+_THREAD_LOCKS: dict[str, threading.RLock] = {}
 
 
 def _identity(info):
@@ -44,7 +47,7 @@ def _windows_api():
 def _windows_open(path, *, directory=False, create=False, write=False, share_write=False):
     import msvcrt
     kernel = _windows_api()
-    access = 0x80 if directory else (0x80000000 | (0x40000000 | 0x10000 | 0x40000 if write else 0))
+    access = 0x80 if directory else (0x80000000 | (0x40000000 | 0x40000 | (0 if share_write else 0x10000) if write else 0))
     flags = 0x00200000 | (0x02000000 if directory else 0)  # OPEN_REPARSE_POINT, BACKUP_SEMANTICS
     handle = kernel.CreateFileW(str(path), access, 1 | (2 if directory or share_write else 0), None,
                                 1 if create else 3, flags, None)
@@ -120,7 +123,9 @@ class PinnedDirectory:
                 _plain(os.fstat(child), directory=True)
                 fd = child
                 self.handles.append((fd, current))
-                if made and os.name != "nt": _private_handle(fd, directory=True)
+                if made:
+                    if os.name == "nt": owner_only(current)
+                    else: _private_handle(fd, directory=True)
             self.fd = fd
             self.validate()
         except BaseException:
@@ -239,7 +244,10 @@ def read_text(path: str | Path, *, locked: bool = False) -> str:
     with lock_context:
         with PinnedDirectory(path.parent, create=False) as parent:
             fd = parent.open(path.name)
-            try: return read_all(fd).decode("utf-8")
+            try:
+                content = read_all(fd).decode("utf-8")
+                parent.validate_file(fd, path.name)
+                return content
             finally: os.close(fd)
 
 
@@ -249,22 +257,18 @@ def atomic_json(path: str | Path, value: dict) -> None:
         with PinnedDirectory(path.parent, create=True) as parent:
             predictable = path.name + ".tmp"
             if parent.exists(predictable): raise RuntimeError("predictable temporary exists")
-            target_identity = PathIdentity(path) if parent.exists(path.name) else None
+            if parent.exists(path.name):
+                raise RuntimeError("summary already published; immutable result cannot be overwritten")
             temporary = f".{path.name}.r5tmp-{secrets.token_hex(16)}"
             fd = parent.open(temporary, write=True, create=True)
             payload = json.dumps(redact(value), ensure_ascii=False, indent=2) + "\n"
             try:
                 write_all(fd, payload.encode("utf-8")); os.fsync(fd)
                 parent.validate_file(fd, temporary)
-                if target_identity is not None: target_identity.validate()
-                parent.validate()
-                os.close(fd); fd = None
-                os.replace(parent.path / temporary, parent.path / path.name)
-                parent.validate()
-                read_fd = parent.open(path.name)
-                try:
-                    if read_all(read_fd).decode("utf-8") != payload: raise RuntimeError("summary readback mismatch")
-                finally: os.close(read_fd)
+                parent.publish(fd, temporary, path.name)
+                os.fsync(fd)
+                if read_all(fd).decode("utf-8") != payload: raise RuntimeError("summary readback mismatch")
+                parent.validate_file(fd, path.name)
                 parent.sync()
             finally:
                 if fd is not None: os.close(fd)
@@ -273,5 +277,34 @@ def atomic_json(path: str | Path, value: dict) -> None:
 @contextmanager
 def evidence_lock(path):
     """固定锁文件句柄；锁住完整的 hash-chain read/append 事务。"""
-    with secure_file_lock(path):
-        yield
+    path = checked_path(path)
+    mutex = _THREAD_LOCKS.setdefault(str(path), threading.RLock())
+    if not mutex.acquire(timeout=10): raise RuntimeError("evidence lock contention")
+    try:
+        with PinnedDirectory(path.parent, create=True) as parent:
+            name = path.name + ".lock"
+            try: fd = parent.open(name, write=True, create=True, share_write=True)
+            except FileExistsError: fd = parent.open(name, write=True, share_write=True)
+            acquired = False
+            try:
+                if os.name == "nt":
+                    import msvcrt
+                    os.lseek(fd, 0, os.SEEK_SET)
+                    msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(fd, fcntl.LOCK_EX)
+                acquired = True
+                parent.validate_file(fd, name)
+                if os.fstat(fd).st_size == 0:
+                    write_all(fd, b"0"); os.fsync(fd)
+                yield
+                parent.validate_file(fd, name)
+            finally:
+                try:
+                    if acquired:
+                        if os.name == "nt":
+                            os.lseek(fd, 0, os.SEEK_SET); msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+                        else: fcntl.flock(fd, fcntl.LOCK_UN)
+                finally: os.close(fd)
+    finally: mutex.release()

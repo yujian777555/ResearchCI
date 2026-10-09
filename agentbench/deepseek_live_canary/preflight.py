@@ -282,8 +282,8 @@ class QualificationGate:
             return False
         try:
             events = self.audit_log.events()
-            readback = json.loads(self.summary_path.read_text(encoding="utf-8"))
-        except (OSError, ValueError, json.JSONDecodeError):
+            readback = json.loads(native_read_text(self.summary_path))
+        except (OSError, ValueError, RuntimeError, json.JSONDecodeError):
             return False
         if readback != evidence or evidence.get("run_id") != self.audit_log.run_id:
             return False

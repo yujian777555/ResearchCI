@@ -1,0 +1,32 @@
+{
+  "phase": "2B-DS-1-R5.1-R2",
+  "status": "PASS",
+  "new_tests": 3,
+  "b1": {
+    "existing_summary": "REJECT explicit immutable target",
+    "predictable_temp": "REJECT",
+    "protected_summary_reader": "PASS fail-closed injection",
+    "native_handle_append_read": "PASS",
+    "native_atomic_publish": "PASS",
+    "fsync_fault": "REJECT",
+    "symlink_real": "SKIPPED_LINK_RUNTIME_VALIDATION_PENDING"
+  },
+  "b2": {
+    "v1_live_before_credential": "REJECT",
+    "v2_gate_position": "before credential and production factory",
+    "precheck_only_post_responses": "REJECT"
+  },
+  "regression": {
+    "total": 431,
+    "passed": 429,
+    "failed": 0,
+    "skipped": 2
+  },
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

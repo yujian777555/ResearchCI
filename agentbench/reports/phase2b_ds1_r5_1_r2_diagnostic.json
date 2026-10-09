@@ -1,0 +1,22 @@
+{
+  "phase": "2B-DS-1-R5.1-R2",
+  "status": "READY_FOR_PLANNER_REVIEW",
+  "planner_amendment_commit": "7f6f68a5f6e537947672254e0587a68fd1828e02",
+  "baseline_r1_implementation": "eb333420cf22b6e7f83b03fa9d28dab2efde0dbe",
+  "blockers_closed": {
+    "B1": "PASS: native pinned handles, immutable summary publish, protected read-back, fail-closed IO faults; link runtime pending on Windows",
+    "B2": "PASS: v2-only LIVE_HTTP before credential callback and production transport factory; v1 remains MOCK_HTTP-only"
+  },
+  "historical_evidence_preserved": true,
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "limitations": [
+    "Windows token cannot create symlink; 2 on-disk link tests SKIPPED and LINK_RUNTIME_VALIDATION_PENDING",
+    "No real provider compatibility or live credential was tested"
+  ]
+}

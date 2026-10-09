@@ -172,22 +172,10 @@ def exclusive_json(path: Path, value: dict) -> None:
 
 @contextmanager
 def secure_file_lock(path: str | Path):
-    """Cross-thread/process lock; contention fails closed rather than guessing order."""
-    path = checked_path(path)
-    lock_path = path.with_name(path.name + ".lock")
-    private_directory(lock_path.parent)
-    lock = _LOCKS.setdefault(str(lock_path), threading.RLock())
-    if not lock.acquire(timeout=10): raise RuntimeError("evidence lock contention")
-    fd = None
-    try:
-        try: fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-        except FileExistsError as error: raise RuntimeError("evidence lock contention") from error
-        owner_only(lock_path); os.write(fd, b"1"); os.fsync(fd)
+    """兼容入口；锁文件同样使用固定父目录及原生句柄。"""
+    from .native_evidence import evidence_lock
+    with evidence_lock(path):
         yield
-    finally:
-        if fd is not None: os.close(fd)
-        try: lock_path.unlink(missing_ok=True)
-        finally: lock.release()
 
 
 class PathIdentity:

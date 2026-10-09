@@ -1,0 +1,32 @@
+{
+  "phase": "2B-DS-1-R5.1-R2",
+  "status": "PASS",
+  "allowed_changes": [
+    "agentbench/deepseek_live_canary/**",
+    "tests/test_phase2b_ds1_r5_1_r2.py",
+    "necessary R5.1 test compatibility assertion",
+    "agentbench/reports/phase2b_ds1_r5_1_r2_*"
+  ],
+  "changed_files": [
+    "authorization.py",
+    "preflight.py",
+    "sdk_client.py",
+    "secure_io.py",
+    "native_evidence.py",
+    "tests/test_phase2b_ds1_r5_1_r2.py"
+  ],
+  "forbidden_changes": [],
+  "historical_reports_unchanged": true,
+  "protocols_unchanged": true,
+  "credential_audit": "PASS",
+  "provider_network_audit": "PASS",
+  "canary_audit": "PASS: PRECHECK_ONLY cannot POST /responses",
+  "link_runtime_validation": "PENDING_WINDOWS_SYMLINK_PERMISSION",
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}
