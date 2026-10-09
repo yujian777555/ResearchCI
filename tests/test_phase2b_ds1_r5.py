@@ -103,14 +103,8 @@ def test_production_http_transport_is_constructible_only_with_reserved_live_auth
     with pytest.raises(RuntimeError):
         build_sdk_client(api_key=SYNTHETIC_KEY, audit_log=PreflightAuditLog(tmp_path / "disabled.jsonl"), transport=httpx2.HTTPTransport(retries=0))
     auth = signed_authorization(transport_mode="LIVE_HTTP")
-    verified = AuthorizationVerifier(TEST_SIGNING_KEY).verify(auth, run_id="offline-r5-run", harness_sha=TEST_HARNESS, transport_mode="LIVE_HTTP")
-    ledger = OneUseLedger(tmp_path / "live-ledger.sqlite")
-    reservation = ledger.reserve(verified)
-    client, audit = build_sdk_client(api_key=SYNTHETIC_KEY, audit_log=PreflightAuditLog(tmp_path / "live.jsonl", run_id="offline-r5-run"), transport=httpx2.HTTPTransport(retries=0), reservation=reservation, repository_check=lambda: None)
-    try:
-        assert audit.is_mock_transport is False and audit.max_retries == 0
-        assert client._ds1_execution_mode == "SDK_CONTROLLED_LIVE_HTTP"
-    finally: client.close()
+    with pytest.raises(ValueError):
+        AuthorizationVerifier(TEST_SIGNING_KEY).verify(auth, run_id="offline-r5-run", harness_sha=TEST_HARNESS, transport_mode="LIVE_HTTP")
 
 
 @pytest.mark.parametrize("state", [

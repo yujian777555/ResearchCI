@@ -2,19 +2,20 @@
   "phase": "2B-DS-1-R5.1",
   "status": "PASS",
   "command": "python -m pytest -q --junitxml <temp>/researchci_ds1_r5_1_junit.xml",
-  "total": 424,
+  "total": 428,
   "failed": 0,
   "errors": 0,
-  "skipped": 1,
+  "skipped": 2,
   "r5_1_new_tests": 12,
   "r5_r4_r3_r2_prelive_regression": "PASS",
   "phase1_phase2a_regression": "PASS",
-  "junit_artifact": "temporary local artifact; one symlink test skipped by OS permission (WinError 1314)",
+  "junit_artifact": "temporary local artifact; 2 symlink tests skipped by Windows permission (WinError 1314)",
   "counts": {
     "external_provider_api_calls": 0,
     "external_provider_network_calls": 0,
     "credential_reads": 0,
     "live_canary_episodes": 0,
     "benchmark_episodes": 0
-  }
+  },
+  "r5_1_r1_new_tests": 16
 }

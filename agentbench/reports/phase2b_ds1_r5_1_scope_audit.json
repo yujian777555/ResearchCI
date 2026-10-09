@@ -5,18 +5,21 @@
     "agentbench/deepseek_live_canary/**",
     "tests/test_phase2b_ds1_r5.py",
     "tests/test_phase2b_ds1_r5_1.py",
-    "agentbench/reports/phase2b_ds1_r5_1_*"
+    "agentbench/reports/phase2b_ds1_r5_1_*",
+    "necessary R5 test compatibility assertion"
   ],
   "changed_implementation_files": [
     "agentbench/deepseek_live_canary/authorization.py",
     "agentbench/deepseek_live_canary/cutover.py",
     "agentbench/deepseek_live_canary/sdk_client.py",
     "agentbench/deepseek_live_canary/preflight.py",
-    "agentbench/deepseek_live_canary/secure_io.py"
+    "agentbench/deepseek_live_canary/secure_io.py",
+    "agentbench/deepseek_live_canary/native_evidence.py"
   ],
   "changed_test_files": [
     "tests/test_phase2b_ds1_r5.py",
-    "tests/test_phase2b_ds1_r5_1.py"
+    "tests/test_phase2b_ds1_r5_1.py",
+    "tests/test_phase2b_ds1_r5_1_r1.py"
   ],
   "forbidden_changes": [],
   "forbidden_paths_verified_unchanged": [

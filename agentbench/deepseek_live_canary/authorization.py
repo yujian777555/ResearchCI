@@ -137,6 +137,8 @@ class AuthorizationVerifier:
         intent, signature = authorization["intent"], authorization["signature"]
         if not isinstance(intent, dict) or set(intent) != (INTENT_V2_FIELDS if intent.get("schema_version") == 2 else INTENT_FIELDS) or not isinstance(signature, str):
             raise ValueError("invalid authorization schema")
+        if transport_mode == "LIVE_HTTP" and intent.get("schema_version") != 2:
+            raise ValueError("LIVE_HTTP requires schema_version=2 public-key authorization")
         payload = canonical(intent)
         if intent["schema_version"] == 2:
             if self._public_key is None or intent["key_id"] != self._key_id or intent["key_id"] in self._revoked_keys or intent["token_id"] in self._revoked_tokens:

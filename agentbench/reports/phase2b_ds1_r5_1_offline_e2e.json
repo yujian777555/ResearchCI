@@ -1,7 +1,7 @@
 {
   "phase": "2B-DS-1-R5.1",
   "status": "PASS",
-  "new_tests": 12,
+  "new_tests": 16,
   "cross_process": {
     "workers": 16,
     "reservation_winners": 1,
@@ -67,5 +67,7 @@
     "synthetic_header_request_id": "REJECTED_FROM_PERSISTENCE",
     "model_catalog": "REJECTED_FROM_PERSISTENCE",
     "api_key": "not_read"
-  }
+  },
+  "symlink_tests_skipped": 2,
+  "secure_file_operations": "native handle layer + fail-closed injection"
 }

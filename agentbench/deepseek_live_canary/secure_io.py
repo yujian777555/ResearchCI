@@ -9,6 +9,13 @@ from pathlib import Path
 import re
 import stat
 import subprocess
+import secrets
+import errno
+from contextlib import contextmanager
+import threading
+from .redaction import redact
+
+_LOCKS: dict[str, threading.RLock] = {}
 
 
 def checked_path(path: str | Path) -> Path:
@@ -66,6 +73,87 @@ def private_directory(path: Path) -> Path:
     return path
 
 
+def _sync_directory(path: Path) -> None:
+    if os.name == "nt":
+        return
+    try:
+        fd = os.open(path, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+        try: os.fsync(fd)
+        finally: os.close(fd)
+    except OSError:
+        raise
+
+
+def secure_append_jsonl(path: str | Path, line: str) -> None:
+    path = checked_path(path)
+    parent = private_directory(path.parent)
+    parent_identity = PathIdentity(parent)
+    flags = os.O_WRONLY | os.O_APPEND | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        fd = os.open(path, flags, 0o600)
+    except OSError:
+        raise
+    try:
+        owner_only(path)
+        before = os.fstat(fd)
+        if path.is_symlink() or (path.stat().st_dev, path.stat().st_ino) != (before.st_dev, before.st_ino):
+            raise RuntimeError("audit path identity changed before append")
+        data = line.encode("utf-8")
+        os.write(fd, data)
+        os.fsync(fd)
+        parent_identity.validate()
+    finally:
+        os.close(fd)
+
+
+def secure_read_text(path: str | Path) -> str:
+    path = checked_path(path)
+    parent_identity = PathIdentity(path.parent)
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        before = os.fstat(fd)
+        if path.is_symlink() or (path.stat().st_dev, path.stat().st_ino) != (before.st_dev, before.st_ino):
+            raise RuntimeError("evidence path identity changed before read")
+        value = os.read(fd, max(1, before.st_size + 1)).decode("utf-8")
+        parent_identity.validate()
+        return value
+    finally:
+        os.close(fd)
+
+
+def secure_atomic_write_json(path: str | Path, value: dict) -> None:
+    path = checked_path(path)
+    parent = private_directory(path.parent)
+    parent_identity = PathIdentity(parent)
+    predictable = path.with_suffix(path.suffix + ".tmp")
+    if predictable.exists() or predictable.is_symlink():
+        raise RuntimeError("predictable temporary file already exists")
+    target_identity = PathIdentity(path) if path.exists() else None
+    tmp = parent / (f".{path.name}.r5tmp-{secrets.token_hex(16)}")
+    fd = os.open(tmp, os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, "O_NOFOLLOW", 0), 0o600)
+    try:
+        owner_only(tmp)
+        payload = json.dumps(redact(value), ensure_ascii=False, indent=2) + "\n"
+        os.write(fd, payload.encode("utf-8"))
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+    try:
+        parent_identity.validate()
+        if target_identity is not None: target_identity.validate()
+        checked_path(tmp)
+        os.replace(tmp, path)
+        owner_only(path)
+        checked_path(path)
+        parent_identity.validate()
+        if secure_read_text(path) != payload:
+            raise RuntimeError("summary read-back mismatch")
+        _sync_directory(parent)
+    except BaseException:
+        try: tmp.unlink(missing_ok=True)
+        finally: raise
+
+
 def exclusive_json(path: Path, value: dict) -> None:
     path = checked_path(path)
     fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, "O_NOFOLLOW", 0), 0o600)
@@ -80,6 +168,26 @@ def exclusive_json(path: Path, value: dict) -> None:
     finally:
         if fd >= 0:
             os.close(fd)
+
+
+@contextmanager
+def secure_file_lock(path: str | Path):
+    """Cross-thread/process lock; contention fails closed rather than guessing order."""
+    path = checked_path(path)
+    lock_path = path.with_name(path.name + ".lock")
+    private_directory(lock_path.parent)
+    lock = _LOCKS.setdefault(str(lock_path), threading.RLock())
+    if not lock.acquire(timeout=10): raise RuntimeError("evidence lock contention")
+    fd = None
+    try:
+        try: fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        except FileExistsError as error: raise RuntimeError("evidence lock contention") from error
+        owner_only(lock_path); os.write(fd, b"1"); os.fsync(fd)
+        yield
+    finally:
+        if fd is not None: os.close(fd)
+        try: lock_path.unlink(missing_ok=True)
+        finally: lock.release()
 
 
 class PathIdentity:

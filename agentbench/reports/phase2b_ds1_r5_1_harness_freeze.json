@@ -4,16 +4,16 @@
   "baseline_r5_commit": "a632bdfa2736824ede804b110d71edf7f5449cbf",
   "deepseek_protocol_hash": "sha256:07cc0a68ec471f796dbc312c39f8386b6ff956d64524043adc11632c4bb448fe",
   "stats_protocol_hash": "sha256:e6e262d95c55611f48541637a7ffbb8d75421632324030b52b0dd03477b5a083",
-  "source_bundle_hash": "sha256:4449074c3902e6161c55313e32544f2796ceeb80b19f675d6e9e14a611bfab05",
-  "authorization_hash": "sha256:0629b78d80f5efffa6ae7460b1bb7a7a713f32bc9ed99ac707f8efb43717f43f",
+  "source_bundle_hash": "sha256:077b13c9873cb8281949eab24da28a6957ffb1a6ab4d18110f68a1fede3f502e",
+  "authorization_hash": "sha256:de2de7ab593f7412cc2b8494f1a0c4e50755efda1c45874a42f88ae74d6d8313",
   "cutover_hash": "sha256:487e45ee6c161bd1e16e76185577e2a52bf7c778d38c3088a579be61b826bf9e",
-  "secure_io_hash": "sha256:927afb4d6bef9837917587e296cd174bdb4c0b8d78be717bd84da933a44e9d02",
-  "sdk_factory_hash": "sha256:6bf170634f64a14eb55b1cf9bd35cb09b60f6bf1a1e7aa62cccbd9a04cfcda74",
-  "preflight_hash": "sha256:af490f7b1b02e815439a952462c8ca8555b7893133fcce8af0b50d3aab55d517",
+  "secure_io_hash": "sha256:69adc46b32826b65de0c1d3c61c5dba0857bdd57c08687c190143dd8ab321b4e",
+  "sdk_factory_hash": "sha256:680322c20f59e7448e77dabc9a17e0a9c83a0a2eb8a3fca7fc184e40a7deeb91",
+  "preflight_hash": "sha256:ab02d778d1011a98081ae6af73ea43cbcc5bed7407459714bc36662626ab2622",
   "authorization_schema_hash": "sha256:2b88acdcff6ec688b22c02cdddc844c67f03be4ef4805bfa08a2fe9302a7fb1a",
   "ledger_schema_hash": "sha256:b19ff6442d8f3946d105601d70319e1ef1563457fb17f3bee5b5dcf94e4b2416",
-  "r5_1_tests_hash": "sha256:bc3f63cac74dc7f7d372cc2e337e81ba470347f9cd06c0087482a78cc860365b",
-  "r5_tests_hash": "sha256:0c96fb0e78301dace718fe02ee517870726c85a912a7e13ceb0013301f3c1678",
+  "r5_1_tests_hash": "sha256:86c38f6dd801103228670113f44c601f9acb5b7fe4a82455c42ed9e0405df5fe",
+  "r5_tests_hash": "sha256:8e2e16b973d4456de57e2a3d0c0c896c67c730897ad05240a6477d7abfaf98d6",
   "provider_request_contract_hash": "sha256:dfff59d58255cb1cebe5b69b3bc8995025778f5c2b2f77b66444ad39fdbfa226",
   "system_prompt_hash": "sha256:298a49f20b6b0effec7f2fe756cb97be5e48a244388456911cc611226972f317",
   "tool_schema_hash": "sha256:e77bb4e27f8e69da4e9b7ce2e13926cf27a4f752b871fc88c94bd8cf7291e5f3",
@@ -42,5 +42,7 @@
     "live_canary_episodes": 0,
     "benchmark_episodes": 0
   },
-  "historical_failure_preserved": true
+  "historical_failure_preserved": true,
+  "native_evidence_hash": "sha256:637de3b53286e619bccbaaee2e788968b3ee09a2e688ff2edf70236ebec4827f",
+  "r5_1_r1_tests_hash": "sha256:35a598837c3f17283d82469614f142fdeaea5bd2cb8e21dd101762a3a864f3a8"
 }

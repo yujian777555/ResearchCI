@@ -9,7 +9,7 @@
 - 账本：SQLite `FULL` 同步事务、唯一 token/run/hash、hash-chain、外部 claim tombstone、单向状态转换；跨进程 16 竞争仅 1 个赢家。
 - 故障：audit append/fsync、summary 写入、timeout/connection、HTTP_STARTED 崩溃、结果未知均拒绝自动重试。
 - 传输：同一 R4 SDK factory；`HTTPTransport` 仅有 v2 reservation 才可构造，`max_retries=0`、transport retries=0、TLS、`trust_env=False`、无重定向、900 秒超时。
-- 文件：仓库外 ledger/evidence 路径拒绝遍历、链接/reparse point；POSIX 使用 owner-only 权限，Windows 应用 owner + SYSTEM ACL；敏感值不写入 audit/summary。
+- 文件：仓库外 ledger/evidence 路径使用 native handle layer 固定祖先目录、拒绝链接/reparse/遍历、唯一临时名与不可覆盖发布；POSIX 使用 owner-only 权限，Windows 应用 owner + SYSTEM ACL；敏感值不写入 audit/summary。
 
 ## 剩余风险与威胁边界
 
@@ -19,7 +19,7 @@
 4. 当前有效 v2 线上授权必须由独立操作者产生；仓库只包含离线 synthetic fixtures，不包含可用生产授权。
 5. 任何 ledger/audit/summary 持久化不确定均进入 `UNKNOWN`，不允许转换为 PASS 或启动 canary。
 
-测试限制：当前 Windows 执行环境未授予创建 symlink 的权限，因此 symlink 替换测试被 pytest skip；代码路径检查仍以 fail-closed 实现，实际 symlink/reparse 运行时未在本机生成样本。
+测试限制：当前 Windows 执行环境未授予创建 symlink 的权限，因此 2 个 symlink 替换测试被 pytest skip；代码路径检查和 native handle policy 仍以 fail-closed 实现，实际 symlink/reparse 运行时未在本机生成样本。
 
 ## 结论
 

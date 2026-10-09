@@ -17,6 +17,8 @@ from typing import Any, Callable
 from uuid import uuid4
 
 from .redaction import redact
+from .secure_io import secure_append_jsonl, secure_read_text, secure_atomic_write_json, secure_file_lock
+from .native_evidence import append_line as native_append_line, read_text as native_read_text, atomic_json as native_atomic_json
 
 TARGET_MODEL = "deepseek-v4-pro"
 UNKNOWN = None
@@ -213,24 +215,21 @@ class PreflightAuditLog:
         return "sha256:" + hashlib.sha256(payload).hexdigest()
 
     def append(self, event: dict[str, Any]) -> dict[str, Any]:
-        safe = {key: redact(value) for key, value in event.items() if key in _ALLOWED_EVENT_KEYS}
-        existing = self.events() if self.path.exists() else []
-        record = dict(safe)
-        record["run_id"] = self.run_id
-        record["event_seq"] = len(existing) + 1
-        record["previous_event_hash"] = existing[-1].get("event_hash") if existing else None
-        record["event_hash"] = self._event_hash(record)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self.path.open("a", encoding="utf-8", newline="\n") as handle:
-            handle.write(json.dumps(record, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n")
-            handle.flush()
-            os.fsync(handle.fileno())
+        with secure_file_lock(self.path):
+            safe = {key: redact(value) for key, value in event.items() if key in _ALLOWED_EVENT_KEYS}
+            existing = self._events_unlocked() if self.path.exists() else []
+            record = dict(safe)
+            record["run_id"] = self.run_id
+            record["event_seq"] = len(existing) + 1
+            record["previous_event_hash"] = existing[-1].get("event_hash") if existing else None
+            record["event_hash"] = self._event_hash(record)
+            native_append_line(self.path, json.dumps(record, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n", locked=True)
         return record
 
-    def events(self) -> list[dict[str, Any]]:
+    def _events_unlocked(self) -> list[dict[str, Any]]:
         if not self.path.exists():
             return []
-        events = [json.loads(line) for line in self.path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        events = [json.loads(line) for line in native_read_text(self.path, locked=True).splitlines() if line.strip()]
         previous = None
         for index, event in enumerate(events, start=1):
             if event.get("run_id") != self.run_id or event.get("event_seq") != index or event.get("previous_event_hash") != previous:
@@ -242,6 +241,10 @@ class PreflightAuditLog:
             previous = claimed
         return events
 
+    def events(self) -> list[dict[str, Any]]:
+        with secure_file_lock(self.path):
+            return self._events_unlocked()
+
     @property
     def integrity_hash(self) -> str | None:
         events = self.events()
@@ -249,14 +252,7 @@ class PreflightAuditLog:
 
 
 def atomic_write_json(path: str | Path, value: dict[str, Any]) -> None:
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    with temporary.open("w", encoding="utf-8", newline="\n") as handle:
-        handle.write(json.dumps(redact(value), ensure_ascii=False, indent=2) + "\n")
-        handle.flush()
-        os.fsync(handle.fileno())
-    temporary.replace(path)
+    native_atomic_json(path, value)
 
 
 def serialize_preflight_summary(result: PreflightResult) -> dict[str, Any]:
@@ -352,7 +348,7 @@ def persist_preflight_result(result: PreflightResult, summary_path: str | Path, 
     summary = serialize_preflight_summary(persisted)
     summary_path = Path(summary_path)
     atomic_write_json(summary_path, summary)
-    readback = json.loads(summary_path.read_text(encoding="utf-8"))
+    readback = json.loads(native_read_text(summary_path))
     if readback != summary:
         raise ValueError("preflight summary read-back mismatch")
     return summary
