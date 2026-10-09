@@ -17,5 +17,6 @@
     "live_canary_episodes": 0,
     "benchmark_episodes": 0
   },
-  "r5_1_r1_new_tests": 16
+  "r5_1_r1_new_tests": 16,
+  "passed": 426
 }
