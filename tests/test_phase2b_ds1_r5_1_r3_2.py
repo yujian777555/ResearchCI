@@ -64,3 +64,21 @@ def test_dirty_or_stale_repository_reject_before_callback_and_factory(tmp_path):
     bad=lambda _: RepositoryState('changed',TEST_HARNESS,'main',False,TEST_HARNESS,time.monotonic())
     with pytest.raises(RuntimeError): execute_replacement_preflight(authorization=auth,verifier=AuthorizationVerifier(public_key_pem=pub,key_id='r3-1-key'),ledger_path=tmp_path/'ledger.sqlite',output_dir=tmp_path/'evidence',repo_root=ROOT,run_id='r3-1-run',expected_harness_sha=TEST_HARNESS,credential_provider=lambda: cb.append(1) or SYNTHETIC_KEY,transport_factory=lambda: factory.append(1) or httpx2.MockTransport(lambda req: None),state_reader=bad)
     assert cb==[] and factory==[]
+
+
+def test_live_mode_requires_fresh_remote_before_callback_and_factory(tmp_path):
+    auth,pub=auth_for(tmp_path)
+    callbacks=[]; factories=[]
+    states=[state(tmp_path), RepositoryState("changed", TEST_HARNESS, "main", True, TEST_HARNESS, __import__("time").monotonic())]
+    def reader(_): return states.pop(0)
+    with pytest.raises(RuntimeError):
+        execute_replacement_preflight(authorization=auth,verifier=AuthorizationVerifier(public_key_pem=pub,key_id="r3-1-key"),ledger_path=tmp_path/"ledger.sqlite",output_dir=tmp_path/"evidence",repo_root=ROOT,run_id="r3-1-run",expected_harness_sha=TEST_HARNESS,credential_provider=lambda: callbacks.append(1) or SYNTHETIC_KEY,transport_factory=lambda: factories.append(1) or httpx2.MockTransport(lambda req: httpx2.Response(200,json={"data":[]},request=req)),state_reader=reader)
+    assert callbacks==[] and factories==[]
+
+
+def test_live_security_mode_stays_live_under_mock_wire_injection(tmp_path):
+    auth,pub=auth_for(tmp_path)
+    out,callbacks,factories,requests=execute(tmp_path,auth,pub)
+    assert out["authorization_transport_mode"]=="LIVE_HTTP"
+    assert out["execution_security_mode"]=="LIVE_HTTP"
+    assert out["wire_backend"]=="MOCK_TRANSPORT" and out["is_test_injection"] is True

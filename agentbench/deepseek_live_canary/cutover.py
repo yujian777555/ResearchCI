@@ -36,7 +36,7 @@ def execute_replacement_preflight(*, authorization: Any, verifier: Authorization
     mode = "MOCK_HTTP" if isinstance(transport, httpx2.MockTransport) else "LIVE_HTTP"
     approval = verifier.verify(authorization, run_id=run_id, harness_sha=expected_harness_sha, transport_mode=mode)
     def repository_check():
-        validate_repository(state_reader(root), expected_harness_sha)
+        validate_repository(state_reader(root), expected_harness_sha, require_fresh=(mode == "LIVE_HTTP"))
     repository_check()
     ledger = OneUseLedger(ledger_path)
     reservation = ledger.reserve(approval, repo_root=root)
@@ -70,6 +70,10 @@ def execute_replacement_preflight(*, authorization: Any, verifier: Authorization
             "http_attempt_count_verified": summary["http_attempt_count_verified"], "primary_event_hash": summary["primary_event_hash"]})
         return {**summary, "ledger_state": state, "authorization_hash": approval.authorization_hash,
                 "sdk_invocations_by_endpoint": dict(audit.sdk_invocations_by_endpoint),
+                "authorization_transport_mode": audit.authorization_transport_mode,
+                "execution_security_mode": audit.execution_security_mode,
+                "wire_backend": audit.wire_backend,
+                "is_test_injection": audit.is_test_injection,
                 "mock_http_attempts": audit.http_attempts if mode == "MOCK_HTTP" else 0,
                 "actual_external_network_calls": audit.actual_external_network_calls}
     except BaseException:

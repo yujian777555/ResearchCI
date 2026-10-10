@@ -1,0 +1,33 @@
+{
+  "phase": "2B-DS-1-R5.1-R3.2",
+  "status": "HARNESS_FROZEN",
+  "baseline_r3_1_commit": "af897168d1e88981317e490ec43168c291139b1b",
+  "source_bundle_hash": "sha256:bd3389632903fb58bbc563da9eff003af640c63d9c44767f3076da478bc7c355",
+  "authorization_hash": "sha256:255e0aeef31deb58ff7ef746fb497240d4e56a7391b110cc938e9b2a20aaa998",
+  "cutover_hash": "sha256:c887ccf2c83261315eb62a824226d8ee6db1849d6bcdf46c6bef9c8f143862ed",
+  "sdk_factory_hash": "sha256:32306953bfee098bf5d6cd59a709f124fa16de6d19f00972deffdd1917cc5420",
+  "preflight_hash": "sha256:6cefe1dbc4e3debf6f8b43959cb3cf09dc7bfb5ddf7d88cd4b9a7ae4e6d4b402",
+  "r3_tests_hash": "sha256:44d7b8f51246e9ad71fb51a6ecda449d911a7dd653c85af6b291777a97d889fd",
+  "r3_2_tests_hash": "sha256:9cd84c4af34b3715761a73ea77f4c6096a49ef9e6820128d42baa2f29dc10aab",
+  "provenance_manifest": "agentbench/reports/phase2b_ds1_r5_1_r3_evidence_provenance.json",
+  "deepseek_protocol_hash": "sha256:07cc0a68ec471f796dbc312c39f8386b6ff956d64524043adc11632c4bb448fe",
+  "stats_protocol_hash": "sha256:e6e262d95c55611f48541637a7ffbb8d75421632324030b52b0dd03477b5a083",
+  "transport_contract": {
+    "base_url": "https://api.deepseek.com",
+    "max_retries": 0,
+    "transport_retries": 0,
+    "tls_verify": true,
+    "trust_env": false,
+    "timeout_seconds": 900
+  },
+  "stage": "PRECHECK_ONLY",
+  "live_authorized": false,
+  "link_runtime": "PENDING_WINDOWS_SYMLINK_PERMISSION",
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

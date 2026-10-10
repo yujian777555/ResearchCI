@@ -1,0 +1,32 @@
+{
+  "phase": "2B-DS-1-R5.1-R3.2",
+  "status": "PASS",
+  "new_tests": 14,
+  "v2_positive": {
+    "authorization_verified": true,
+    "fresh_remote_verified": true,
+    "ledger_reservation_count": 1,
+    "credential_callbacks": 1,
+    "transport_factory_calls": 1,
+    "sdk_models_list_calls": 1,
+    "mock_get_models_attempts": 1,
+    "real_external_network_attempts": 0,
+    "post_responses_attempts": 0,
+    "canary_episodes": 0,
+    "authorization_transport_mode": "LIVE_HTTP",
+    "execution_security_mode": "LIVE_HTTP",
+    "wire_backend": "MOCK_TRANSPORT",
+    "is_test_injection": true
+  },
+  "negative_policy": "PASS: each re-signed policy error denied before callback/factory; token identity only tested through real ledger binding",
+  "freshness_negative": "PASS: wrong/stale/changed state denied before callback/factory",
+  "history": "PASS: provenance correction manifest retained",
+  "windows_links": "SKIPPED/LINK_RUNTIME_VALIDATION_PENDING",
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

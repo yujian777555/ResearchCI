@@ -1,0 +1,19 @@
+{
+  "phase": "2B-DS-1-R5.1-R3.2",
+  "status": "READY_FOR_PLANNER_REVIEW",
+  "baseline_r3_1_commit": "af897168d1e88981317e490ec43168c291139b1b",
+  "implementation_parent": "db05e0b1f9f595f46816de629bf93fe28bc44c25",
+  "planner_prompt_commit": "9173815540974487157c68f8a1f173325baa0202",
+  "A_live_freshness": "PASS: factory, credential admission and pre-wire use fresh repository_check for LIVE_HTTP",
+  "B_mode_isolation": "PASS: authorization/execution mode LIVE_HTTP remains distinct from MOCK_TRANSPORT backend",
+  "C_signed_policy": "PASS: v2 resigning matrix and 0 callback/factory on rejection",
+  "D_history": "PASS: append-only correction manifest recorded prior historical report changes",
+  "E_windows": "PENDING: runtime symlink/junction lane unavailable",
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

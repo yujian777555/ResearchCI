@@ -1,0 +1,13 @@
+{
+  "phase": "2B-DS-1-R5.1-R3.2",
+  "status": "APPEND_ONLY_CORRECTION",
+  "prior_manifest": "agentbench/reports/phase2b_ds1_r5_1_r3_evidence_provenance.json",
+  "prior_manifest_preserved": true,
+  "historical_reports_rewritten_in_r3_2": false,
+  "corrections": "R3.1 historical report modifications remain documented by the prior provenance manifest; R3.2 adds no rewrite and no experimental fact changes.",
+  "baseline_commits": {
+    "r3": "db05e0b1f9f595f46816de629bf93fe28bc44c25",
+    "r3_1": "ad0ba315b6fbd7273b7587948a862c25e4d68ea0",
+    "r3_1_reports": "af897168d1e88981317e490ec43168c291139b1b"
+  }
+}

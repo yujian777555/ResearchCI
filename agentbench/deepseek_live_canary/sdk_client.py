@@ -31,6 +31,11 @@ class SDKTransportAudit(TransportAudit):
     reservation: Any = field(default=None, repr=False)
     repository_check: Any = field(default=None, repr=False)
     is_mock_transport: bool = True
+    authorization_transport_mode: str = "UNKNOWN"
+    execution_security_mode: str = "UNKNOWN"
+    wire_backend: str = "UNKNOWN"
+    is_test_injection: bool = False
+    mock_wire_attempts: int = 0
 
 
 class AuditedSDKTransport(httpx2.BaseTransport):
@@ -50,8 +55,8 @@ class AuditedSDKTransport(httpx2.BaseTransport):
                 audit.reservation.deny_canary()
             audit.repository_check()
             audit.reservation.validate("RESERVED")
-            if not audit.is_mock_transport:
-                audit.reservation.validate_live_execution()
+            if audit.execution_security_mode == "LIVE_HTTP":
+                audit.reservation.validate_live_execution(audit.repository_check)
         audit.attempts_by_endpoint[endpoint] += 1
         # 原文只留在内存中，供最终 wire JSON 与 replay 一致性验证。
         import json
@@ -95,6 +100,8 @@ class _AuditedResource:
                 audit.reservation.deny_canary()
             audit.repository_check()
             audit.reservation.validate("RESERVED")
+            if audit.execution_security_mode == "LIVE_HTTP":
+                audit.reservation.validate_live_execution(audit.repository_check)
         audit.sdk_invocations_by_endpoint[endpoint] += 1
         index = audit.sdk_invocations_by_endpoint[endpoint]
         attempt_id = f"{audit._log.run_id}:{endpoint}:{index}"
@@ -176,6 +183,10 @@ def build_sdk_client(*, api_key: str | None, audit_log: PreflightAuditLog,
             is_mock = True
     audit = SDKTransportAudit(max_retries=0)
     audit.reservation, audit.repository_check, audit.is_mock_transport = reservation, repository_check, is_mock
+    audit.authorization_transport_mode = reservation.intent["transport_mode"] if reservation is not None else ("MOCK_HTTP" if is_mock else "UNKNOWN")
+    audit.execution_security_mode = audit.authorization_transport_mode
+    audit.wire_backend = "MOCK_TRANSPORT" if is_mock else "HTTPTRANSPORT"
+    audit.is_test_injection = bool(transport_factory is not None or is_mock)
     audit.bind(audit_log)
     timeout = httpx2.Timeout(float(BudgetConfig().timeout_seconds))
     http_client = httpx2.Client(transport=AuditedSDKTransport(transport, audit), trust_env=False,
