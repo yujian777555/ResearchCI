@@ -1,0 +1,7 @@
+{
+  "phase": "2B-DS-1-R5.1-R3.1",
+  "status": "APPEND_ONLY_CORRECTION",
+  "prior_report_prefix": "phase2b_ds1_r5_1_r3_*",
+  "new_report_prefix": "phase2b_ds1_r5_1_r3_1_*",
+  "reason": "R3.1 report names corrected to the Planner-required suffix; prior R3 reports unchanged"
+}

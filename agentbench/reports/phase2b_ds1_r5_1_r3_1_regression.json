@@ -1,0 +1,20 @@
+{
+  "phase": "2B-DS-1-R5.1-R3.1",
+  "status": "PASS",
+  "command": "python -m pytest -q --junitxml <temp>/researchci_ds1_r5_1_r3_junit.xml",
+  "total": 443,
+  "passed": 441,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 2,
+  "r3_new_tests": 12,
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "skip_reason": "2 Windows symlink tests skipped due WinError 1314; LINK_RUNTIME_VALIDATION_PENDING",
+  "r3_1_implementation_commit": "ad0ba315b6fbd7273b7587948a862c25e4d68ea0"
+}
