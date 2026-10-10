@@ -1,0 +1,255 @@
+{
+  "phase": "2B-DS-1-R5.1-ENV-AUDIT",
+  "status": "WINDOWS_RUNTIME_VALIDATION_FAILED",
+  "live_activation": "BLOCKED",
+  "baseline_commit": "b3e5338f5045686c60db42f322147cb57b0aeac7",
+  "environments": {
+    "linux": {
+      "os": "Linux",
+      "kernel": "6.18.40.1-microsoft-standard-WSL2",
+      "platform": "Linux-6.18.40.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+      "python": "3.10.12",
+      "python_executable": "/usr/bin/python3",
+      "uid": 1000,
+      "euid": 1000,
+      "user": "yujian",
+      "developer_mode": "NOT_APPLICABLE",
+      "symlink_capability": true
+    },
+    "windows": {
+      "os": "Windows-10-10.0.26200-SP0",
+      "os_name": "Windows",
+      "python": "3.10.1",
+      "python_executable": "C:\\Program Files\\Python310\\python.exe",
+      "identity": "desktop-tvsk9sh\\于舰",
+      "privileges": "PRIVILEGES INFORMATION\n----------------------\n\nPrivilege Name                Description                          State   \n============================= ==================================== ========\nSeShutdownPrivilege           Shut down the system                 Disabled\nSeChangeNotifyPrivilege       Bypass traverse checking             Enabled \nSeUndockPrivilege             Remove computer from docking station Disabled\nSeIncreaseWorkingSetPrivilege Increase a process working set       Disabled\nSeTimeZonePrivilege           Change the time zone                 Disabled",
+      "systeminfo_os": [
+        "OS Name:                       Microsoft Windows 11 家庭版 中文版",
+        "OS Version:                    10.0.26200 N/A Build 26200"
+      ],
+      "is_admin_hint": true,
+      "se_create_symbolic_link_privilege": false,
+      "developer_mode": "DISABLED_OR_NOT_SET"
+    }
+  },
+  "runtime_matrix": {
+    "linux": [
+      {
+        "test": "Linux audit symlink",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "native append rejected real symlink",
+        "outside_unchanged": true,
+        "error": "RuntimeError",
+        "test_id": "audit_symlink"
+      },
+      {
+        "test": "Linux summary symlink",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "native atomic write rejected real symlink",
+        "outside_unchanged": true,
+        "error": "RuntimeError",
+        "test_id": "summary_symlink"
+      },
+      {
+        "test": "Linux parent directory symlink",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "native parent path validation rejected real symlink",
+        "outside_unchanged": true,
+        "error": "RuntimeError",
+        "test_id": "parent_symlink"
+      },
+      {
+        "test": "Linux TOCTOU replacement",
+        "result": "FAIL",
+        "runtime_verified": true,
+        "detail": "RuntimeError: identity change was not detected",
+        "test_id": "toctou"
+      },
+      {
+        "test": "Linux hardlink",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "native single-link invariant rejected hardlink",
+        "outside_unchanged": true,
+        "error": "RuntimeError",
+        "test_id": "hardlink"
+      },
+      {
+        "test": "Linux permission failure",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "read-only evidence file rejected write",
+        "unchanged": true,
+        "error": "PermissionError",
+        "test_id": "permissions"
+      },
+      {
+        "test": "Linux audit hash chain",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "real append/fsync/read-back chain verified",
+        "event_count": 2,
+        "integrity_hash": "sha256:457bd581c9abc6b70cd766a60306a03a6dbdef6c5700ee529cb986e5cb97117e",
+        "test_id": "hash_chain"
+      },
+      {
+        "test": "Linux summary atomic read-back",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "real atomic publish and read-back verified",
+        "value": {
+          "status": "PASS",
+          "runtime": "linux"
+        },
+        "test_id": "summary_readback"
+      }
+    ],
+    "windows": [
+      {
+        "test": "audit symlink",
+        "result": "ENVIRONMENT_BLOCKED",
+        "runtime_verified": false,
+        "detail": "WINDOWS_RUNTIME_PERMISSION_BLOCKED: real file symlink unavailable",
+        "winerror": 1314,
+        "test_id": "audit_symlink"
+      },
+      {
+        "test": "summary symlink",
+        "result": "ENVIRONMENT_BLOCKED",
+        "runtime_verified": false,
+        "detail": "WINDOWS_RUNTIME_PERMISSION_BLOCKED: real file symlink unavailable",
+        "winerror": 1314,
+        "test_id": "summary_symlink"
+      },
+      {
+        "test": "parent directory symlink",
+        "result": "ENVIRONMENT_BLOCKED",
+        "runtime_verified": false,
+        "detail": "WINDOWS_RUNTIME_PERMISSION_BLOCKED: real directory symlink unavailable",
+        "winerror": 1314,
+        "test_id": "parent_directory_symlink"
+      },
+      {
+        "test": "directory junction",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "audit, summary, and read-back paths reject junction",
+        "outside_unchanged": true,
+        "error": "RuntimeError",
+        "test_id": "junction"
+      },
+      {
+        "test": "reparse point",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "native reparse attribute and path rejection verified",
+        "file_attribute_reparse_point": true,
+        "error": "RuntimeError",
+        "test_id": "reparse_point"
+      },
+      {
+        "test": "hardlink",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "native single-link invariant rejected hardlink",
+        "outside_unchanged": true,
+        "error": "RuntimeError",
+        "test_id": "hardlink"
+      },
+      {
+        "test": "target replacement / immutable summary",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "existing summary cannot be replaced",
+        "unchanged": true,
+        "error": "RuntimeError",
+        "test_id": "target_replacement"
+      },
+      {
+        "test": "TOCTOU target replacement",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "Windows handle sharing denied replacement while evidence handle was pinned",
+        "replacement_blocked": true,
+        "test_id": "toctou_replacement"
+      },
+      {
+        "test": "permission/fsync failure",
+        "result": "PASS",
+        "runtime_verified": false,
+        "detail": "fsync failure propagated without success",
+        "summary_absent": true,
+        "error": "OSError",
+        "test_id": "permission_failure"
+      },
+      {
+        "test": "audit hash chain",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "append/fsync/read-back chain verified",
+        "event_count": 2,
+        "integrity_hash": "sha256:3a80c88037dfab99c888193505b0a1a92c67a78d08535a6f1f38efe295f3b267",
+        "test_id": "audit_chain"
+      },
+      {
+        "test": "summary atomic write/read-back",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "atomic publish and read-back verified",
+        "value": {
+          "status": "PASS",
+          "run_id": "r3-3-runtime"
+        },
+        "test_id": "summary_readback"
+      },
+      {
+        "test": "path identity / traversal",
+        "result": "PASS",
+        "runtime_verified": true,
+        "detail": "parent traversal rejected",
+        "error": "RuntimeError",
+        "test_id": "path_identity"
+      }
+    ]
+  },
+  "linux_summary": {
+    "pass": 7,
+    "fail": 1,
+    "skipped": 0,
+    "not_run": 0
+  },
+  "windows_summary": {
+    "pass": 9,
+    "fail": 0,
+    "skipped": 0,
+    "not_run": 0,
+    "environment_blocked": 3
+  },
+  "security_defects": [
+    {
+      "classification": "BLOCKED_SECURITY_DEFECT",
+      "test_id": "toctou",
+      "detail": "RuntimeError: identity change was not detected",
+      "action": "Do not modify frozen security logic in this phase; Planner review required."
+    }
+  ],
+  "regression": {
+    "command": "python -m pytest -q",
+    "collected": 469,
+    "passed": 467,
+    "skipped": 2,
+    "failed": 0
+  },
+  "network": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "protocols_modified": false,
+  "security_logic_modified": false
+}

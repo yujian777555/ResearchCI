@@ -1,0 +1,43 @@
+{
+  "phase": "2B-DS-1-R5.1-ENV-AUDIT",
+  "baseline_commit": "b3e5338f5045686c60db42f322147cb57b0aeac7",
+  "branch": "main",
+  "allowed_changes": [
+    "tests/phase2b_ds1_r5_1_env_audit_linux.py",
+    "agentbench/reports/phase2b_ds1_r5_1_env_*"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_r5_1_env_audit.json",
+    "agentbench/reports/phase2b_ds1_r5_1_env_security_review.md",
+    "agentbench/reports/phase2b_ds1_r5_1_env_scope_audit.json",
+    "tests/phase2b_ds1_r5_1_env_audit_linux.py"
+  ],
+  "forbidden_paths": [
+    "agentbench/deepseek_live_canary/authorization.py",
+    "agentbench/deepseek_live_canary/cutover.py",
+    "agentbench/deepseek_live_canary/sdk_client.py",
+    "agentbench/deepseek_live_canary/native_evidence.py",
+    "agentbench/deepseek_live_canary/secure_io.py",
+    "src/researchci/**",
+    "benchmarks/**",
+    "historical reports",
+    "DeepSeek protocol",
+    "STATS protocol"
+  ],
+  "forbidden_changes_detected": false,
+  "protocols_modified": false,
+  "security_logic_modified": false,
+  "security_defects": [
+    {
+      "classification": "BLOCKED_SECURITY_DEFECT",
+      "test_id": "linux.toctou",
+      "status": "UNFIXED_BY_INSTRUCTION",
+      "action": "Planner review required before any security logic change"
+    }
+  ],
+  "network_calls": 0,
+  "credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "FAIL_SECURITY_DEFECT"
+}
