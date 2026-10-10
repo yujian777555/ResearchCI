@@ -150,7 +150,8 @@ class AuditedSDKClient:
 
 def build_sdk_client(*, api_key: str | None, audit_log: PreflightAuditLog,
                      transport: Any = None, base_url: str = BASE_URL,
-                     reservation: Any = None, repository_check: Any = None) -> tuple[AuditedSDKClient, SDKTransportAudit]:
+                     reservation: Any = None, repository_check: Any = None,
+                     transport_factory: Any = None) -> tuple[AuditedSDKClient, SDKTransportAudit]:
     """无环境变量读取；真实传输只能由已消费的独立授权在本函数构造。"""
     is_mock = isinstance(transport, httpx2.MockTransport)
     if reservation is not None:
@@ -163,17 +164,17 @@ def build_sdk_client(*, api_key: str | None, audit_log: PreflightAuditLog,
             raise RuntimeError("transport/run authorization mismatch")
     if not is_mock and reservation is None:
         raise RuntimeError("production transport is disabled without a reserved authorization")
-    if not is_mock:
-        reservation.validate_live_execution()
     if base_url != BASE_URL:
         raise ValueError("frozen DeepSeek base URL cannot be changed")
     if not isinstance(api_key, str) or not api_key:
         raise ValueError("explicit credential required; environment lookup is disabled")
+    if not is_mock:
+        transport = transport_factory() if transport_factory is not None else httpx2.HTTPTransport(verify=True, trust_env=False, retries=0)
+        if transport_factory is not None and isinstance(transport, httpx2.MockTransport):
+            is_mock = True
     audit = SDKTransportAudit(max_retries=0)
     audit.reservation, audit.repository_check, audit.is_mock_transport = reservation, repository_check, is_mock
     audit.bind(audit_log)
-    if not is_mock:
-        transport = httpx2.HTTPTransport(verify=True, trust_env=False, retries=0)
     timeout = httpx2.Timeout(float(BudgetConfig().timeout_seconds))
     http_client = httpx2.Client(transport=AuditedSDKTransport(transport, audit), trust_env=False,
                                follow_redirects=False, timeout=timeout)

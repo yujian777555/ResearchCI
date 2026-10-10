@@ -20,7 +20,8 @@ from .sdk_client import build_sdk_client
 def execute_replacement_preflight(*, authorization: Any, verifier: AuthorizationVerifier,
         ledger_path: str | Path, output_dir: str | Path, repo_root: str | Path,
         run_id: str, expected_harness_sha: str, credential_provider: Callable[[], str],
-        transport: Any = None, state_reader: Callable = read_repository_state) -> dict[str, Any]:
+        transport: Any = None, state_reader: Callable = read_repository_state,
+        transport_factory: Any = None) -> dict[str, Any]:
     """验证→不可回退 reserve→凭据回调→真实 SDK→持久化→STOP。
 
     没有内置批准或环境凭据回退。调用者必须先获得未来独立的人类批准；R5 的
@@ -48,7 +49,7 @@ def execute_replacement_preflight(*, authorization: Any, verifier: Authorization
         if not isinstance(credential, str) or not credential:
             raise RuntimeError("operator-supplied credential missing")
         client, audit = build_sdk_client(api_key=credential, audit_log=log, transport=transport,
-            reservation=reservation, repository_check=repository_check)
+            reservation=reservation, repository_check=repository_check, transport_factory=transport_factory)
         del credential
         result = run_preflight(client_factory=lambda _: client, credential_present=True, audit_log=log)
         # 资格结论必须与同一 SDK/transport/log 的实际观察一致。

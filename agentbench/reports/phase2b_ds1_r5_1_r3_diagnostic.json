@@ -1,0 +1,17 @@
+{
+  "phase": "2B-DS-1-R5.1-R3",
+  "status": "READY_FOR_PLANNER_REVIEW",
+  "planner_prompt_commit": "9173815540974487157c68f8a1f173325baa0202",
+  "baseline_r2_commit": "ac3c94a8f0302001beb5380fb46344c940a31fcb",
+  "v2_positive_chain": "PASS via execute_replacement_preflight + synthetic RSA v2 + safe MockTransport factory",
+  "negative_matrix": "PASS: legacy/invalid/expired/revoked/wrong-bound authorization before credential/factory",
+  "historical_provenance_manifest": "phase2b_ds1_r5_1_r3_evidence_provenance.json",
+  "link_runtime": "LINK_RUNTIME_VALIDATION_PENDING on Windows token",
+  "counts": {
+    "external_provider_api_calls": 0,
+    "external_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

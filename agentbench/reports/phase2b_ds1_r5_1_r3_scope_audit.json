@@ -1,0 +1,16 @@
+{
+  "phase": "2B-DS-1-R5.1-R3",
+  "status": "PASS",
+  "allowed_changes": [
+    "agentbench/deepseek_live_canary/**",
+    "tests/test_phase2b_ds1_r5_1_r3.py",
+    "append-only provenance manifest",
+    "agentbench/reports/phase2b_ds1_r5_1_r3_*"
+  ],
+  "historical_reports_modified_in_r2": "recorded, not changed in R3",
+  "forbidden_changes": [],
+  "protocols_unchanged": true,
+  "provider_network": "0",
+  "credential_reads": "0",
+  "link_runtime": "PENDING_WINDOWS_SYMLINK_PERMISSION"
+}

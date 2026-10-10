@@ -1,0 +1,187 @@
+{
+  "schema": "researchci.ds1.r5.1.r3.evidence-provenance.v1",
+  "baseline_commit": "a53ccafdf50df1978cfcd8da965f78afe4549270",
+  "comparison_commit": "ac3c94a8f0302001beb5380fb46344c940a31fcb",
+  "hash_algorithm": "Git blob SHA-1 for repository lineage; SHA-256 for current source hashes",
+  "entries": [
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_harness_freeze.json",
+      "baseline_blob_sha": "d1734bd03e7e25036786bf8b916de9731ad92606",
+      "r2_blob_sha": "c744af3c96e0d5c2f11a0d3c18e4a59724624ba0",
+      "commits_touching": [
+        "eb333420cf22b6e7f83b03fa9d28dab2efde0dbe:Phase 2B-DS-1-R5.1-R1: fix evidence IO and live authorization admission",
+        "a53ccafdf50df1978cfcd8da965f78afe4549270:Phase 2B-DS-1-R5.1: harden offline pre-live authorization and crash safety"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_offline_e2e.json",
+      "baseline_blob_sha": "e5523a3419c1c7210da632fbc6848ef4d130810d",
+      "r2_blob_sha": "1ebf63b3e77dfe1cf64cc2e6ddcd27b68f00b18d",
+      "commits_touching": [
+        "eb333420cf22b6e7f83b03fa9d28dab2efde0dbe:Phase 2B-DS-1-R5.1-R1: fix evidence IO and live authorization admission",
+        "a53ccafdf50df1978cfcd8da965f78afe4549270:Phase 2B-DS-1-R5.1: harden offline pre-live authorization and crash safety"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r1_diagnostic.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "11d01c0420ca3bfb2705bfa17baed420bada8979",
+      "commits_touching": [
+        "7130db6114e2e69b9763267428e344eb406177f3:R5.1-R1: publish offline security audit artifacts"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r1_harness_freeze.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "c1a3e32178ad0a0a420c163e3c1e30da0ab9375c",
+      "commits_touching": [
+        "7130db6114e2e69b9763267428e344eb406177f3:R5.1-R1: publish offline security audit artifacts"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r1_offline_e2e.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "fc220b046fdf895085088088ee31ad963a733a55",
+      "commits_touching": [
+        "7130db6114e2e69b9763267428e344eb406177f3:R5.1-R1: publish offline security audit artifacts"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r1_regression.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "545091f0b8df33a45ce9e9bdbd795f140139f136",
+      "commits_touching": [
+        "7130db6114e2e69b9763267428e344eb406177f3:R5.1-R1: publish offline security audit artifacts"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r1_scope_audit.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "563e577e65dd5e9bfab8d85ba56fc596e9610bde",
+      "commits_touching": [
+        "7130db6114e2e69b9763267428e344eb406177f3:R5.1-R1: publish offline security audit artifacts"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r1_security_review.md",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "05fa86f54aa157e8e300b3479736b5d9f93b8c7b",
+      "commits_touching": [
+        "7130db6114e2e69b9763267428e344eb406177f3:R5.1-R1: publish offline security audit artifacts"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r2_diagnostic.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "eb0a2cd84df536afcf06d3bfc61e805925465c94",
+      "commits_touching": [
+        "ac3c94a8f0302001beb5380fb46344c940a31fcb:Phase 2B-DS-1-R5.1-R2: complete offline native evidence and v2 live gate proof"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r2_harness_freeze.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "a6eb199feb50bf0fddfca847c3e870c98607bfa2",
+      "commits_touching": [
+        "ac3c94a8f0302001beb5380fb46344c940a31fcb:Phase 2B-DS-1-R5.1-R2: complete offline native evidence and v2 live gate proof"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r2_offline_e2e.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "209aab0bb95016ba1dd54a4954574a671340cd61",
+      "commits_touching": [
+        "ac3c94a8f0302001beb5380fb46344c940a31fcb:Phase 2B-DS-1-R5.1-R2: complete offline native evidence and v2 live gate proof"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r2_regression.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "a8e8ea674e1a15d9076358a67a2483950f93ebc5",
+      "commits_touching": [
+        "ac3c94a8f0302001beb5380fb46344c940a31fcb:Phase 2B-DS-1-R5.1-R2: complete offline native evidence and v2 live gate proof"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r2_scope_audit.json",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "05a349cbad26e0c770ee8a47c53c68e35d44de9d",
+      "commits_touching": [
+        "ac3c94a8f0302001beb5380fb46344c940a31fcb:Phase 2B-DS-1-R5.1-R2: complete offline native evidence and v2 live gate proof"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_r2_security_review.md",
+      "baseline_blob_sha": null,
+      "r2_blob_sha": "68ce24bf2b54a1216f0a62734a874fdc5e6d2eab",
+      "commits_touching": [
+        "ac3c94a8f0302001beb5380fb46344c940a31fcb:Phase 2B-DS-1-R5.1-R2: complete offline native evidence and v2 live gate proof"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_regression.json",
+      "baseline_blob_sha": "f9121e6c85153febe5422a793ae97bb56e30db47",
+      "r2_blob_sha": "581135b89d59f88dccaf787396a078211ef9e3f9",
+      "commits_touching": [
+        "cb734eee419c218f32df50aeeb3ef397e24f67f6:R5.1-R1: record final regression pass count",
+        "eb333420cf22b6e7f83b03fa9d28dab2efde0dbe:Phase 2B-DS-1-R5.1-R1: fix evidence IO and live authorization admission",
+        "a53ccafdf50df1978cfcd8da965f78afe4549270:Phase 2B-DS-1-R5.1: harden offline pre-live authorization and crash safety"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_scope_audit.json",
+      "baseline_blob_sha": "b859e48305ec88bffba1aeb4fa9528bd0da5c772",
+      "r2_blob_sha": "2fd0f63ef8f88d6d6935bc2c0a61b6aee35953cd",
+      "commits_touching": [
+        "eb333420cf22b6e7f83b03fa9d28dab2efde0dbe:Phase 2B-DS-1-R5.1-R1: fix evidence IO and live authorization admission",
+        "a53ccafdf50df1978cfcd8da965f78afe4549270:Phase 2B-DS-1-R5.1: harden offline pre-live authorization and crash safety"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    },
+    {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_security_review.md",
+      "baseline_blob_sha": "bafbe87732fe8745fe6f7486c647dbfd65e6927a",
+      "r2_blob_sha": "958193d77ca6204b724c17280d207bfb7ec728c0",
+      "commits_touching": [
+        "eb333420cf22b6e7f83b03fa9d28dab2efde0dbe:Phase 2B-DS-1-R5.1-R1: fix evidence IO and live authorization admission",
+        "a53ccafdf50df1978cfcd8da965f78afe4549270:Phase 2B-DS-1-R5.1: harden offline pre-live authorization and crash safety"
+      ],
+      "classification": "historical report bookkeeping/report correction; underlying provider execution evidence was not rerun in R1/R2",
+      "historical_fact_reinterpreted": false
+    }
+  ],
+  "historical_reports_deleted": false,
+  "git_history_rewritten": false,
+  "note": "This append-only manifest records observed historical report changes; no earlier report was overwritten in R3."
+}
