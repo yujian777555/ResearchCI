@@ -164,6 +164,8 @@ def build_sdk_client(*, api_key: str | None, audit_log: PreflightAuditLog,
             raise RuntimeError("transport/run authorization mismatch")
     if not is_mock and reservation is None:
         raise RuntimeError("production transport is disabled without a reserved authorization")
+    if not is_mock:
+        reservation.validate_live_execution(repository_check)
     if base_url != BASE_URL:
         raise ValueError("frozen DeepSeek base URL cannot be changed")
     if not isinstance(api_key, str) or not api_key:

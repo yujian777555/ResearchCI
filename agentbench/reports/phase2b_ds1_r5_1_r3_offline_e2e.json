@@ -1,7 +1,7 @@
 {
   "phase": "2B-DS-1-R5.1-R3",
   "status": "PASS",
-  "new_tests": 10,
+  "new_tests": 12,
   "v2_positive": {
     "authorization_verified": true,
     "ledger_reservations": 1,
@@ -11,7 +11,8 @@
     "mock_get_models_attempts": 1,
     "real_network_attempts": 0,
     "post_responses_attempts": 0,
-    "canary_episodes": 0
+    "canary_episodes": 0,
+    "test_status": "PASS"
   },
   "negative_matrix": "PASS: invalid signature, wrong key/run/token/SHA/stage/kind/mode, expiry/revocation and legacy v1 denied before credential/factory",
   "link_runtime": "PENDING_WINDOWS_SYMLINK_PERMISSION",

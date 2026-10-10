@@ -295,11 +295,14 @@ class Reservation:
     def begin_http(self) -> None:
         self.transition("RESERVED", "HTTP_STARTED")
 
-    def validate_live_execution(self) -> None:
+    def validate_live_execution(self, repository_check=None) -> None:
         self.approval.validate()
         if self.intent["schema_version"] != 2 or self.repo_root is None:
             raise RuntimeError("legacy/unsigned execution cannot enter live HTTP")
-        validate_repository(read_repository_state(self.repo_root), self.intent["harness_sha"], require_fresh=True)
+        if repository_check is not None:
+            repository_check()
+        else:
+            validate_repository(read_repository_state(self.repo_root), self.intent["harness_sha"], require_fresh=True)
 
     def deny_canary(self) -> None:
         raise RuntimeError("PRECHECK_ONLY never authorizes responses or canary")
