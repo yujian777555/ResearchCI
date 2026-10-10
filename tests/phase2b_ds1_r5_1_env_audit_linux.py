@@ -20,6 +20,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from agentbench.deepseek_live_canary import native_evidence
 from agentbench.deepseek_live_canary.native_evidence import PinnedDirectory, atomic_json, read_text
 from agentbench.deepseek_live_canary.preflight import PreflightAuditLog
 
@@ -89,11 +90,23 @@ def toctou(root: Path) -> dict[str, Any]:
     with PinnedDirectory(evidence) as parent:
         replacement = evidence / "replacement"
         _write(replacement, "replacement\n")
-        os.replace(replacement, target)
+        original_open = native_evidence.os.open
+        replaced = False
+
+        def racing_open(path, flags, *args, **kwargs):
+            nonlocal replaced
+            if not replaced and kwargs.get("dir_fd") == parent.fd and path == target.name:
+                os.replace(replacement, target)
+                replaced = True
+            return original_open(path, flags, *args, **kwargs)
+
+        native_evidence.os.open = racing_open
         try:
             parent.open(target.name)
         except (OSError, RuntimeError, ValueError) as error:
             return _pass("Linux TOCTOU replacement", "identity change after path check failed closed", error=type(error).__name__)
+        finally:
+            native_evidence.os.open = original_open
     return _fail("Linux TOCTOU replacement", RuntimeError("identity change was not detected"))
 
 

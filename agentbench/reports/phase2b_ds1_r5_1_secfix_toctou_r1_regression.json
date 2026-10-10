@@ -1,0 +1,38 @@
+{
+  "phase": "2B-DS-1-R5.1-SEC-FIX-TOCTOU-R1",
+  "command": "python -m pytest -q",
+  "windows": {
+    "collected": 476,
+    "passed": 472,
+    "skipped": 4,
+    "failed": 0,
+    "errors": 0,
+    "skip_reasons": [
+      "existing R5.1 symlink permission WinError 1314",
+      "existing R5.1-R1 symlink permission unavailable",
+      "R1 symlink replacement NOT_RUN: Windows symlink privilege unavailable",
+      "R1 parent directory replacement NOT_RUN: Windows handle sharing blocks replacement"
+    ]
+  },
+  "r1_tests": {
+    "file": "tests/test_phase2b_ds1_r5_1_secfix_toctou.py",
+    "windows_passed": 5,
+    "windows_skipped": 2,
+    "windows_failed": 0,
+    "linux_pytest": "NOT_RUN: WSL pytest package unavailable",
+    "linux_harness": {
+      "environment": "WSL2 Ubuntu-22.04 / Linux / Python 3.10.12",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "security_invariants": {
+    "outside_target_modified": false,
+    "audit_hash_chain_valid": true,
+    "summary_integrity_valid": true,
+    "credential_callback_count": 0,
+    "provider_network_calls": 0
+  },
+  "status": "PASS_WITH_PLATFORM_NOT_RUNS"
+}

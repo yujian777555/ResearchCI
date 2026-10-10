@@ -24,6 +24,16 @@ def _identity(info):
     return info.st_dev, info.st_ino
 
 
+def _file_identity(info):
+    """文件身份包含设备、inode、文件类型和权限 mode。"""
+    return (
+        info.st_dev,
+        info.st_ino,
+        stat.S_IFMT(info.st_mode),
+        info.st_mode & 0o7777,
+    )
+
+
 def _plain(info, *, directory=False):
     if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
         raise RuntimeError("evidence symlink/reparse point denied")
@@ -155,13 +165,21 @@ class PinnedDirectory:
         self.validate()
         if Path(name).name != name:
             raise RuntimeError("evidence basename required")
+        expected = None
+        if not create:
+            expected = self.stat(name)
+            _plain(expected)
         if os.name == "nt":
             fd = _windows_open(self.path / name, write=write, create=create, share_write=share_write)
         else:
-            flags = (os.O_RDWR if write else os.O_RDONLY) | os.O_NOFOLLOW
+            # 相对父目录 fd 打开，并在 open 前保存预期身份；这样替换发生在
+            # stat 与 openat 之间时，打开 fd 会与 expected 不一致而 fail closed。
+            flags = (os.O_RDWR if write else os.O_RDONLY) | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
             if create: flags |= os.O_CREAT | os.O_EXCL
             fd = os.open(name, flags, 0o600, dir_fd=self.fd)
         try:
+            if expected is not None and _file_identity(os.fstat(fd)) != _file_identity(expected):
+                raise RuntimeError("evidence file identity changed before open")
             self.validate_file(fd, name)
             if create: _private_handle(fd)
             return fd
@@ -172,7 +190,7 @@ class PinnedDirectory:
     def validate_file(self, fd, name):
         opened, named = os.fstat(fd), self.stat(name)
         _plain(opened); _plain(named)
-        if _identity(opened) != _identity(named):
+        if _file_identity(opened) != _file_identity(named):
             raise RuntimeError("evidence file identity changed")
         self.validate()
 
