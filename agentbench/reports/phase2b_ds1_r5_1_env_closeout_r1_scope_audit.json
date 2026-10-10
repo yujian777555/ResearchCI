@@ -1,0 +1,36 @@
+{
+  "phase": "2B-DS-1-R5.1-ENV-CLOSEOUT-R1",
+  "baseline_commit": "e276934df2149ca5b2b74ae077daa48225cfb869",
+  "branch": "main",
+  "allowed_changes": [
+    "tests/phase2b_ds1_r5_1_env_closeout_r1.py",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_*"
+  ],
+  "changed_files": [
+    "tests/phase2b_ds1_r5_1_env_closeout_r1.py",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1.json",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_security_review.md",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_scope_audit.json"
+  ],
+  "forbidden_paths": [
+    "agentbench/deepseek_live_canary/authorization.py",
+    "agentbench/deepseek_live_canary/cutover.py",
+    "agentbench/deepseek_live_canary/sdk_client.py",
+    "agentbench/deepseek_live_canary/native_evidence.py",
+    "agentbench/deepseek_live_canary/secure_io.py",
+    "ledger implementation",
+    "src/researchci/**",
+    "benchmarks/**",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "historical reports"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "security_logic_modified": false,
+  "provider_network_calls": 0,
+  "credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "PASS_WITH_WINDOWS_SYMLINK_ENVIRONMENT_BLOCKED"
+}

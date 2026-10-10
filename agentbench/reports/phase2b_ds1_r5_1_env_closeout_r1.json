@@ -1,0 +1,72 @@
+{
+  "phase": "2B-DS-1-R5.1-ENV-CLOSEOUT-R1",
+  "status": "WINDOWS_RUNTIME_VALIDATION_PENDING",
+  "live_activation": "BLOCKED",
+  "baseline_commit": "e276934df2149ca5b2b74ae077daa48225cfb869",
+  "environment": {
+    "os": "Windows",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "systeminfo_os": [
+      "OS Name:                       Microsoft Windows 11 家庭版 中文版",
+      "OS Version:                    10.0.26200 N/A Build 26200"
+    ],
+    "python": "3.10.1",
+    "python_executable": "C:\\Program Files\\Python310\\python.exe",
+    "whoami": "desktop-tvsk9sh\\于舰",
+    "privileges": "PRIVILEGES INFORMATION\n----------------------\n\nPrivilege Name                Description                          State   \n============================= ==================================== ========\nSeShutdownPrivilege           Shut down the system                 Disabled\nSeChangeNotifyPrivilege       Bypass traverse checking             Enabled \nSeUndockPrivilege             Remove computer from docking station Disabled\nSeIncreaseWorkingSetPrivilege Increase a process working set       Disabled\nSeTimeZonePrivilege           Change the time zone                 Disabled",
+    "se_create_symbolic_link_privilege": false,
+    "developer_mode": "DISABLED_OR_NOT_SET"
+  },
+  "tests": [
+    {
+      "test": "Windows file symlink",
+      "result": "ENVIRONMENT_BLOCKED",
+      "substatus": "WINDOWS_SYMLINK_ENVIRONMENT_BLOCKED",
+      "runtime_verified": false,
+      "winerror": 1314,
+      "detail": "Python symlink: OSError: [WinError 1314] 客户端没有所需的特权。: 'D:\\\\temp\\\\researchci-closeout-lqin1xob\\\\file-link\\\\outside\\\\target.json' -> 'D:\\\\temp\\\\researchci-closeout-lqin1xob\\\\file-link\\\\evidence\\\\audit.json' | mklink: You do not have sufficient privilege to perform this operation."
+    },
+    {
+      "test": "Windows directory symlink",
+      "result": "ENVIRONMENT_BLOCKED",
+      "substatus": "WINDOWS_SYMLINK_ENVIRONMENT_BLOCKED",
+      "runtime_verified": false,
+      "winerror": 1314,
+      "detail": "Python symlink: OSError: [WinError 1314] 客户端没有所需的特权。: 'D:\\\\temp\\\\researchci-closeout-lqin1xob\\\\dir-link\\\\outside\\\\target-dir' -> 'D:\\\\temp\\\\researchci-closeout-lqin1xob\\\\dir-link\\\\evidence\\\\evidence-dir' | mklink: You do not have sufficient privilege to perform this operation."
+    },
+    {
+      "test": "Windows parent directory replacement",
+      "result": "PASS",
+      "runtime_verified": true,
+      "outside_unchanged": true,
+      "detail": "pinned parent identity rejected replacement: RuntimeError: evidence directory identity changed"
+    }
+  ],
+  "prior_windows_matrix": {
+    "junction": "PASS",
+    "reparse": "PASS",
+    "hardlink": "PASS",
+    "symlink_prior_status": {
+      "pass": 9,
+      "fail": 0,
+      "skipped": 0,
+      "not_run": 0,
+      "environment_blocked": 3
+    }
+  },
+  "linux_existing_validation": {
+    "symlink": "PASS",
+    "toctou": "PASS",
+    "hardlink": "PASS",
+    "parent_replacement": "PASS"
+  },
+  "network": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "historical_reports_modified": false,
+  "security_logic_modified": false
+}
