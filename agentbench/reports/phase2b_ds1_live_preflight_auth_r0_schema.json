@@ -1,0 +1,95 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-AUTH-R0",
+  "status": "AUTHORIZATION_DESIGNED_OFFLINE",
+  "authorization_object": {
+    "required_fields": [
+      "authorization_id",
+      "run_id",
+      "requester",
+      "approver",
+      "created_at",
+      "expires_at",
+      "repository_sha",
+      "protocol_hash",
+      "allowed_provider",
+      "allowed_endpoint",
+      "allowed_method",
+      "allowed_scope",
+      "transport_mode",
+      "credential_policy",
+      "audit_destination",
+      "one_use_required"
+    ],
+    "binding_fields": ["run_id", "repository_sha", "protocol_hash", "allowed_scope"],
+    "status_values": ["REQUESTED", "REVIEWING", "APPROVED", "READY_FOR_EXECUTION", "CONSUMED", "REJECTED", "EXPIRED", "REVOKED", "CANCELLED"]
+  },
+  "permission_scope": {
+    "provider": "DeepSeek",
+    "method": "GET",
+    "endpoint": "/models",
+    "max_requests": 1,
+    "transport_mode": "LIVE_HTTP",
+    "allowed_actions": ["GET /models"],
+    "forbidden_actions": ["POST /responses", "chat completion", "tool execution", "agent execution", "benchmark", "canary"]
+  },
+  "approval_workflow": {
+    "normal_path": ["REQUESTED", "REVIEWING", "APPROVED", "READY_FOR_EXECUTION", "CONSUMED"],
+    "rejection_states": ["REJECTED", "EXPIRED", "REVOKED", "CANCELLED"],
+    "explicit_execution_trigger_required": true,
+    "approved_does_not_auto_execute": true,
+    "one_use": true,
+    "reuse_after_consumed": "REJECT"
+  },
+  "credential_policy": {
+    "source": "approved_callback_only",
+    "lifetime": "temporary_memory_only",
+    "discard_after_request": true,
+    "forbidden_persistence": ["api_key", "token", "Authorization header", "raw secret"],
+    "credential_callback_count": 1
+  },
+  "revocation_policy": {
+    "reasons": ["expired", "manual_revocation", "repository_sha_changed", "protocol_hash_changed", "scope_changed"],
+    "decision": "REJECT",
+    "no_reauthorization_by_executor": true
+  },
+  "execution_order": [
+    "Approval Artifact",
+    "Signature Verification",
+    "Repository Freshness",
+    "One-use Ledger Reservation",
+    "Credential Callback",
+    "Transport Construction",
+    "GET /models",
+    "Evidence Persist",
+    "STOP"
+  ],
+  "evidence_bundle": {
+    "allowed_fields": ["authorization_fingerprint", "approval_fingerprint", "run_id", "repository_sha", "protocol_hash", "scope", "final_state", "failure_reason"],
+    "forbidden_fields": ["credential", "secret", "api_key", "token", "authorization_header", "raw_response_body"],
+    "hash_chain_required": true,
+    "atomic_summary_required": true
+  },
+  "decision_rules": {
+    "valid_approval": "APPROVED",
+    "invalid_scope": "REJECT",
+    "expired": "REJECT",
+    "revoked": "REJECT",
+    "repository_mismatch": "REJECT",
+    "protocol_mismatch": "REJECT",
+    "second_consume": "REJECT"
+  },
+  "current_authorization": {
+    "status": "NOT_GRANTED",
+    "live_execution": "BLOCKED",
+    "planner_approval_present": false,
+    "credential_present": false,
+    "real_provider_request_performed": false
+  },
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

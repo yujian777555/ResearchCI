@@ -1,0 +1,52 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-AUTH-R0",
+  "baseline_commit": "631b8beedcdee2ac01b04e6aea00cf8eb8aa17b2",
+  "branch": "main",
+  "allowed_changes": [
+    "agentbench/reports/phase2b_ds1_live_preflight_auth_r0.*",
+    "tests/test_live_preflight_authorization_design.py"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_live_preflight_auth_r0_design.md",
+    "agentbench/reports/phase2b_ds1_live_preflight_auth_r0_schema.json",
+    "agentbench/reports/phase2b_ds1_live_preflight_auth_r0_scope_audit.json",
+    "tests/test_live_preflight_authorization_design.py"
+  ],
+  "forbidden_paths": [
+    "authorization core implementation",
+    "ledger core",
+    "secure_io",
+    "native_evidence",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "scientific core",
+    "historical reports",
+    "provider transport"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "AUTHORIZATION_DESIGN_SCOPE_PASS",
+  "regression": {
+    "command": "python -m pytest -q",
+    "collected": 496,
+    "passed": 492,
+    "skipped": 4,
+    "failed": 0,
+    "errors": 0,
+    "new_authorization_tests": 10
+  },
+  "schema_sha256": "sha256:eb582b84369d7a06c0e34cea4403eff374a1dfc68dce4b1a5979efe23ea91122",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "tracked_baseline_changes": []
+}
