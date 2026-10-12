@@ -1,0 +1,53 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-EXECUTION-PLAN-R0",
+  "baseline_commit": "0730e6daa1d6817c0a6e178bff54c75220e3a36c",
+  "branch": "main",
+  "allowed_changes": [
+    "agentbench/reports/phase2b_ds1_live_preflight_execution_plan_r0.*",
+    "tests/test_live_preflight_execution_plan.py"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_live_preflight_execution_plan_r0.md",
+    "agentbench/reports/phase2b_ds1_live_preflight_execution_plan_r0_checklist.json",
+    "agentbench/reports/phase2b_ds1_live_preflight_execution_plan_r0_scope_audit.json",
+    "tests/test_live_preflight_execution_plan.py"
+  ],
+  "forbidden_paths": [
+    "authorization core",
+    "secure_io",
+    "native_evidence",
+    "ledger core",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "scientific core",
+    "historical reports",
+    "provider transport"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "execution_authorization": "NOT GRANTED",
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "EXECUTION_PLAN_SCOPE_PASS",
+  "regression": {
+    "command": "python -m pytest -q",
+    "collected": 529,
+    "passed": 525,
+    "skipped": 4,
+    "failed": 0,
+    "errors": 0,
+    "new_execution_plan_tests": 9
+  },
+  "checklist_sha256": "sha256:b7ccc954031156b1e4f244109c15ad34eaa9ed7b6c4e15733be89b74cb49742a",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "tracked_baseline_changes": []
+}

@@ -1,0 +1,61 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-EXECUTION-PLAN-R0",
+  "status": "DESIGNED_OFFLINE",
+  "runtime_binding": {
+    "runtime_class": "Linux",
+    "distribution": "Ubuntu-22.04",
+    "kernel": "6.18.40.1-microsoft-standard-WSL2",
+    "filesystem": "native Linux filesystem",
+    "evidence_location": "/tmp or an approved native Linux evidence path",
+    "forbidden_locations": ["Windows filesystem", "unvalidated mount", "network filesystem"]
+  },
+  "pre_execution_checklist": {
+    "environment": ["runtime identity", "repository SHA", "protocol hashes", "filesystem qualification", "clock/time validity"],
+    "authorization": ["approval artifact exists", "signature valid", "scope valid", "not expired", "not revoked"],
+    "ledger": ["one-use reservation available"],
+    "credential": ["approved callback source", "no disk secret", "no environment dump", "no secret logging"]
+  },
+  "execution_sequence": [
+    "start approved Linux runtime",
+    "verify repository freshness",
+    "verify authorization artifact",
+    "reserve one-use ledger",
+    "acquire credential through approved callback",
+    "construct production transport",
+    "execute exactly GET /models",
+    "persist evidence",
+    "destroy credential material",
+    "stop"
+  ],
+  "request_limits": {
+    "method": "GET",
+    "endpoint": "/models",
+    "max_requests": 1,
+    "forbidden_actions": ["POST /responses", "chat completion", "tool calls", "agent execution", "benchmark", "canary"]
+  },
+  "abort_conditions": {
+    "runtime": ["repository mismatch", "protocol mismatch", "filesystem failure"],
+    "authorization": ["expired", "revoked", "scope changed"],
+    "network": ["unexpected endpoint", "unexpected method", "redirect", "retry request"],
+    "evidence": ["audit write failure", "summary persistence failure"],
+    "result_on_abort": "UNKNOWN",
+    "retry_allowed": false,
+    "continue_allowed": false
+  },
+  "post_execution_evidence": {
+    "allowed": ["run id", "authorization fingerprint", "repository SHA", "protocol hash", "request metadata", "response metadata", "final state"],
+    "forbidden": ["credential", "secret", "authorization header", "raw token"],
+    "hash_chain_required": true,
+    "atomic_summary_required": true,
+    "credential_destroy_after_persist": true
+  },
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "execution_authorization": "NOT GRANTED",
+  "live_activation": "BLOCKED"
+}
