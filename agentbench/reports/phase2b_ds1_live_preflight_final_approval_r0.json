@@ -1,0 +1,40 @@
+{
+  "approval_id": "live-preflight-final-approval-r0",
+  "decision": "HOLD",
+  "request": {
+    "provider": "DeepSeek",
+    "method": "GET",
+    "endpoint": "/models",
+    "max_requests": 1
+  },
+  "runtime": {
+    "selected": "Linux WSL2 Ubuntu-22.04",
+    "status": "ACCEPTED",
+    "filesystem": "native Linux filesystem"
+  },
+  "authorization_reference": "phase2b_ds1_live_preflight_authorization_decision_r0.json",
+  "execution_plan_reference": "phase2b_ds1_live_preflight_execution_plan_r0_checklist.json",
+  "risk_acceptance": "HOLD: provider availability and external network uncertainty may be evaluated only after explicit approval; scope expansion, credential material persistence and retries remain prohibited.",
+  "approved_by": "",
+  "timestamp": "2026-10-12T00:00:00Z",
+  "credential_status": "NOT PROVIDED",
+  "planner_explicit_approval": false,
+  "execution_authorization": "NOT GRANTED",
+  "live_activation": "BLOCKED",
+  "forbidden_actions": ["POST /responses", "tool execution", "agent execution", "benchmark", "canary"],
+  "evidence_reviewed": [
+    "phase2b_ds1_r5_1_secfix_toctou_r1_security_review.md",
+    "phase2b_ds1_r5_1_env_closeout_r1_recheck_security_review.md",
+    "phase2b_ds1_runtime_resolution_r0.json",
+    "phase2b_ds1_live_preflight_auth_r0_schema.json",
+    "phase2b_ds1_live_preflight_review_r0_approval_package.md",
+    "phase2b_ds1_live_preflight_execution_plan_r0_checklist.json"
+  ],
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}
