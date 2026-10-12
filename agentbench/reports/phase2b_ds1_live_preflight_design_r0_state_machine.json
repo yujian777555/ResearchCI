@@ -1,0 +1,123 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-DESIGN-R0",
+  "status": "DESIGNED_OFFLINE",
+  "request_contract": {
+    "method": "GET",
+    "path": "/models",
+    "endpoint_allowlist": ["https://api.deepseek.com/models"],
+    "transport_mode": "LIVE_HTTP",
+    "max_provider_requests": 1,
+    "allowed_request_count": 1,
+    "forbidden_methods": ["POST", "PUT", "PATCH", "DELETE"],
+    "forbidden_paths": ["/responses", "/chat/completions", "/*"]
+  },
+  "identity_binding": [
+    "run_id",
+    "authorization_id",
+    "token_id",
+    "repository_sha",
+    "protocol_hash",
+    "transport_mode",
+    "endpoint",
+    "allowed_method",
+    "allowed_path"
+  ],
+  "states": [
+    "CREATED",
+    "AUTHORIZED",
+    "FRESHNESS_VERIFIED",
+    "RESERVED",
+    "CREDENTIAL_ACQUIRED",
+    "TRANSPORT_READY",
+    "HTTP_STARTED",
+    "RESULT_RECEIVED",
+    "RESULT_PERSISTED",
+    "COMPLETED",
+    "REJECTED",
+    "UNKNOWN",
+    "ABORTED"
+  ],
+  "terminal_states": ["COMPLETED", "REJECTED", "UNKNOWN", "ABORTED"],
+  "allowed_transitions": [
+    ["CREATED", "AUTHORIZED"],
+    ["AUTHORIZED", "FRESHNESS_VERIFIED"],
+    ["FRESHNESS_VERIFIED", "RESERVED"],
+    ["RESERVED", "CREDENTIAL_ACQUIRED"],
+    ["CREDENTIAL_ACQUIRED", "TRANSPORT_READY"],
+    ["TRANSPORT_READY", "HTTP_STARTED"],
+    ["HTTP_STARTED", "RESULT_RECEIVED"],
+    ["RESULT_RECEIVED", "RESULT_PERSISTED"],
+    ["RESULT_PERSISTED", "COMPLETED"]
+  ],
+  "failure_transitions": {
+    "authorization_invalid": "REJECTED",
+    "repository_changed": "REJECTED",
+    "ledger_conflict": "REJECTED",
+    "endpoint_policy_violation": "REJECTED",
+    "credential_failure": "UNKNOWN",
+    "network_timeout": "UNKNOWN",
+    "provider_5xx": "UNKNOWN",
+    "audit_persistence_failure": "UNKNOWN",
+    "operator_abort": "ABORTED"
+  },
+  "forbidden_transitions": [
+    ["CREATED", "HTTP_STARTED"],
+    ["UNKNOWN", "RETRY"],
+    ["UNKNOWN", "RESERVED"],
+    ["RESULT_PERSISTED", "HTTP_STARTED"],
+    ["COMPLETED", "RESERVED"],
+    ["COMPLETED", "HTTP_STARTED"],
+    ["REJECTED", "HTTP_STARTED"],
+    ["ABORTED", "HTTP_STARTED"]
+  ],
+  "reservation": {
+    "one_use": true,
+    "consume_before_request": true,
+    "reconsume_after_unknown": false,
+    "reconsume_after_completed": false
+  },
+  "evidence_bundle": {
+    "required_fields": [
+      "run_identity",
+      "authorization_fingerprint",
+      "repository_fingerprint",
+      "protocol_hashes",
+      "timestamp",
+      "transport_configuration",
+      "request_metadata",
+      "response_metadata",
+      "final_state",
+      "failure_reason"
+    ],
+    "request_metadata_fields": ["method", "path", "endpoint", "request_timestamp"],
+    "response_metadata_fields": ["http_status", "request_id", "response_timestamp", "target_present"],
+    "forbidden_fields": ["api_key", "authorization_header", "raw_credential", "full_response_body", "token_value"],
+    "redaction_required": true,
+    "hash_chain_required": true,
+    "atomic_summary_required": true
+  },
+  "preconditions": [
+    "windows_linux_runtime_qualification_accepted",
+    "planner_explicit_approval",
+    "signed_authorization_exists",
+    "fresh_repository_proof",
+    "one_use_ledger_available",
+    "credential_source_approved",
+    "endpoint_allowlist_verified",
+    "audit_sink_writable"
+  ],
+  "execution_stop_conditions": [
+    "any_precondition_false",
+    "any_policy_mismatch",
+    "any_identity_mismatch",
+    "any_evidence_persistence_failure",
+    "any_request_count_uncertainty"
+  ],
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

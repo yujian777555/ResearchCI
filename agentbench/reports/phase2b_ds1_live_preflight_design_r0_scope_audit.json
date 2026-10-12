@@ -1,0 +1,52 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-DESIGN-R0",
+  "baseline_commit": "7436ad6995b46590c3d35c2eea513dea1de4944d",
+  "branch": "main",
+  "allowed_changes": [
+    "agentbench/reports/phase2b_ds1_live_preflight_design_r0.*",
+    "tests/test_live_preflight_design.py"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_live_preflight_design_r0.md",
+    "agentbench/reports/phase2b_ds1_live_preflight_design_r0_state_machine.json",
+    "agentbench/reports/phase2b_ds1_live_preflight_design_r0_scope_audit.json",
+    "tests/test_live_preflight_design.py"
+  ],
+  "forbidden_paths": [
+    "agentbench/deepseek_live_canary/authorization.py",
+    "agentbench/deepseek_live_canary/secure_io.py",
+    "agentbench/deepseek_live_canary/native_evidence.py",
+    "ledger implementation",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "src/researchci/**",
+    "scientific core",
+    "historical reports"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "DESIGN_SCOPE_PASS",
+  "regression": {
+    "command": "python -m pytest -q",
+    "collected": 486,
+    "passed": 482,
+    "skipped": 4,
+    "failed": 0,
+    "errors": 0,
+    "new_design_tests": 10
+  },
+  "design_state_machine_sha256": "sha256:e285889911087192b90dac0c38176c778541ecce562eedb6c5315cdfd67fbf76",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "tracked_baseline_changes": []
+}
