@@ -1,0 +1,46 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-REVIEW-R0",
+  "status": "REVIEW_REQUIRED",
+  "risks": [
+    {
+      "risk_id": "R1",
+      "description": "Credential leakage through logs, evidence, exceptions, or persistent summaries.",
+      "severity": "HIGH",
+      "mitigation": "Approved callback only; temporary memory lifetime; discard after request; redacted evidence.",
+      "status": "controlled"
+    },
+    {
+      "risk_id": "R2",
+      "description": "Unauthorized endpoint or method expansion beyond the single models request.",
+      "severity": "HIGH",
+      "mitigation": "Provider, method, endpoint, path and maximum request count are bound in the signed scope and checked before transport construction.",
+      "status": "controlled"
+    },
+    {
+      "risk_id": "R3",
+      "description": "Replay or reuse of an approved authorization artifact.",
+      "severity": "HIGH",
+      "mitigation": "One-use ledger reservation, run identity binding and consumed terminal state.",
+      "status": "controlled"
+    },
+    {
+      "risk_id": "R4",
+      "description": "Repository drift between approval and a future execution.",
+      "severity": "HIGH",
+      "mitigation": "Fresh SHA verification and protocol hash matching immediately before reservation.",
+      "status": "controlled"
+    },
+    {
+      "risk_id": "R5",
+      "description": "Windows runtime filesystem qualification remains incomplete.",
+      "severity": "MEDIUM",
+      "mitigation": "Linux runtime validated; Windows symlink and full parent replacement evidence remain an explicit precondition.",
+      "status": "open"
+    }
+  ],
+  "decision_template": {
+    "decision": "NOT_FILLED",
+    "allowed_values": ["APPROVE", "REJECT", "HOLD"],
+    "current_execution_authorization": "NOT GRANTED"
+  }
+}
