@@ -1,0 +1,255 @@
+{
+  "phase": "2B-DS-1-R5.1-ENV-CLOSEOUT-R1",
+  "kind": "supplemental_runtime_evidence",
+  "utc": "2026-10-11T03:03:00.557431+00:00",
+  "base_commit": "6df539a376941c9bcb293632d603fe0a1e5e041f",
+  "status": "PLATFORM_CASES_PASS",
+  "live_activation": "BLOCKED",
+  "environment": {
+    "os": "Linux",
+    "kernel": "6.18.40.1-microsoft-standard-WSL2",
+    "platform": "Linux-6.18.40.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "python_executable": "/usr/bin/python3",
+    "temporary_root": "/tmp/researchci-closeout-recheck-4s_m8vec",
+    "uid": 1000,
+    "euid": 1000,
+    "developer_mode": "NOT_APPLICABLE",
+    "filesystem": {
+      "command": [
+        "stat",
+        "-f",
+        "-c",
+        "%T",
+        "/tmp/researchci-closeout-recheck-4s_m8vec"
+      ],
+      "exit_code": 0,
+      "stdout": "ext2/ext3\n",
+      "stderr": ""
+    },
+    "identity": {
+      "command": [
+        "id"
+      ],
+      "exit_code": 0,
+      "stdout": "uid=1000(yujian) gid=1000(yujian) groups=1000(yujian),4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),117(netdev),999(docker)\n",
+      "stderr": ""
+    }
+  },
+  "tests": [
+    {
+      "result": "PASS",
+      "creation": {},
+      "operations": {
+        "audit_append": {
+          "type": "RuntimeError",
+          "message": "symlink/reparse point denied",
+          "errno": null,
+          "winerror": null
+        }
+      },
+      "outside_target_modified": false,
+      "real_link_created": true,
+      "file_attributes": null,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "file_symlink"
+    },
+    {
+      "result": "PASS",
+      "creation": {},
+      "operations": {
+        "summary_write_and_publish": {
+          "type": "RuntimeError",
+          "message": "symlink/reparse point denied",
+          "errno": null,
+          "winerror": null
+        }
+      },
+      "outside_target_modified": false,
+      "real_link_created": true,
+      "file_attributes": null,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "summary_symlink"
+    },
+    {
+      "result": "PASS",
+      "creation": {},
+      "operations": {
+        "audit_append": {
+          "type": "RuntimeError",
+          "message": "symlink/reparse point denied",
+          "errno": null,
+          "winerror": null
+        },
+        "summary_write_and_publish": {
+          "type": "RuntimeError",
+          "message": "symlink/reparse point denied",
+          "errno": null,
+          "winerror": null
+        },
+        "readback": {
+          "type": "RuntimeError",
+          "message": "symlink/reparse point denied",
+          "errno": null,
+          "winerror": null
+        }
+      },
+      "outside_target_modified": false,
+      "real_link_created": true,
+      "file_attributes": null,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "directory_symlink"
+    },
+    {
+      "result": "PASS",
+      "creation": {},
+      "operations": {
+        "audit_append": {
+          "type": "RuntimeError",
+          "message": "evidence hard links denied",
+          "errno": null,
+          "winerror": null
+        }
+      },
+      "outside_target_modified": false,
+      "real_link_created": true,
+      "file_attributes": null,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "hardlink"
+    },
+    {
+      "result": "PASS",
+      "rejection": {
+        "type": "RuntimeError",
+        "message": "evidence file identity changed before open",
+        "errno": null,
+        "winerror": null
+      },
+      "checked_inode_changed": true,
+      "outside_target_modified": false,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "toctou"
+    },
+    {
+      "result": "PASS",
+      "substatus": null,
+      "entrypoint": "PreflightAuditLog.append",
+      "attack": {
+        "attempted": true,
+        "installed": true,
+        "renamed_original": true,
+        "checked_identity": [
+          2096,
+          57442
+        ],
+        "replacement_identity": [
+          2096,
+          57447
+        ]
+      },
+      "rejection": {
+        "type": "RuntimeError",
+        "message": "evidence directory identity changed",
+        "errno": null,
+        "winerror": null
+      },
+      "outside_target_modified": false,
+      "original_evidence_unchanged": true,
+      "summary_unpublished": true,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "parent_audit_append"
+    },
+    {
+      "result": "PASS",
+      "substatus": null,
+      "entrypoint": "atomic_write_json",
+      "attack": {
+        "attempted": true,
+        "installed": true,
+        "renamed_original": true,
+        "checked_identity": [
+          2096,
+          57453
+        ],
+        "replacement_identity": [
+          2096,
+          57458
+        ]
+      },
+      "rejection": {
+        "type": "RuntimeError",
+        "message": "evidence directory identity changed",
+        "errno": null,
+        "winerror": null
+      },
+      "outside_target_modified": false,
+      "original_evidence_unchanged": true,
+      "summary_unpublished": true,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "parent_summary_write"
+    },
+    {
+      "result": "PASS",
+      "substatus": null,
+      "entrypoint": "atomic_write_json",
+      "attack": {
+        "attempted": true,
+        "installed": true,
+        "renamed_original": true,
+        "checked_identity": [
+          2096,
+          57465
+        ],
+        "replacement_identity": [
+          2096,
+          57470
+        ]
+      },
+      "rejection": {
+        "type": "RuntimeError",
+        "message": "evidence directory identity changed",
+        "errno": null,
+        "winerror": null
+      },
+      "outside_target_modified": false,
+      "original_evidence_unchanged": true,
+      "summary_unpublished": true,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "parent_evidence_publish"
+    }
+  ],
+  "counts": {
+    "PASS": 8
+  },
+  "source_hashes": {
+    "agentbench/deepseek_live_canary/native_evidence.py": "sha256:2a051b51039b3758c9210a36975459cf98f55db1e22898ff230e109a074b5777",
+    "agentbench/deepseek_live_canary/secure_io.py": "sha256:30b6913b20b9540c5248e2beb19da682e0790a78a273e90678507966f8cbd69b",
+    "agentbench/deepseek_live_canary/preflight.py": "sha256:6cefe1dbc4e3debf6f8b43959cb3cf09dc7bfb5ddf7d88cd4b9a7ae4e6d4b402",
+    "tests/phase2b_ds1_r5_1_env_closeout_r1_recheck.py": "sha256:94ec0286cf29b5698f771f193f52af08e9181bbd96bac69130726396060623a9"
+  },
+  "offline_guard": {
+    "network_attempts_blocked": 0,
+    "credential_reads_blocked": 0
+  },
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0
+}

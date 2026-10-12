@@ -1,0 +1,34 @@
+{
+  "phase": "2B-DS-1-R5.1-ENV-CLOSEOUT-R1-RECHECK",
+  "baseline_commit": "6df539a376941c9bcb293632d603fe0a1e5e041f",
+  "branch": "main",
+  "allowed_changes": [
+    "tests/phase2b_ds1_r5_1_env_closeout_r1_recheck.py",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_recheck_*"
+  ],
+  "changed_files": [
+    "tests/phase2b_ds1_r5_1_env_closeout_r1_recheck.py",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_recheck_windows.json",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_recheck_linux.json",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_recheck_security_review.md",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_recheck_scope_audit.json",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_recheck_regression.json"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "security_logic_modified": false,
+  "protocols_modified": false,
+  "provider_network_calls": 0,
+  "credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "PASS_WITH_WINDOWS_ENVIRONMENT_LIMITS",
+  "tracked_baseline_changes": [],
+  "audit_command": "git diff --name-only 6df539a376941c9bcb293632d603fe0a1e5e041f --",
+  "regression_report": "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_recheck_regression.json",
+  "original_closeout_report_hashes": {
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1.json": "sha256:28502f1a634637f5161dd6cdf200c78810eb1fc2bae245f305b62c2aa520de7d",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_security_review.md": "sha256:80e929c66113d6dbac7f65ecf6384ee60355cd98fd6b452df4b4abdb65e3bac0",
+    "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_scope_audit.json": "sha256:c66eb819a45536a963f8ae4df01369ab3b13843b47eaa8b371297989d2ea0749"
+  }
+}

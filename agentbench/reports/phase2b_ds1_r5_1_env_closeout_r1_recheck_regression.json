@@ -1,0 +1,47 @@
+{
+  "phase": "2B-DS-1-R5.1-ENV-CLOSEOUT-R1",
+  "kind": "supplemental_regression_evidence",
+  "base_commit": "6df539a376941c9bcb293632d603fe0a1e5e041f",
+  "command": "python -m pytest -q --junitxml=D:/temp/researchci-closeout-recheck-regression.xml",
+  "counts": {
+    "tests": 476,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4,
+    "passed": 472
+  },
+  "skipped_tests": [
+    {
+      "test": "tests.test_phase2b_ds1_r5_1.test_evidence_symlink_and_summary_temporary_link_are_rejected",
+      "reason": "symlink creation unavailable: [WinError 1314] 客户端没有所需的特权。: 'D:\\\\temp\\\\pytest-of-于舰\\\\pytest-644\\\\test_evidence_symlink_and_summ0\\\\target.txt' -> 'D:\\\\temp\\\\pytest-of-于舰\\\\pytest-644\\\\test_evidence_symlink_and_summ0\\\\alias.jsonl'"
+    },
+    {
+      "test": "tests.test_phase2b_ds1_r5_1_r1.test_audit_symlink_parent_and_preexisting_temp_fail_closed",
+      "reason": "symlink unavailable on this Windows host"
+    },
+    {
+      "test": "tests.test_phase2b_ds1_r5_1_secfix_toctou.test_symlink_replacement_is_rejected",
+      "reason": "NOT_RUN: Windows symlink privilege unavailable"
+    },
+    {
+      "test": "tests.test_phase2b_ds1_r5_1_secfix_toctou.test_parent_directory_replacement_fails_closed",
+      "reason": "NOT_RUN: Windows directory replacement is blocked by native handle sharing"
+    }
+  ],
+  "duration_seconds": 370.044,
+  "verification": "JUnit 测试数和结束日志相互核对；会话结束后未重新执行可选测试。",
+  "process_exit_code": null,
+  "process_exit_code_note": "完成后的工具进程句柄已失效；不虚构进程退出码，使用完整 JUnit 与终结日志验证结果。",
+  "junit_sha256": "sha256:daaf1f386e3fdc0ecf2eac58fbdfc1d3c740e3d49a296ba63be90ebb97b9aac8",
+  "terminal_log_sha256": "sha256:fe6adf660c283a5fefb56c236de49de905ac601c1efe3938f9cb8dfc08ce255c",
+  "initial_launch": {
+    "status": "ENVIRONMENT_BLOCKED",
+    "detail": "设置 PYTHONUTF8=1 后，本机旧编码 .pth 文件造成 site 初始化 UnicodeDecodeError；恢复原有启动方式后完成全量回归。"
+  },
+  "new_pytest_tests": 0,
+  "new_runtime_cases": {
+    "windows": 8,
+    "linux": 8
+  },
+  "status": "PASS_WITH_4_RECORDED_SKIPS"
+}

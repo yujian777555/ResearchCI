@@ -1,0 +1,347 @@
+{
+  "phase": "2B-DS-1-R5.1-ENV-CLOSEOUT-R1",
+  "kind": "supplemental_runtime_evidence",
+  "utc": "2026-10-11T03:02:40.548598+00:00",
+  "base_commit": "6df539a376941c9bcb293632d603fe0a1e5e041f",
+  "status": "WINDOWS_RUNTIME_VALIDATION_PENDING",
+  "live_activation": "BLOCKED",
+  "environment": {
+    "os": "Windows",
+    "kernel": "10",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.10.1",
+    "python_executable": "C:\\Program Files\\Python310\\python.exe",
+    "temporary_root": "D:\\temp\\researchci-closeout-recheck-4th8_rk7",
+    "whoami": {
+      "command": [
+        "whoami"
+      ],
+      "exit_code": 0,
+      "stdout": "desktop-tvsk9sh\\于舰\r\n",
+      "stderr": ""
+    },
+    "privileges": {
+      "command": [
+        "whoami",
+        "/priv"
+      ],
+      "exit_code": 0,
+      "stdout": "\r\nPRIVILEGES INFORMATION\r\n----------------------\r\n\r\nPrivilege Name                Description                          State   \r\n============================= ==================================== ========\r\nSeShutdownPrivilege           Shut down the system                 Disabled\r\nSeChangeNotifyPrivilege       Bypass traverse checking             Enabled \r\nSeUndockPrivilege             Remove computer from docking station Disabled\r\nSeIncreaseWorkingSetPrivilege Increase a process working set       Disabled\r\nSeTimeZonePrivilege           Change the time zone                 Disabled\r\n",
+      "stderr": ""
+    },
+    "systeminfo": {
+      "command": [
+        "systeminfo"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout_sha256": "sha256:416e109742ebcc006f8fad411add815b777c08ec86a59b61a53fa401db88e4e3",
+      "stdout_selected_lines": [
+        "OS Name:                       Microsoft Windows 11 家庭版 中文版",
+        "OS Version:                    10.0.26200 N/A Build 26200",
+        "OS Manufacturer:               Microsoft Corporation",
+        "OS Configuration:              Standalone Workstation",
+        "OS Build Type:                 Multiprocessor Free",
+        "System Type:                   x64-based PC"
+      ]
+    },
+    "python_version": {
+      "command": [
+        "C:\\Program Files\\Python310\\python.exe",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Python 3.10.1\r\n",
+      "stderr": ""
+    },
+    "elevated_admin_token": false,
+    "se_create_symbolic_link_privilege": false,
+    "developer_mode": {
+      "state": "NOT_SET",
+      "error": {
+        "type": "FileNotFoundError",
+        "message": "[WinError 2] 系统找不到指定的文件。",
+        "errno": 2,
+        "winerror": 2
+      }
+    }
+  },
+  "tests": [
+    {
+      "result": "ENVIRONMENT_BLOCKED",
+      "substatus": "WINDOWS_SYMLINK_ENVIRONMENT_BLOCKED",
+      "creation": {
+        "python_error": {
+          "type": "OSError",
+          "message": "[WinError 1314] 客户端没有所需的特权。: 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\file_symlink\\\\outside\\\\audit.jsonl' -> 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\file_symlink\\\\evidence\\\\audit.jsonl'",
+          "errno": 22,
+          "winerror": 1314
+        },
+        "mklink": {
+          "command": [
+            "cmd.exe",
+            "/c",
+            "mklink",
+            "D:\\temp\\researchci-closeout-recheck-4th8_rk7\\file_symlink\\evidence\\audit.jsonl",
+            "D:\\temp\\researchci-closeout-recheck-4th8_rk7\\file_symlink\\outside\\audit.jsonl"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "You do not have sufficient privilege to perform this operation.\r\n"
+        }
+      },
+      "outside_target_modified": false,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "file_symlink"
+    },
+    {
+      "result": "ENVIRONMENT_BLOCKED",
+      "substatus": "WINDOWS_SYMLINK_ENVIRONMENT_BLOCKED",
+      "creation": {
+        "python_error": {
+          "type": "OSError",
+          "message": "[WinError 1314] 客户端没有所需的特权。: 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\summary_symlink\\\\outside\\\\stable.json' -> 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\summary_symlink\\\\evidence\\\\summary.json'",
+          "errno": 22,
+          "winerror": 1314
+        },
+        "mklink": {
+          "command": [
+            "cmd.exe",
+            "/c",
+            "mklink",
+            "D:\\temp\\researchci-closeout-recheck-4th8_rk7\\summary_symlink\\evidence\\summary.json",
+            "D:\\temp\\researchci-closeout-recheck-4th8_rk7\\summary_symlink\\outside\\stable.json"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "You do not have sufficient privilege to perform this operation.\r\n"
+        }
+      },
+      "outside_target_modified": false,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "summary_symlink"
+    },
+    {
+      "result": "ENVIRONMENT_BLOCKED",
+      "substatus": "WINDOWS_SYMLINK_ENVIRONMENT_BLOCKED",
+      "creation": {
+        "python_error": {
+          "type": "OSError",
+          "message": "[WinError 1314] 客户端没有所需的特权。: 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\directory_symlink\\\\outside' -> 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\directory_symlink\\\\evidence'",
+          "errno": 22,
+          "winerror": 1314
+        },
+        "mklink": {
+          "command": [
+            "cmd.exe",
+            "/c",
+            "mklink",
+            "/D",
+            "D:\\temp\\researchci-closeout-recheck-4th8_rk7\\directory_symlink\\evidence",
+            "D:\\temp\\researchci-closeout-recheck-4th8_rk7\\directory_symlink\\outside"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "You do not have sufficient privilege to perform this operation.\r\n"
+        }
+      },
+      "outside_target_modified": false,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "directory_symlink"
+    },
+    {
+      "result": "PASS",
+      "creation": {},
+      "operations": {
+        "audit_append": {
+          "type": "RuntimeError",
+          "message": "evidence hard links denied",
+          "errno": null,
+          "winerror": null
+        }
+      },
+      "outside_target_modified": false,
+      "real_link_created": true,
+      "file_attributes": 32,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "hardlink"
+    },
+    {
+      "result": "PASS",
+      "creation": {
+        "mklink": {
+          "command": [
+            "cmd.exe",
+            "/c",
+            "mklink",
+            "/J",
+            "D:\\temp\\researchci-closeout-recheck-4th8_rk7\\junction_reparse\\evidence",
+            "D:\\temp\\researchci-closeout-recheck-4th8_rk7\\junction_reparse\\outside"
+          ],
+          "exit_code": 0,
+          "stdout": "Junction created for D:\\temp\\researchci-closeout-recheck-4th8_rk7\\junction_reparse\\evidence <<===>> D:\\temp\\researchci-closeout-recheck-4th8_rk7\\junction_reparse\\outside\r\n",
+          "stderr": ""
+        }
+      },
+      "operations": {
+        "audit_append": {
+          "type": "RuntimeError",
+          "message": "symlink/reparse point denied",
+          "errno": null,
+          "winerror": null
+        },
+        "summary_write_and_publish": {
+          "type": "RuntimeError",
+          "message": "symlink/reparse point denied",
+          "errno": null,
+          "winerror": null
+        },
+        "readback": {
+          "type": "RuntimeError",
+          "message": "symlink/reparse point denied",
+          "errno": null,
+          "winerror": null
+        }
+      },
+      "outside_target_modified": false,
+      "real_link_created": true,
+      "file_attributes": 1040,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "junction_reparse"
+    },
+    {
+      "result": "ENVIRONMENT_BLOCKED",
+      "substatus": "ENVIRONMENT_LIMITED",
+      "entrypoint": "PreflightAuditLog.append",
+      "attack": {
+        "attempted": true,
+        "installed": false,
+        "renamed_original": false,
+        "checked_identity": [
+          2498677899,
+          12103423999279104
+        ],
+        "error": {
+          "type": "PermissionError",
+          "message": "[WinError 5] 拒绝访问。: 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\parent_audit_append\\\\evidence' -> 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\parent_audit_append\\\\original'",
+          "errno": 13,
+          "winerror": 5
+        }
+      },
+      "rejection": {
+        "type": "EnvironmentLimited",
+        "message": "真实目录替换被操作系统阻断",
+        "errno": null,
+        "winerror": null
+      },
+      "outside_target_modified": false,
+      "original_evidence_unchanged": true,
+      "summary_unpublished": true,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "parent_audit_append"
+    },
+    {
+      "result": "ENVIRONMENT_BLOCKED",
+      "substatus": "ENVIRONMENT_LIMITED",
+      "entrypoint": "atomic_write_json",
+      "attack": {
+        "attempted": true,
+        "installed": false,
+        "renamed_original": false,
+        "checked_identity": [
+          2498677899,
+          12103423999279122
+        ],
+        "error": {
+          "type": "PermissionError",
+          "message": "[WinError 5] 拒绝访问。: 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\parent_summary_write\\\\evidence' -> 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\parent_summary_write\\\\original'",
+          "errno": 13,
+          "winerror": 5
+        }
+      },
+      "rejection": {
+        "type": "EnvironmentLimited",
+        "message": "真实目录替换被操作系统阻断",
+        "errno": null,
+        "winerror": null
+      },
+      "outside_target_modified": false,
+      "original_evidence_unchanged": true,
+      "summary_unpublished": true,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "parent_summary_write"
+    },
+    {
+      "result": "ENVIRONMENT_BLOCKED",
+      "substatus": "ENVIRONMENT_LIMITED",
+      "entrypoint": "atomic_write_json",
+      "attack": {
+        "attempted": true,
+        "installed": false,
+        "renamed_original": false,
+        "checked_identity": [
+          2498677899,
+          12666373952700446
+        ],
+        "error": {
+          "type": "PermissionError",
+          "message": "[WinError 5] 拒绝访问。: 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\parent_evidence_publish\\\\evidence' -> 'D:\\\\temp\\\\researchci-closeout-recheck-4th8_rk7\\\\parent_evidence_publish\\\\original'",
+          "errno": 13,
+          "winerror": 5
+        }
+      },
+      "rejection": {
+        "type": "EnvironmentLimited",
+        "message": "真实目录替换被操作系统阻断",
+        "errno": null,
+        "winerror": null
+      },
+      "outside_target_modified": false,
+      "original_evidence_unchanged": true,
+      "summary_unpublished": true,
+      "audit_hash_chain_valid": true,
+      "chain_tail": "sha256:7359cf0b78f5c564c5375fb717a48fdbed3a10f3a7c08fbe5e200dffc234a22b",
+      "summary_integrity": true,
+      "test_id": "parent_evidence_publish"
+    }
+  ],
+  "counts": {
+    "ENVIRONMENT_BLOCKED": 6,
+    "PASS": 2
+  },
+  "source_hashes": {
+    "agentbench/deepseek_live_canary/native_evidence.py": "sha256:2a051b51039b3758c9210a36975459cf98f55db1e22898ff230e109a074b5777",
+    "agentbench/deepseek_live_canary/secure_io.py": "sha256:30b6913b20b9540c5248e2beb19da682e0790a78a273e90678507966f8cbd69b",
+    "agentbench/deepseek_live_canary/preflight.py": "sha256:6cefe1dbc4e3debf6f8b43959cb3cf09dc7bfb5ddf7d88cd4b9a7ae4e6d4b402",
+    "tests/phase2b_ds1_r5_1_env_closeout_r1_recheck.py": "sha256:94ec0286cf29b5698f771f193f52af08e9181bbd96bac69130726396060623a9"
+  },
+  "offline_guard": {
+    "network_attempts_blocked": 0,
+    "credential_reads_blocked": 0
+  },
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "publication_projection": {
+    "original_report_sha256": "sha256:834d4cc62e2668dcf2ccdb8c4f9ed5a8c0940a2bf7b2e1afa32b368afb687d15",
+    "systeminfo_selection": "仅发布 OS 和架构字段；省略网络地址、产品标识及无关硬件信息。",
+    "runtime_results_modified": false,
+    "full_local_evidence": "本机执行期间留存；未提交原始 systeminfo 全文。"
+  }
+}
