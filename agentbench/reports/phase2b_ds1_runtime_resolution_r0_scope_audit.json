@@ -1,0 +1,58 @@
+{
+  "phase": "2B-DS-1-RUNTIME-RESOLUTION-R0",
+  "baseline_commit": "a7a868719da12d208bb10378c72f64ef65426c05",
+  "branch": "main",
+  "allowed_changes": [
+    "agentbench/reports/phase2b_ds1_runtime_resolution_r0.md",
+    "agentbench/reports/phase2b_ds1_runtime_resolution_r0.json",
+    "agentbench/reports/phase2b_ds1_runtime_resolution_r0_scope_audit.json",
+    "tests/test_runtime_resolution.py"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_runtime_resolution_r0.md",
+    "agentbench/reports/phase2b_ds1_runtime_resolution_r0.json",
+    "agentbench/reports/phase2b_ds1_runtime_resolution_r0_scope_audit.json",
+    "tests/test_runtime_resolution.py"
+  ],
+  "forbidden_paths": [
+    "authorization core",
+    "secure_io",
+    "native_evidence",
+    "ledger",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "scientific code",
+    "historical reports",
+    "provider transport"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "execution_authorization": "NOT GRANTED",
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "RUNTIME_RESOLUTION_SCOPE_PASS",
+  "evidence_reports_modified": false,
+  "new_files_only": true,
+  "decision_authority": "Executor 按 Planner 本轮允许的规则提出 Linux 文件系统资格认可，等待 Planner 审查；没有真实请求批准。",
+  "regression": {
+    "command": "python -m pytest -q",
+    "collected": 520,
+    "passed": 516,
+    "skipped": 4,
+    "failed": 0,
+    "errors": 0,
+    "new_runtime_resolution_tests": 6
+  },
+  "runtime_report_sha256": "sha256:d050b3e1fe0bd1d8b0180dbb653c709f9302f9acc56649f195508b1f872d9a8f",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "tracked_baseline_changes": []
+}

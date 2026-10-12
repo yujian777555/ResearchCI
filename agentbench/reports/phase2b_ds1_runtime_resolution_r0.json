@@ -1,0 +1,179 @@
+{
+  "phase": "2B-DS-1-RUNTIME-RESOLUTION-R0",
+  "status": "RUNTIME_ACCEPTED: Linux",
+  "decision": "RUNTIME_ACCEPTED",
+  "recommended_runtime": "Linux",
+  "selected_runtime": {
+    "class": "Linux",
+    "distribution": "Ubuntu-22.04",
+    "runtime": "existing local WSL2 distribution",
+    "validation_environment": "WSL2 Ubuntu-22.04",
+    "kernel": "6.18.40.1-microsoft-standard-WSL2",
+    "filesystem": "native Linux filesystem; stat -f reports ext2/ext3",
+    "validated_test_root": "/tmp",
+    "python": "3.10.12",
+    "python_executable": "/usr/bin/python3",
+    "uid": 1000,
+    "production_requirement": "use this qualified WSL2 Linux environment and native Linux evidence storage; any other deployment requires separate qualification"
+  },
+  "qualification_scope": {
+    "accepted": "filesystem security of the recorded WSL2 Linux environment and unchanged evidence implementation",
+    "validation_type": "existing real runtime evidence plus current read-only environment verification",
+    "native_linux_evidence_storage_required": true,
+    "windows_mounted_storage_accepted": false,
+    "unqualified_linux_deployments_accepted": false,
+    "windows_runtime_accepted": false,
+    "filesystem_proof_is_execution_approval": false,
+    "exact_future_evidence_sink_readiness": "MUST_VERIFY_BEFORE_EXECUTION",
+    "other_runtime_changes": "REQUALIFY_BEFORE_EXECUTION"
+  },
+  "linux_evidence": {
+    "symlink": "PASS",
+    "summary_symlink": "PASS",
+    "toctou": "PASS",
+    "hardlink": "PASS",
+    "parent_replacement_audit_append": "PASS",
+    "parent_replacement_summary_write": "PASS",
+    "parent_replacement_evidence_publish": "PASS",
+    "audit_hash_chain": "PASS",
+    "summary_integrity": "PASS",
+    "outside_target_modified": false
+  },
+  "windows_evidence": {
+    "file_symlink": "ENVIRONMENT_BLOCKED",
+    "directory_symlink": "ENVIRONMENT_BLOCKED",
+    "junction": "PASS",
+    "reparse_point": "PASS",
+    "hardlink": "PASS",
+    "parent_replacement": "ENVIRONMENT_LIMITED",
+    "blocking_reasons": [
+      "SeCreateSymbolicLinkPrivilege unavailable",
+      "WinError 1314",
+      "WinError 5 directory replacement limited"
+    ]
+  },
+  "security_impact": {
+    "linux_evidence_integrity": "ACCEPTED",
+    "linux_toctou_protection": "ACCEPTED",
+    "linux_runtime_qualification": "ACCEPTED",
+    "windows_runtime_qualification": "PENDING",
+    "windows_use": "development_or_non-production until qualification completes",
+    "windows_pending_blocks_selected_linux_filesystem_qualification": false
+  },
+  "execution_authorization": "NOT GRANTED",
+  "live_activation": "BLOCKED",
+  "blockers": [
+    "Planner explicit execution approval is absent",
+    "Approved live credential source is absent",
+    "No provider request is authorized in this phase",
+    "Valid signed run authorization, one-use reservation and exact audit sink readiness must be verified before execution"
+  ],
+  "excluded_runtime_restrictions": [
+    "Windows runtime qualification remains pending; do not execute on Windows or its mounted filesystems"
+  ],
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "evidence_references": {
+    "linux": {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_recheck_linux.json",
+      "sha256": "sha256:182b1931ff6356c1206ea02fcd6f34a2aeb7e4521bf3fee4fb08bc8dbaa28dc7"
+    },
+    "windows": {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_env_closeout_r1_recheck_windows.json",
+      "sha256": "sha256:6e32ddfa840ed4e8d4d3ec01c56268830f2cf3931cdd9eb37c014a4c4812c0aa"
+    },
+    "authorization_decision": {
+      "path": "agentbench/reports/phase2b_ds1_live_preflight_authorization_decision_r0.json",
+      "sha256": "sha256:13f3e17e726f48693aebcc2aec1370ebb59e202aedbc334fb71e15269e86c403"
+    },
+    "toctou_fix": {
+      "path": "agentbench/reports/phase2b_ds1_r5_1_secfix_toctou_r1_security_review.md",
+      "sha256": "sha256:09c91bda723e3f905ef9312cfdfd28c8257ba94c431a73fcc802e6d1cfbc2585"
+    }
+  },
+  "implementation_matches_validated_sources": true,
+  "validated_source_hashes": {
+    "agentbench/deepseek_live_canary/native_evidence.py": "sha256:2a051b51039b3758c9210a36975459cf98f55db1e22898ff230e109a074b5777",
+    "agentbench/deepseek_live_canary/secure_io.py": "sha256:30b6913b20b9540c5248e2beb19da682e0790a78a273e90678507966f8cbd69b",
+    "agentbench/deepseek_live_canary/preflight.py": "sha256:6cefe1dbc4e3debf6f8b43959cb3cf09dc7bfb5ddf7d88cd4b9a7ae4e6d4b402",
+    "tests/phase2b_ds1_r5_1_env_closeout_r1_recheck.py": "sha256:94ec0286cf29b5698f771f193f52af08e9181bbd96bac69130726396060623a9"
+  },
+  "environment_verification": {
+    "verified_at_utc": "2026-10-12T13:03:47.738750+00:00",
+    "mode": "read_only_no_provider",
+    "kernel": "6.18.40.1-microsoft-standard-WSL2",
+    "observations": [
+      {
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-22.04",
+          "--",
+          "uname",
+          "-r"
+        ],
+        "returncode": 0,
+        "stdout": "6.18.40.1-microsoft-standard-WSL2"
+      },
+      {
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-22.04",
+          "--",
+          "python3",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": "Python 3.10.12"
+      },
+      {
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-22.04",
+          "--",
+          "id"
+        ],
+        "returncode": 0,
+        "stdout": "uid=1000(yujian) gid=1000(yujian) groups=1000(yujian),4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),117(netdev),999(docker)"
+      },
+      {
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-22.04",
+          "--",
+          "stat",
+          "-f",
+          "-c",
+          "%T",
+          "/tmp",
+          "/home/yujian"
+        ],
+        "returncode": 0,
+        "stdout": "ext2/ext3\next2/ext3"
+      },
+      {
+        "command": [
+          "wsl.exe",
+          "-d",
+          "Ubuntu-22.04",
+          "--",
+          "stat",
+          "-c",
+          "%d",
+          "/tmp",
+          "/home/yujian"
+        ],
+        "returncode": 0,
+        "stdout": "2096\n2096"
+      }
+    ]
+  }
+}
