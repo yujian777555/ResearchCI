@@ -1,0 +1,42 @@
+{
+  "approval_id": "live-preflight-final-approval-final-r0",
+  "decision": "REJECT",
+  "runtime": "Linux WSL2 Ubuntu-22.04",
+  "provider": "DeepSeek",
+  "scope": {
+    "method": "GET",
+    "endpoint": "/models",
+    "max_requests": 1
+  },
+  "execution_config_reference": "phase2b_ds1_live_preflight_execution_config_r0.json",
+  "execution_auth_reference": "phase2b_ds1_live_preflight_execution_auth_r0.json",
+  "grant_status": "HOLD",
+  "credential_status": "NOT_PROVIDED",
+  "risk_acceptance": "REJECT: bound artifacts do not share the current repository SHA; execution grant and credential prerequisites are also absent.",
+  "approved_by": "",
+  "timestamp": "2026-10-13T00:00:00Z",
+  "current_repository_sha": "2c6e702ccfd22685167f90d6b91dac391ac13046",
+  "artifact_bindings": {
+    "execution_config_repository_sha": "62c5eb67ecde46b5204b7581c20a1542273dbf67",
+    "execution_auth_repository_sha": "25e9dfccaaf7cf0113746070db16da3b06efe89a",
+    "grant_repository_sha": "33f3701945adb5140f3a9f6854d5f704701c0201",
+    "repository_binding_match": false,
+    "protocol_binding_match": true,
+    "scope_binding_match": true
+  },
+  "rejection_reasons": [
+    "artifact repository SHA mismatch",
+    "execution grant status HOLD",
+    "credential status NOT_PROVIDED",
+    "Planner execution approval not granted"
+  ],
+  "execution_authorization": "NOT GRANTED",
+  "live_activation": "BLOCKED",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

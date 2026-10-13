@@ -1,0 +1,54 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-EXECUTION-APPROVAL-FINAL-R0",
+  "baseline_commit": "2c6e702ccfd22685167f90d6b91dac391ac13046",
+  "branch": "main",
+  "allowed_changes": [
+    "agentbench/reports/phase2b_ds1_live_preflight_execution_approval_final_r0.*",
+    "tests/test_live_preflight_execution_approval_final.py"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_live_preflight_execution_approval_final_r0.md",
+    "agentbench/reports/phase2b_ds1_live_preflight_execution_approval_final_r0.json",
+    "agentbench/reports/phase2b_ds1_live_preflight_execution_approval_final_r0_scope_audit.json",
+    "tests/test_live_preflight_execution_approval_final.py"
+  ],
+  "forbidden_paths": [
+    "authorization core",
+    "secure_io",
+    "native_evidence",
+    "ledger",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "scientific code",
+    "historical reports",
+    "provider transport"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "decision": "REJECT",
+  "execution_authorization": "NOT GRANTED",
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "FINAL_DECISION_SCOPE_PASS",
+  "regression": {
+    "command": "python -m pytest -q",
+    "collected": 586,
+    "passed": 582,
+    "skipped": 4,
+    "failed": 0,
+    "errors": 0,
+    "new_final_decision_tests": 8
+  },
+  "decision_artifact_sha256": "sha256:a986a5aa2ec76fbd06a5efdb4cebf77ac5de0c937badea905c275d2acf5a50d7",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "tracked_baseline_changes": []
+}
