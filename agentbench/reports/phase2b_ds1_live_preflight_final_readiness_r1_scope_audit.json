@@ -1,0 +1,55 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-FINAL-READINESS-R1",
+  "baseline_commit": "f30e3153c0d671af043807f22d70c58d70a22ab2",
+  "immutable_execution_target": "1fa9b1958993c9a89c6001036ead6fdb88064c28",
+  "branch": "main",
+  "allowed_changes": [
+    "agentbench/reports/phase2b_ds1_live_preflight_final_readiness_r1.*",
+    "tests/test_live_preflight_final_readiness_r1.py"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_live_preflight_final_readiness_r1.md",
+    "agentbench/reports/phase2b_ds1_live_preflight_final_readiness_r1.json",
+    "agentbench/reports/phase2b_ds1_live_preflight_final_readiness_r1_scope_audit.json",
+    "tests/test_live_preflight_final_readiness_r1.py"
+  ],
+  "forbidden_paths": [
+    "authorization core",
+    "secure_io",
+    "native_evidence",
+    "ledger",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "scientific code",
+    "historical reports",
+    "provider transport"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "decision": "BLOCKED",
+  "execution_authorization": "NOT GRANTED",
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "FINAL_READINESS_SCOPE_PASS_WITH_REGRESSION_ENVIRONMENT_BLOCK",
+  "regression": {
+    "command": "python -m pytest -q",
+    "status": "ENVIRONMENT_BLOCKED",
+    "collected": 599,
+    "passed": 505,
+    "failed": 90,
+    "skipped": 4,
+    "errors": 0,
+    "new_readiness_tests": 9,
+    "representative_failure": "native_evidence.evidence_lock: WinError 80 then WinError 5 on Windows sandbox lock file"
+  },
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  }
+}

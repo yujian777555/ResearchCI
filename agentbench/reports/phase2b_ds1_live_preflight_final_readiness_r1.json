@@ -1,0 +1,56 @@
+{
+  "readiness_id": "live-preflight-final-readiness-r1",
+  "decision": "BLOCKED",
+  "repository_sha": "1fa9b1958993c9a89c6001036ead6fdb88064c28",
+  "publication_commit": "f30e3153c0d671af043807f22d70c58d70a22ab2",
+  "runtime": {
+    "name": "Linux WSL2 Ubuntu-22.04",
+    "validated": true,
+    "filesystem": "native Linux filesystem"
+  },
+  "binding": {
+    "execution_config": "PASS",
+    "execution_auth": "PASS",
+    "grant": "PASS",
+    "approval": "PASS",
+    "binding_reference": "phase2b_ds1_live_preflight_binding_reissue_r0.json",
+    "all_bound_to_repository_sha": true
+  },
+  "scope": {
+    "provider": "DeepSeek",
+    "method": "GET",
+    "endpoint": "/models",
+    "max_requests": 1
+  },
+  "grant": {
+    "status": "HOLD"
+  },
+  "credential": {
+    "status": "NOT_PROVIDED"
+  },
+  "execution_authorization": "NOT GRANTED",
+  "live_activation": "BLOCKED",
+  "blockers": [
+    "Grant HOLD",
+    "Credential NOT_PROVIDED",
+    "Planner execution approval not granted"
+  ],
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "regression": {
+    "command": "python -m pytest -q",
+    "status": "ENVIRONMENT_BLOCKED",
+    "collected": 599,
+    "passed": 505,
+    "failed": 90,
+    "skipped": 4,
+    "errors": 0,
+    "failure_class": "Windows native_evidence lock-file open (WinError 80 followed by WinError 5)",
+    "new_readiness_tests": 9
+  }
+}
