@@ -1,0 +1,70 @@
+{
+  "grant_id": "deepseek-live-preflight-grant-reissue-r1",
+  "status": "HOLD",
+  "repository_sha": "3489ed40af3589313f2d3c5a08d9da5faf41dddf",
+  "runtime": {
+    "platform": "Linux",
+    "environment": "WSL2 Ubuntu-22.04",
+    "validated": true
+  },
+  "provider": "DeepSeek",
+  "scope": {
+    "method": "GET",
+    "endpoint": "/models",
+    "max_requests": 1
+  },
+  "credential_source": {
+    "type": "environment_callback",
+    "reference": "DEEPSEEK_API_KEY",
+    "acquisition": "lazy",
+    "invoked": false,
+    "status": "NOT_ACQUIRED"
+  },
+  "reuse": false,
+  "binding": {
+    "grant_repository_sha_match": true,
+    "execution_config": {
+      "status": "REJECT_STALE",
+      "bound_sha": "62c5eb67ecde46b5204b7581c20a1542273dbf67"
+    },
+    "execution_auth": {
+      "status": "REJECT_STALE",
+      "bound_sha": "25e9dfccaaf7cf0113746070db16da3b06efe89a"
+    },
+    "approval": {
+      "status": "REJECT_STALE_OR_HOLD",
+      "bound_sha": "1fa9b1958993c9a89c6001036ead6fdb88064c28",
+      "decision": "HOLD"
+    },
+    "credential_source": {
+      "status": "PASS",
+      "bound_sha": "3489ed40af3589313f2d3c5a08d9da5faf41dddf"
+    },
+    "chain_consistent": false,
+    "chain_status": "STALE_DEPENDENCIES"
+  },
+  "old_grant": {
+    "repository_sha": "1fa9b1958993c9a89c6001036ead6fdb88064c28",
+    "result": "REJECTED_STALE"
+  },
+  "execution_status": "BLOCKED",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "credential_callback_calls": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "regression": {
+    "command": "python -m pytest -q",
+    "status": "ENVIRONMENT_BLOCKED",
+    "collected": 630,
+    "passed": 536,
+    "failed": 90,
+    "skipped": 4,
+    "errors": 0,
+    "failure_class": "Windows native_evidence lock-file open (WinError 80 followed by WinError 5)",
+    "new_reissue_tests": 9
+  }
+}

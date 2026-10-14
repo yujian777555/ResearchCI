@@ -1,0 +1,62 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-GRANT-REISSUE-R1",
+  "baseline_commit": "3489ed40af3589313f2d3c5a08d9da5faf41dddf",
+  "current_head": "3489ed40af3589313f2d3c5a08d9da5faf41dddf",
+  "old_grant_sha": "1fa9b1958993c9a89c6001036ead6fdb88064c28",
+  "branch": "main",
+  "allowed_changes": [
+    "agentbench/reports/phase2b_ds1_live_preflight_grant_reissue_r1.*",
+    "tests/test_live_preflight_grant_reissue_r1.py"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_live_preflight_grant_reissue_r1.json",
+    "agentbench/reports/phase2b_ds1_live_preflight_grant_reissue_r1.md",
+    "agentbench/reports/phase2b_ds1_live_preflight_grant_reissue_r1_scope_audit.json",
+    "tests/test_live_preflight_grant_reissue_r1.py"
+  ],
+  "forbidden_paths": [
+    "authorization core",
+    "secure_io",
+    "native_evidence",
+    "ledger",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "scientific code",
+    "historical reports",
+    "provider transport",
+    "DEEPSEEK_API_KEY value",
+    "credential callback invocation"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "credential_callback_invoked": false,
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "GRANT_REISSUE_SCOPE_PASS_CHAIN_BLOCKED_WITH_REGRESSION_ENVIRONMENT_BLOCK",
+  "chain_status": "STALE_DEPENDENCIES",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "credential_callback_calls": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "regression": {
+    "command": "python -m pytest -q",
+    "status": "ENVIRONMENT_BLOCKED",
+    "collected": 630,
+    "passed": 536,
+    "failed": 90,
+    "skipped": 4,
+    "errors": 0,
+    "new_reissue_tests": 9,
+    "representative_failure": "native_evidence.evidence_lock: WinError 80 then WinError 5 on Windows sandbox lock file"
+  },
+  "grant_schema_sha256": "sha256:2ac1e18ac83614854d8f6eb6ccc0f5d3860ade354e73897a68bf144516aea443",
+  "grant_report_sha256": "sha256:52bcb7bc23e9fae56e51eede8251c40ed763abf9d7b739722af6b7b18f570a8b",
+  "grant_test_sha256": "sha256:34dfc79cd8165f5c76473a5782a4fc33bee7448af67527836a66996a4df45852"
+}
