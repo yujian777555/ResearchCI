@@ -1,0 +1,60 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-GRANT-FINAL-R0",
+  "baseline_commit": "24326dcdbc074e4d4f201ac49f4bbd686cb40284",
+  "immutable_execution_target": "1fa9b1958993c9a89c6001036ead6fdb88064c28",
+  "branch": "main",
+  "allowed_changes": [
+    "agentbench/reports/phase2b_ds1_live_preflight_grant_final_r0.*",
+    "tests/test_live_preflight_grant_final.py"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_live_preflight_grant_final_r0.json",
+    "agentbench/reports/phase2b_ds1_live_preflight_grant_final_r0.md",
+    "agentbench/reports/phase2b_ds1_live_preflight_grant_final_r0_scope_audit.json",
+    "tests/test_live_preflight_grant_final.py"
+  ],
+  "forbidden_paths": [
+    "authorization core",
+    "secure_io",
+    "native_evidence",
+    "ledger",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "scientific code",
+    "historical reports",
+    "provider transport",
+    "DEEPSEEK_API_KEY value",
+    "credential callback invocation"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "credential_callback_invoked": false,
+  "real_provider_api_calls": 0,
+  "real_provider_network_calls": 0,
+  "real_credential_reads": 0,
+  "live_canary_episodes": 0,
+  "benchmark_episodes": 0,
+  "status": "GRANT_FINAL_SCOPE_PASS_WITH_REGRESSION_ENVIRONMENT_BLOCK",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "credential_callback_calls": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "regression": {
+    "command": "python -m pytest -q",
+    "status": "ENVIRONMENT_BLOCKED",
+    "collected": 621,
+    "passed": 527,
+    "failed": 90,
+    "skipped": 4,
+    "errors": 0,
+    "new_grant_tests": 10,
+    "representative_failure": "native_evidence.evidence_lock: WinError 80 then WinError 5 on Windows sandbox lock file"
+  },
+  "grant_schema_sha256": "sha256:aa63003720dcd39c1641b846a2b9b8c65690dd47ab46e49fbc81a8a6ee9e6c90",
+  "grant_report_sha256": "sha256:2394bd77297eb2021fb21b0220df9d0a5189652e83c686d9a4978afa82251f0c",
+  "grant_test_sha256": "sha256:ba685f465979446a3bd21a1a0e8ee5a5c9b345a7eb18998ec75c0c692e4ab6b2"
+}

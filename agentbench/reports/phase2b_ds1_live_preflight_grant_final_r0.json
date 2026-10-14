@@ -1,0 +1,126 @@
+{
+  "grant_id": "deepseek-live-preflight-final-grant-r0",
+  "status": "HOLD",
+  "repository": {
+    "branch": "main",
+    "sha": "1fa9b1958993c9a89c6001036ead6fdb88064c28",
+    "publication_commit": "24326dcdbc074e4d4f201ac49f4bbd686cb40284"
+  },
+  "runtime": {
+    "platform": "Linux",
+    "environment": "WSL2 Ubuntu-22.04",
+    "validated": true
+  },
+  "binding": {
+    "execution_config": "PASS",
+    "execution_auth": "PASS",
+    "approval": "PASS",
+    "credential_source": "PASS",
+    "repository_sha_match": true,
+    "binding_reference": "phase2b_ds1_live_preflight_binding_reissue_r0.json",
+    "credential_source_reference": "phase2b_ds1_live_preflight_credential_source_binding_r0.json"
+  },
+  "provider": {
+    "name": "DeepSeek"
+  },
+  "scope": {
+    "method": "GET",
+    "endpoint": "/models",
+    "max_requests": 1
+  },
+  "credential": {
+    "source": "environment_callback",
+    "reference": "DEEPSEEK_API_KEY",
+    "acquisition": "lazy",
+    "status": "NOT_ACQUIRED",
+    "storage": "memory_only",
+    "persistence": false,
+    "callback_invoked": false
+  },
+  "reuse": false,
+  "single_use": {
+    "reservation": "required",
+    "replay": "reject",
+    "current_state": "HOLD"
+  },
+  "network": {
+    "allowed": false,
+    "provider_calls": 0
+  },
+  "state_machine": {
+    "states": [
+      "CREATED",
+      "VALIDATED",
+      "HOLD",
+      "GRANTED",
+      "CONSUMED",
+      "DESTROYED",
+      "REJECTED"
+    ],
+    "current_state": "HOLD",
+    "allowed_transitions": [
+      [
+        "CREATED",
+        "VALIDATED"
+      ],
+      [
+        "VALIDATED",
+        "HOLD"
+      ],
+      [
+        "HOLD",
+        "GRANTED"
+      ],
+      [
+        "GRANTED",
+        "CONSUMED"
+      ],
+      [
+        "CONSUMED",
+        "DESTROYED"
+      ]
+    ],
+    "forbidden_transitions": [
+      [
+        "HOLD",
+        "CONSUMED"
+      ],
+      [
+        "CONSUMED",
+        "GRANTED"
+      ],
+      [
+        "DESTROYED",
+        "GRANTED"
+      ],
+      [
+        "DESTROYED",
+        "CONSUMED"
+      ],
+      [
+        "REJECTED",
+        "GRANTED"
+      ]
+    ]
+  },
+  "execution_status": "BLOCKED",
+  "offline_counters": {
+    "real_provider_api_calls": 0,
+    "real_provider_network_calls": 0,
+    "real_credential_reads": 0,
+    "credential_callback_calls": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "regression": {
+    "command": "python -m pytest -q",
+    "status": "ENVIRONMENT_BLOCKED",
+    "collected": 621,
+    "passed": 527,
+    "failed": 90,
+    "skipped": 4,
+    "errors": 0,
+    "failure_class": "Windows native_evidence lock-file open (WinError 80 followed by WinError 5)",
+    "new_grant_tests": 10
+  }
+}
