@@ -1,0 +1,84 @@
+{
+  "freeze_id": "phase2b-ds1-execution-freeze-r0",
+  "execution_sha": "52a643763a072bbc828e335d26f9e65d1ced8ab6",
+  "freeze_created_from": "main",
+  "runtime": "Linux WSL2 Ubuntu-22.04",
+  "provider": "DeepSeek",
+  "scope": {
+    "method": "GET",
+    "endpoint": "/models",
+    "max_requests": 1
+  },
+  "artifacts": {
+    "execution_config": {
+      "path": "agentbench/reports/phase2b_ds1_live_preflight_execution_config_r0.json",
+      "repository_sha": "62c5eb67ecde46b5204b7581c20a1542273dbf67",
+      "content_sha256": "sha256:7d98b4f7fc88a1889da0010beb41c1003ba1913f09c6338f888c55044f2a9b58",
+      "status": "STALE_REQUIRES_REISSUE"
+    },
+    "execution_auth": {
+      "path": "agentbench/reports/phase2b_ds1_live_preflight_execution_auth_r0.json",
+      "repository_sha": "25e9dfccaaf7cf0113746070db16da3b06efe89a",
+      "content_sha256": "sha256:3ff0dc48830d8a0d446eece3cebda99d2f9ac21131ecdb1c9fa9dd69bba40d09",
+      "status": "STALE_REQUIRES_REISSUE"
+    },
+    "approval": {
+      "path": "agentbench/reports/phase2b_ds1_live_preflight_final_readiness_r1.json",
+      "repository_sha": "1fa9b1958993c9a89c6001036ead6fdb88064c28",
+      "content_sha256": "sha256:ed4acaa703feb256ffabc17d39f8848ae382b77fd85173537862e3fbcf7b1350",
+      "status": "STALE_REQUIRES_REISSUE"
+    },
+    "grant": {
+      "path": "agentbench/reports/phase2b_ds1_live_preflight_grant_reissue_r1.json",
+      "repository_sha": "3489ed40af3589313f2d3c5a08d9da5faf41dddf",
+      "content_sha256": "sha256:2ac1e18ac83614854d8f6eb6ccc0f5d3860ade354e73897a68bf144516aea443",
+      "status": "STALE_REQUIRES_REISSUE"
+    },
+    "credential_source": {
+      "path": "agentbench/reports/phase2b_ds1_live_preflight_credential_source_binding_r0.json",
+      "repository_sha": "24326dcdbc074e4d4f201ac49f4bbd686cb40284",
+      "content_sha256": "sha256:43f8565831025a71d144bf18d3fdd81c3796e54ae66e3f27e03325a9aebd6596",
+      "status": "STALE_REQUIRES_REISSUE"
+    }
+  },
+  "artifact_binding": {
+    "expected_execution_sha": "52a643763a072bbc828e335d26f9e65d1ced8ab6",
+    "all_repository_sha_match": false,
+    "chain_status": "CHAIN_INVALID",
+    "reason": "Existing artifacts are bound to earlier publication commits; reissue is required before execution."
+  },
+  "abort_conditions": [
+    "artifact_sha != frozen_sha -> REJECT_BEFORE_EXECUTION",
+    "config/auth/approval/grant/credential chain mismatch -> CHAIN_INVALID",
+    "credential logging, persistence, or early acquisition -> SECURITY_ABORT",
+    "method or endpoint outside GET /models, or max_requests > 1 -> NETWORK_SCOPE_VIOLATION",
+    "SDK, transport, or manual retry -> EXECUTION_ABORT",
+    "HEAD != frozen_sha after freeze -> EXECUTION_INVALIDATED"
+  ],
+  "hard_stop": {
+    "enabled": true,
+    "credential_callback_on_mismatch": false,
+    "network_on_mismatch": false,
+    "execution_status": "BLOCKED"
+  },
+  "offline_counters": {
+    "provider_api_calls": 0,
+    "network_calls": 0,
+    "credential_reads": 0,
+    "credential_callback_calls": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "status": "FREEZE_TARGET_ESTABLISHED_CHAIN_INVALID",
+  "regression": {
+    "command": "python -m pytest -q",
+    "status": "ENVIRONMENT_BLOCKED",
+    "collected": 638,
+    "passed": 544,
+    "failed": 90,
+    "skipped": 4,
+    "errors": 0,
+    "failure_class": "Windows native_evidence lock-file open (WinError 80 followed by WinError 5)",
+    "new_freeze_tests": 8
+  }
+}

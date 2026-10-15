@@ -1,0 +1,53 @@
+{
+  "phase": "2B-DS-1-LIVE-PREFLIGHT-EXECUTION-FREEZE-R0",
+  "baseline_commit": "52a643763a072bbc828e335d26f9e65d1ced8ab6",
+  "frozen_execution_sha": "52a643763a072bbc828e335d26f9e65d1ced8ab6",
+  "branch": "main",
+  "allowed_changes": [
+    "agentbench/reports/phase2b_ds1_execution_freeze_r0.*",
+    "tests/test_phase2b_ds1_execution_freeze_r0.py"
+  ],
+  "changed_files": [
+    "agentbench/reports/phase2b_ds1_execution_freeze_r0.json",
+    "agentbench/reports/phase2b_ds1_execution_freeze_r0.md",
+    "agentbench/reports/phase2b_ds1_execution_freeze_r0_scope_audit.json",
+    "tests/test_phase2b_ds1_execution_freeze_r0.py"
+  ],
+  "forbidden_paths": [
+    "secure_io",
+    "authorization core",
+    "ledger core",
+    "DeepSeek protocol",
+    "STATS protocol",
+    "scientific code",
+    "historical reports",
+    "provider transport",
+    "credential value"
+  ],
+  "forbidden_changes_detected": false,
+  "historical_reports_modified": false,
+  "status": "FREEZE_SCOPE_PASS_CHAIN_INVALID_WITH_REGRESSION_ENVIRONMENT_BLOCK",
+  "chain_status": "CHAIN_INVALID",
+  "offline_counters": {
+    "provider_api_calls": 0,
+    "network_calls": 0,
+    "credential_reads": 0,
+    "credential_callback_calls": 0,
+    "live_canary_episodes": 0,
+    "benchmark_episodes": 0
+  },
+  "regression": {
+    "command": "python -m pytest -q",
+    "status": "ENVIRONMENT_BLOCKED",
+    "collected": 638,
+    "passed": 544,
+    "failed": 90,
+    "skipped": 4,
+    "errors": 0,
+    "new_freeze_tests": 8,
+    "representative_failure": "native_evidence.evidence_lock: WinError 80 then WinError 5 on Windows sandbox lock file"
+  },
+  "manifest_sha256": "sha256:e26503e65ebfaac8ed6978ff509bbb6217d16280f9d7e03075d4303d46bf738c",
+  "freeze_report_sha256": "sha256:9a0f7d63d403040b35ac0cbf22614177bb48b3f5cff108056c28906c98209491",
+  "freeze_test_sha256": "sha256:f7b1c153df5f719fd41b4ded72afc40375325a7bdad7ef9fbcec54bff0bf4242"
+}
